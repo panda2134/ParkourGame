@@ -27,8 +27,8 @@ void Entity::updatePosition() {
 QVector2D Entity::getVelocity() const { return velocity; }
 
 void Entity::setVelocity(const QVector2D& value) {
-    velocity = QVector2D(geometry::compareFloats(value[0], 0) * qMin(qAbs(value[0]), MAX_VELOCITY),
-        geometry::compareFloats(value[1], 0) * qMin(qAbs(value[1]), MAX_VELOCITY));
+    velocity = QVector2D(geometry::compareDoubles(value[0], 0) * qMin(1.0 * qAbs(value[0]), MAX_VELOCITY),
+        geometry::compareDoubles(value[1], 0) * qMin(1.0 * qAbs(value[1]), MAX_VELOCITY));
 }
 
 QVector2D Entity::getAcceleration() const {
@@ -36,8 +36,8 @@ QVector2D Entity::getAcceleration() const {
 }
 
 void Entity::setAcceleration(const QVector2D& value) {
-    acceleration = QVector2D(geometry::compareFloats(value[0], 0) * qMin(qAbs(value[0]), MAX_ACCELERATION),
-        geometry::compareFloats(value[1], 0) * qMin(qAbs(value[1]), MAX_ACCELERATION));
+    acceleration = QVector2D(geometry::compareDoubles(value[0], 0) * qMin(1.0 * qAbs(value[0]), MAX_ACCELERATION),
+        geometry::compareDoubles(value[1], 0) * qMin(1.0 * qAbs(value[1]), MAX_ACCELERATION));
 }
 
 }

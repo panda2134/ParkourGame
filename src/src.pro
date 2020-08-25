@@ -23,7 +23,8 @@ SOURCES += \
     model/testentity.cpp \
     model/world.cpp \
     utils/geometryhelper.cpp \
-    view\mainwindow.cpp
+    view/gamerenderglwidget.cpp \
+    view/mainwindow.cpp
 
 HEADERS += \
     model/boundingbox.h \
@@ -35,10 +36,11 @@ HEADERS += \
     utils/direction.h \
     utils/geometryhelper.h \
     utils/singleton.h \
-    view\mainwindow.h
+    view/gamerenderglwidget.h \
+    view/mainwindow.h
 
 FORMS += \
-    view\mainwindow.ui
+    view/mainwindow.ui
 
 
 release: DESTDIR = ../bin/release

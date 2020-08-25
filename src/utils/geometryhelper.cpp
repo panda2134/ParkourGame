@@ -3,7 +3,7 @@
 namespace parkour {
 namespace geometry {
 
-    int compareFloats(float lhs, float rhs) {
+    int compareDoubles(double lhs, double rhs) {
         using parkour::EPSILON;
         return qAbs(lhs - rhs) < EPSILON ? 0 : (lhs - rhs > EPSILON ? 1 : -1);
     }
@@ -17,8 +17,12 @@ namespace geometry {
      */
     bool pointFallsInRectangle(const QVector2D& point, const QVector2D& rectOffset, const QVector2D& rectDimensions) {
         const QVector2D rectEnd = rectOffset + rectDimensions;
-        return (compareFloats(point.x(), rectOffset.x()) > 0 && compareFloats(point.x(), rectEnd.x()) < 0)
-            && (compareFloats(point.y(), rectOffset.y()) > 0 && compareFloats(point.y(), rectEnd.y()) < 0);
+        return (compareDoubles(point.x(), rectOffset.x()) > 0 && compareDoubles(point.x(), rectEnd.x()) < 0)
+            && (compareDoubles(point.y(), rectOffset.y()) > 0 && compareDoubles(point.y(), rectEnd.y()) < 0);
+    }
+
+    double normalizeDenominater(double d) {
+        return qAbs(d) >= EPSILON ? d : (EPSILON * (d > 0 ? 1 : -1));
     }
 }
 }

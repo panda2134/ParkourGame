@@ -7,7 +7,8 @@
 
 namespace parkour {
 namespace geometry {
-    int compareFloats(float lhs, float rhs);
+    int compareDoubles(double lhs, double rhs);
+    double normalizeDenominater(double d);
     bool pointFallsInRectangle(const QVector2D& point, const QVector2D& rectOffset, const QVector2D& rectDimensions);
 }
 }

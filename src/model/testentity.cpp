@@ -2,15 +2,18 @@
 
 namespace parkour {
 
-BoundingBox parkour::TestEntity::getBoundingBox() const {
+BoundingBox TestEntity::getBoundingBox() const {
     BoundingBox ret;
     ret.offset = QVector2D(0, 0);
-    ret.dimensions = QVector2D(30, 60);
+    ret.dimensions = dimensions;
     return ret;
 }
 
-BoundingBoxWorld parkour::TestEntity::getBoundingBoxWorld() const {
+BoundingBoxWorld TestEntity::getBoundingBoxWorld() const {
     return BoundingBoxWorld(this->getPosition(), this->getBoundingBox());
 }
 
+void TestEntity::collide(const ICollidable& oth, Direction dir) {
+    qDebug() << dir;
+}
 }
