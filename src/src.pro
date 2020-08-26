@@ -16,26 +16,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    controller/localworldcontroller.cpp \
     main.cpp \
+    model/block.cpp \
+    model/blockdelegate.cpp \
+    model/blockgrass.cpp \
     model/boundingbox.cpp \
     model/entity.cpp \
     model/icollidable.cpp \
     model/testentity.cpp \
     model/world.cpp \
+    utils/direction.cpp \
     utils/geometryhelper.cpp \
     view/gamerenderglwidget.cpp \
     view/mainwindow.cpp
 
 HEADERS += \
+    controller/localworldcontroller.h \
+    model/block.h \
+    model/blockdelegate.h \
+    model/blockgrass.h \
     model/boundingbox.h \
     model/entity.h \
     model/icollidable.h \
+    model/registry.h \
     model/testentity.h \
     model/world.h \
     utils/consts.h \
     utils/direction.h \
     utils/geometryhelper.h \
     utils/singleton.h \
+    utils/types.h \
     view/gamerenderglwidget.h \
     view/mainwindow.h
 

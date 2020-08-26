@@ -2,9 +2,17 @@
 
 namespace parkour {
 
+QString TestEntity::getName() const {
+    return "test";
+}
+
+QString TestEntity::getResourceLocation() {
+    return ":/assets/entities/test.png";
+}
+
 BoundingBox TestEntity::getBoundingBox() const {
     BoundingBox ret;
-    ret.offset = QVector2D(0, 0);
+    ret.offset = offset;
     ret.dimensions = dimensions;
     return ret;
 }

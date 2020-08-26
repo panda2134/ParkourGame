@@ -8,14 +8,17 @@
 
 namespace parkour {
 
-class TestEntity : public Entity
-{
+class TestEntity : public Entity {
+    Q_OBJECT
 public:
+    QString getName() const override;
+    QString getResourceLocation() override;
     TestEntity() = default;
-    TestEntity(QVector2D dim)
-        : dimensions(dim) {}
+    TestEntity(QVector2D off, QVector2D dim)
+        : offset(off)
+        , dimensions(dim) {}
 
-    QVector2D dimensions;
+    QVector2D offset, dimensions;
 
     BoundingBox getBoundingBox() const;
     BoundingBoxWorld getBoundingBoxWorld() const override;

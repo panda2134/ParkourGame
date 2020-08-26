@@ -9,6 +9,8 @@ enum Direction {
     RIGHT, // 3
     UNKNOWN
 };
+
+Direction getOppositeFace(Direction face);
 }
 
 #endif // DIRECTION_H

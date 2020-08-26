@@ -10,12 +10,28 @@ Entity::Entity(QObject* parent)
     velocity.setY(0);
     acceleration.setX(0);
     acceleration.setY(0);
+    hp = 0.0;
 }
 
 QVector2D Entity::getPosition() const { return position; }
 
 void Entity::setPosition(const QVector2D& value) {
     position = value;
+}
+
+double Entity::getHp() const {
+    return hp;
+}
+
+void Entity::setHp(double value) {
+    hp = value;
+    if (hp < 0) {
+        this->dying = true;
+    }
+}
+
+void Entity::damage(double value) {
+    setHp(getHp() - value);
 }
 
 void Entity::updatePosition() {
