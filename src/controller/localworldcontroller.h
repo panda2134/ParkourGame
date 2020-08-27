@@ -10,15 +10,15 @@
 #include <QTimer>
 
 namespace parkour {
-class LocalWorldController : public QObject, Singleton<LocalWorldController> {
+class LocalWorldController : public QObject, public Singleton<LocalWorldController> {
     Q_OBJECT
     QTimer timer;
 
-private:
-    explicit LocalWorldController(QObject* parent = nullptr);
-
 public:
     void loadTestWorld();
+    void unloadWorld();
+
+    void explode(QPoint center, double power);
 public slots:
     void tick();
 signals:

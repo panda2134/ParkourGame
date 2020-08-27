@@ -11,6 +11,7 @@
 #include <QVector2D>
 
 namespace parkour {
+
 class Entity : public QObject, public ICollidable {
     Q_OBJECT
 
@@ -20,22 +21,33 @@ class Entity : public QObject, public ICollidable {
 
     double hp = 20.0;
     bool dying = false;
+    bool onFloor = true;
 
 public:
     virtual QString getName() const = 0;
     /**
-         * @brief 每个tick调用一次，用于更新位置；此后需要在collide中设置状态
-         */
+     * @brief 每个tick调用一次，用于更新位置；此后需要在collide中设置状态
+     */
     void updatePosition();
     /**
-         * @brief 实体碰撞处理器，子类可以重写以实现特定的碰撞处理
-         * @param dir 自己被撞到的方向
-         */
+     * @brief 实体碰撞处理器，子类可以重写以实现特定的碰撞处理
+     * @param dir 自己被撞到的方向
+     */
     virtual void collide(const ICollidable&, Direction) override {};
     /**
      * @brief 由子类重写实现特定的每tick更新
      */
     virtual void update() {};
+
+    /**
+     *  @brief 设置实体Bounding Box左下角
+     *  @param bottomLeft 左下角的位置
+     */
+    void placeBoundingBoxAt(const QVector2D& bottomLeft);
+    /**
+     * @brief getBottomLeft 取得Bounding Box左下角位置
+     */
+    QVector2D getBoundingBoxBottomLeft();
 
     explicit Entity(QObject* parent = nullptr);
     virtual ~Entity() {};
@@ -54,8 +66,16 @@ public:
     virtual void damage(double value);
 
     virtual QString getResourceLocation() = 0;
+    /**
+     * @brief getTextureDimensions 取得材质渲染的大小
+     * @return 游戏坐标下，材质渲染的大小
+     */
+    virtual QVector2D getTextureDimensions() = 0;
 
-    bool getDying() const;
+    bool isDying() const;
+
+    bool isOnFloor() const;
+    void setOnFloor(bool value);
 
 signals:
 };

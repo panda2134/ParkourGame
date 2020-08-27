@@ -3,13 +3,20 @@
 namespace parkour {
 
 bool BoundingBoxWorld::in(const BoundingBoxWorld& other) const {
-    QVector2D rectOffset = position + offset,
-              rectEnd = position + offset + dimensions,
-              otherRectOffset = other.position + other.offset;
-    return geometry::pointFallsInRectangle(rectOffset, otherRectOffset, other.dimensions)
-        || geometry::pointFallsInRectangle(QVector2D(rectOffset.x(), rectEnd.y()), otherRectOffset, other.dimensions)
-        || geometry::pointFallsInRectangle(QVector2D(rectEnd.x(), rectOffset.y()), otherRectOffset, other.dimensions)
-        || geometry::pointFallsInRectangle(rectEnd, otherRectOffset, other.dimensions);
+    float xMin = qMax(getMinX(), other.getMinX()),
+          yMin = qMax(getMinY(), other.getMinY()),
+          xMax = qMin(getMaxX(), other.getMaxX()),
+          yMax = qMin(getMaxY(), other.getMaxY());
+    return geometry::compareDoubles(xMin, xMax) < 0
+        && geometry::compareDoubles(yMin, yMax) < 0;
+}
+
+bool BoundingBoxWorld::standUpon(const BoundingBoxWorld& other) const {
+    float xMin = qMax(getMinX(), other.getMinX()),
+          yMin = qMax(getMinY(), other.getMinY()),
+          xMax = qMin(getMaxX(), other.getMaxX()),
+          yMax = qMin(getMaxY(), other.getMaxY());
+    return qAbs(yMax - yMin) <= STAND_UPON_DELTA && geometry::compareDoubles(xMax, xMin) > 0;
 }
 
 float BoundingBoxWorld::getMinX() const {

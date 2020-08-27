@@ -2,13 +2,13 @@
 
 namespace parkour {
 
-BlockDelegate::BlockDelegate(QString blockName, BlockPosType blockPos_)
+BlockDelegate::BlockDelegate(QString blockName, QPoint blockPos_)
     : blockPos(blockPos_) {
-    this->block = registry::getBlockByName(blockName);
+    this->block = registry::BlockRegistry::instance().getBlockByName(blockName);
 }
 
 BoundingBoxWorld BlockDelegate::getBoundingBoxWorld() const {
-    QVector2D blockPosVect(blockPos.first, blockPos.second);
+    QVector2D blockPosVect(blockPos);
     BoundingBox bbox = block->getBoundingBox();
     BoundingBoxWorld ret(blockPosVect, bbox);
     return ret;

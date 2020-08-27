@@ -1,7 +1,6 @@
 #ifndef BLOCKDELEGATE_H
 #define BLOCKDELEGATE_H
 
-#include "../utils/types.h"
 #include "block.h"
 #include "entity.h"
 #include "icollidable.h"
@@ -15,7 +14,7 @@ namespace parkour {
 class BlockDelegate : public QObject, public ICollidable {
     Q_OBJECT
     QSharedPointer<Block> block;
-    BlockPosType blockPos;
+    QPoint blockPos;
 
 public:
     /**
@@ -23,7 +22,7 @@ public:
      * @param blockName_ 方块名称
      * @param blockPos_ 方块位置
      */
-    BlockDelegate(QString blockName_, BlockPosType blockPos_);
+    BlockDelegate(QString blockName_, QPoint blockPos_);
 
     BoundingBoxWorld getBoundingBoxWorld() const override;
     void collide(const ICollidable&, Direction) override;

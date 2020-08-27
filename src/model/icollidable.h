@@ -2,6 +2,7 @@
 #define ICOLLIDABLE_H
 
 #include "boundingbox.h"
+#include <QDebug>
 
 namespace parkour {
     class ICollidable {

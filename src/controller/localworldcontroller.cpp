@@ -2,28 +2,90 @@
 #include "../model/testentity.h"
 
 namespace parkour {
-LocalWorldController::LocalWorldController(QObject* parent)
-    : QObject(parent) {
-}
 
 void LocalWorldController::loadTestWorld() {
     auto& world = World::instance();
     if (world.isReady()) {
         throw std::exception("test world loading failed: world is already ready");
     }
-    for (int i = 1; i <= 100; i++) {
-        world.setBlock(qMakePair(i, 16), "grass");
+    qDebug() << "setting block";
+    for (int i = 0; i <= 100; i++) {
+        world.setBlock(QPoint(i, 0), "grass");
     }
-    auto e1 = QSharedPointer<TestEntity>(new TestEntity(QVector2D(0, 0), QVector2D(1, 1)));
-    e1->setPosition(QVector2D(1, 15));
-    e1->setVelocity(QVector2D(1, 0));
+    for (int i = 0; i <= 100; i++) {
+        for (int j = 1; j <= 15; j++) {
+            world.setBlock(QPoint(i, j), "dirt");
+        }
+    }
+
+    for (int i = 6; i <= 8; i++) {
+        for (int j = 6; j <= 8; j++) {
+            world.setBlock(QPoint(i, j), "air");
+        }
+    }
+
+    qDebug() << "loading some entities";
+
+    auto e1 = QSharedPointer<TestEntity>(new TestEntity());
+    e1->placeBoundingBoxAt(QVector2D(7, 8));
+    world.addEntity(e1);
+
+    qDebug() << "test world loaded";
+    world.setReady(true);
+}
+
+void LocalWorldController::unloadWorld() {
+    auto& world = World::instance();
+    if (!world.isReady()) {
+        throw std::exception("world not ready, cannot unload");
+    }
+    world.entities.clear();
+    world.dyingEntities.clear();
+    world.blocks.clear();
+    world.setReady(false);
+}
+
+void LocalWorldController::explode(QPoint center, double power) {
+    if (power < 0) {
+        return;
+    }
+    auto& world = World::instance();
+    if (!world.isReady()) {
+        throw std::exception("world not ready");
+    }
+    // damage blocks
+    double radius = power * EXPLOSION_RADIUS_MULTIPLIER;
+    for (int i = center.x() - radius; i <= center.x() + radius; i++) {
+        for (int j = center.y() - radius; j <= center.y() + radius; j++) {
+            if (geometry::compareDoubles(QVector2D(center - QPoint(i, j)).lengthSquared(), radius * radius) <= 0) {
+                world.setBlock(QPoint(i, j), "air");
+            }
+        }
+    }
+    for (auto& entity : world.getEntities()) {
+        auto distance = QVector2D(entity->getPosition().toPointF() - center).length();
+        if (geometry::compareDoubles(distance, radius) <= 0) {
+            auto damage = (power * EXPLOSION_DAMAGE_MULTIPLIER / (radius * radius)) * (distance - radius) * (distance - radius);
+            entity->damage(damage);
+            qDebug() << "DAMAGE = " << damage;
+        }
+    }
 }
 
 void LocalWorldController::tick() {
+    //    qDebug() << "ticking LocalWorldController";
     auto& world = World::instance();
+
+    if (!world.isReady()) {
+        throw "ticking in a non-ready world";
+    }
+
     ++world.ticksFromBirth;
 
+    //    qDebug() << "ticksFromBirth = " << world.ticksFromBirth;
+
     // 0. 维护将死亡实体列表，并把entities中将死亡的实体加入列表
+    //    qDebug() << "0. calculating dying entities";
     QMutableHashIterator<QSharedPointer<Entity>, int> itDying(world.dyingEntities);
     while (itDying.hasNext()) {
         auto dyingEntity = itDying.next();
@@ -43,26 +105,33 @@ void LocalWorldController::tick() {
     }
 
     // 1. 针对每个存活实体，调用updatePosition，计算一个tick内的位移
+    //    qDebug() << "1. calculating displacement";
     for (auto entity : world.entities) {
         entity->updatePosition();
     }
 
     // 2. 计算方块与实体、实体与实体之间的碰撞
+    //    qDebug() << "2. calculating collision";
     for (int index = 0; index < world.entities.size(); index++) {
         // 方块与实体
         auto entity = world.entities[index];
         auto entityPosition = entity->getPosition();
         int centerBlockX = static_cast<int>(entityPosition.x()),
             centerBlockY = static_cast<int>(entityPosition.y());
-        for (int i = centerBlockX - ENTITY_UPDATE_RANGE; i <= centerBlockX + ENTITY_UPDATE_RANGE; i++) {
-            for (int j = centerBlockY - ENTITY_UPDATE_RANGE; j <= centerBlockY + ENTITY_UPDATE_RANGE; j++) {
-                BlockDelegate blockDelegate(world.getBlock(qMakePair(i, j)), qMakePair(i, j));
+        //        qDebug() << "Check collide #1:" << entity->getName();
+        for (int i = centerBlockX - ENTITY_COLLISION_RANGE; i <= centerBlockX + ENTITY_COLLISION_RANGE; i++) {
+            for (int j = centerBlockY - ENTITY_COLLISION_RANGE; j <= centerBlockY + ENTITY_COLLISION_RANGE; j++) {
+                BlockDelegate blockDelegate(world.getBlock(QPoint(i, j)), QPoint(i, j));
                 if (blockDelegate.isAir()) {
                     continue; // 空气方块，跳过检查
                 }
                 Direction faceOfEntity = entity->checkCollideWith(blockDelegate);
-                if (faceOfEntity == Direction::UNKNOWN) {
+                Direction faceOfBlock = blockDelegate.checkCollideWith(*entity);
+                if (faceOfEntity == Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfBlock) {
                     continue; // 未碰撞 / 嵌入其中
+                }
+                if (faceOfEntity == Direction::DOWN) { // 落地：碰到方块
+                    entity->setOnFloor(true);
                 }
                 // 调用相应的碰撞处理
                 entity->collide(blockDelegate, faceOfEntity);
@@ -72,13 +141,13 @@ void LocalWorldController::tick() {
                 case Direction::UP:
                 case Direction::DOWN:
                     entity->setVelocity(QVector2D(entity->getVelocity().x(), 0));
+                    entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
                     break;
                 case Direction::LEFT:
                 case Direction::RIGHT:
                     entity->setVelocity(QVector2D(0, entity->getVelocity().y()));
+                    entity->setAcceleration(QVector2D(0, entity->getAcceleration().y()));
                     break;
-                default:
-                    throw std::exception("This is impossible");
                 }
                 // 处理碰撞后实体的位置，与方块碰撞盒脱离
                 float delta = 0.0f;
@@ -105,11 +174,16 @@ void LocalWorldController::tick() {
         // 实体与实体，注意避免重复计算
         for (int prev = 0; prev < index; prev++) {
             auto anotherEntity = world.entities[prev];
+
             auto faceOfEntity = entity->checkCollideWith(*anotherEntity);
-            if (faceOfEntity == parkour::Direction::UNKNOWN) {
+            auto faceOfAnotherEntity = anotherEntity->checkCollideWith(*entity);
+
+            if (faceOfEntity == parkour::Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfAnotherEntity) {
                 continue;
             }
-            using parkour::geometry::normalizeDenominater;
+            if (faceOfEntity == Direction::DOWN) { // 落地：碰到实体
+                entity->setOnFloor(true);
+            }
             entity->collide(*anotherEntity, faceOfEntity);
             anotherEntity->collide(*entity, getOppositeFace(faceOfEntity));
 
@@ -119,14 +193,50 @@ void LocalWorldController::tick() {
             auto newVelocity = (entity->getVelocity() + anotherEntity->getVelocity()) / 2;
             entity->setVelocity(newVelocity);
             anotherEntity->setVelocity(newVelocity);
-            entity->setPosition(entity->getPosition() + parkour::TICK_LENGTH * newVelocity); // 补一帧，修复共同加速之情况
-            anotherEntity->setPosition(anotherEntity->getPosition() + parkour::TICK_LENGTH * newVelocity);
+
+            auto newAcceleration = (entity->getAcceleration() + anotherEntity->getAcceleration()) / 2; // 默认质量相同
+            entity->setAcceleration(newAcceleration);
+            anotherEntity->setAcceleration(newAcceleration);
         }
     }
 
     // 3. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
+    //    qDebug() << "3. calling update() of entities";
     for (auto entity : world.entities) {
         entity->update();
+    }
+
+    // 4. 检查悬空的实体，设置其重力加速度
+    for (auto entity : world.entities) {
+        bool isFlying = true;
+
+        for (auto other : world.entities) {
+            if (entity->getBoundingBoxWorld().standUpon(other->getBoundingBoxWorld())) {
+                isFlying = false;
+                break;
+            }
+        }
+
+        int centerBlockX = static_cast<int>(entity->getPosition().x()),
+            centerBlockY = static_cast<int>(entity->getPosition().y());
+        for (int i = centerBlockX - ENTITY_COLLISION_RANGE; i <= centerBlockX + ENTITY_COLLISION_RANGE; i++) {
+            for (int j = centerBlockY - ENTITY_COLLISION_RANGE; j <= centerBlockY + ENTITY_COLLISION_RANGE; j++) {
+                BlockDelegate blockDelegate(world.getBlock(QPoint(i, j)), QPoint(i, j));
+                if (blockDelegate.isAir()) {
+                    continue; // 空气方块，跳过检查
+                }
+                if (entity->getBoundingBoxWorld().standUpon(blockDelegate.getBoundingBoxWorld())) {
+                    isFlying = false;
+                    goto blockChecked; // 用于跳出多层循环
+                }
+            }
+        }
+    blockChecked:
+
+        if (isFlying) {
+            entity->setOnFloor(false);
+            entity->setAcceleration(entity->getAcceleration() + QVector2D(0, static_cast<float>(GRAVITY)));
+        }
     }
 }
 }

@@ -1,7 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "../utils/types.h"
 #include "./boundingbox.h"
 #include "./entity.h"
 #include <QObject>
@@ -16,7 +15,7 @@ public:
     virtual QString getName() const = 0;
     virtual QString getResourceLocation() const = 0;
 
-    virtual void collide(const BlockPosType&, const Entity&, Direction) {};
+    virtual void collide(QPoint, const Entity&, Direction) {};
     virtual BoundingBox getBoundingBox() const;
 signals:
 };

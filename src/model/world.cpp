@@ -10,23 +10,38 @@ void World::setReady(bool value) {
     ready = value;
 }
 
-void World::setBlock(BlockPosType blockPos, QString blockName) {
-    if (!ready) {
-        throw std::exception("not ready");
-    }
-    blocks[blockPos] = blockName;
+void World::setBlock(QPoint blockPos, QString blockName) {
+    auto pair = qMakePair(blockPos.x(), blockPos.y());
+    blocks[pair] = blockName;
 }
 
-QString World::getBlock(BlockPosType blockPos) {
-    if (!ready) {
-        throw std::exception("not ready");
-    }
-
-    if (blocks.count(blockPos)) {
-        return blocks[blockPos];
+QString World::getBlock(QPoint blockPos) {
+    auto pair = qMakePair(blockPos.x(), blockPos.y());
+    if (blocks.count(pair)) {
+        return blocks[pair];
     } else {
         return "air";
     }
 }
 
+void World::addEntity(QSharedPointer<Entity> entity) {
+    for (auto x : entities) {
+        if (x == entity) {
+            return; // already added
+        }
+    }
+    entities.push_back(entity);
+}
+
+const QList<QSharedPointer<Entity>>& World::getEntities() const {
+    return entities;
+}
+
+size_t World::getTicksFromBirth() const {
+    return ticksFromBirth;
+}
+
+const QHash<QSharedPointer<Entity>, int>& World::getDyingEntities() const {
+    return dyingEntities;
+}
 }

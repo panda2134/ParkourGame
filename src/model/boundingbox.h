@@ -29,6 +29,7 @@ namespace parkour {
         }
 
         bool in(const BoundingBoxWorld& other) const;
+        bool standUpon(const BoundingBoxWorld& other) const;
         float getMinX() const;
         float getMaxX() const;
         float getMinY() const;

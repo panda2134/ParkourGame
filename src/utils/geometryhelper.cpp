@@ -9,7 +9,7 @@ namespace geometry {
     }
 
     /**
-     * @brief pointFallsInRectangle 判断点是否在矩形内/边上
+     * @brief pointFallsInRectangle 判断点是否在矩形内
      * @param point 点
      * @param rectOffset 矩形左上角坐标
      * @param rectDimensions 矩形x, y方向的长宽

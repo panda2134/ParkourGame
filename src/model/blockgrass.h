@@ -10,12 +10,12 @@ class BlockGrass : public Block
 {
     Q_OBJECT
 public:
-    BlockGrass();
+    BlockGrass() = default;
 
     QString getName() const override;
     QString getResourceLocation() const override;
 
-    void collide(QVector2D blockPos, const Entity& entity) override;
+    void collide(QPoint blockPos, const Entity& entity, Direction) override;
 };
 }
 

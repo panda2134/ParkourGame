@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -20,10 +20,14 @@ SOURCES += \
     main.cpp \
     model/block.cpp \
     model/blockdelegate.cpp \
+    model/blockdirt.cpp \
     model/blockgrass.cpp \
     model/boundingbox.cpp \
     model/entity.cpp \
     model/icollidable.cpp \
+    model/playerentity.cpp \
+    model/playerlikeentity.cpp \
+    model/registry.cpp \
     model/testentity.cpp \
     model/world.cpp \
     utils/direction.cpp \
@@ -35,18 +39,21 @@ HEADERS += \
     controller/localworldcontroller.h \
     model/block.h \
     model/blockdelegate.h \
+    model/blockdirt.h \
     model/blockgrass.h \
     model/boundingbox.h \
     model/entity.h \
     model/icollidable.h \
+    model/playerentity.h \
+    model/playerlikeentity.h \
     model/registry.h \
     model/testentity.h \
     model/world.h \
+    utils/askeyvaluerange.h \
     utils/consts.h \
     utils/direction.h \
     utils/geometryhelper.h \
     utils/singleton.h \
-    utils/types.h \
     view/gamerenderglwidget.h \
     view/mainwindow.h
 

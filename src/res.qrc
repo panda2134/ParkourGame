@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/blocks/grass.png</file>
+        <file>assets/blocks/no_texture.png</file>
+        <file>assets/blocks/dirt.png</file>
     </qresource>
 </RCC>

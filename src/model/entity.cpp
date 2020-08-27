@@ -4,13 +4,6 @@ namespace parkour {
 
 Entity::Entity(QObject* parent)
     : QObject(parent) {
-    position.setX(0);
-    position.setY(0);
-    velocity.setX(0);
-    velocity.setY(0);
-    acceleration.setX(0);
-    acceleration.setY(0);
-    hp = 0.0;
 }
 
 QVector2D Entity::getPosition() const { return position; }
@@ -34,10 +27,33 @@ void Entity::damage(double value) {
     setHp(getHp() - value);
 }
 
+bool Entity::isDying() const {
+    return dying;
+}
+
+bool Entity::isOnFloor() const {
+    return onFloor;
+}
+
+void Entity::setOnFloor(bool value) {
+    onFloor = value;
+}
+
 void Entity::updatePosition() {
     // 计算一个tick内的运动学变化
     this->setVelocity(this->getVelocity() + TICK_LENGTH * this->getAcceleration());
     this->setPosition(this->getPosition() + TICK_LENGTH * this->getVelocity());
+}
+
+void Entity::placeBoundingBoxAt(const QVector2D& bottomLeft) {
+    const auto& bboxWorld = this->getBoundingBoxWorld();
+    this->setPosition(bottomLeft - QVector2D(0, bboxWorld.dimensions.y()) - bboxWorld.offset);
+    qDebug("MaxY=%.6f", this->getBoundingBoxWorld().getMaxY());
+}
+
+QVector2D Entity::getBoundingBoxBottomLeft() {
+    const auto& bboxWorld = this->getBoundingBoxWorld();
+    return this->getPosition() + bboxWorld.offset + QVector2D(0, bboxWorld.dimensions.y());
 }
 
 QVector2D Entity::getVelocity() const { return velocity; }
