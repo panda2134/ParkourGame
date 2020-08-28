@@ -44,4 +44,12 @@ size_t World::getTicksFromBirth() const {
 const QHash<QSharedPointer<Entity>, int>& World::getDyingEntities() const {
     return dyingEntities;
 }
+
+QVector2D World::getSpawnPoint() const {
+    return spawnPoint;
+}
+
+void World::setSpawnPoint(const QVector2D& value) {
+    spawnPoint = value;
+}
 }

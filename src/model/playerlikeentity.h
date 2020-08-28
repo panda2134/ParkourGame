@@ -16,7 +16,9 @@ public:
      */
     void collide(const ICollidable&, Direction) override;
 
-    void jump();
+    virtual void jump();
+    virtual void goLeft();
+    virtual void goRight();
 };
 }
 

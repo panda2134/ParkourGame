@@ -6,6 +6,8 @@
 #include "../utils/askeyvaluerange.h"
 #include "../utils/consts.h"
 #include "../utils/direction.h"
+#include "./scene/gamescene.h"
+#include "./scene/iscene.h"
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QImage>
@@ -24,24 +26,24 @@
 
 class GameRenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
     Q_OBJECT
-    const double blockSizeOnScreen = 30.0f; // 游戏坐标 * 30.0 = 屏幕坐标
-    QImage texture;
-    QVector<int> textureCount;
 
+    /**
+     * @brief renderTick 渲染时世界不一定已加载，故渲染组件需要单独维护一个tick计数
+     */
+    size_t renderTick;
+    QSharedPointer<parkour::IScene> currentScene;
     std::chrono::time_point<std::chrono::steady_clock> lastUpdateTime;
-
     void paintFps(QPainter&);
-    void loadTexture();
 
 public:
     GameRenderGLWidget(QWidget* parent = nullptr);
 
     QTimer timer;
-    parkour::LocalWorldController& worldController;
 public slots:
     void tick();
 
 protected:
+    bool event(QEvent* e) override;
     void paintGL() override;
     void initializeGL() override;
 };

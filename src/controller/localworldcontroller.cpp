@@ -3,38 +3,40 @@
 
 namespace parkour {
 
-void LocalWorldController::loadTestWorld() {
+QSharedPointer<PlayerController> LocalWorldController::getPlayerController() const
+{
+    return playerController;
+}
+
+LocalWorldController::LocalWorldController()
+    : playerController(QSharedPointer<PlayerController>::create()) {
+}
+
+void LocalWorldController::loadTestWorld() const {
     auto& world = World::instance();
     if (world.isReady()) {
         throw std::exception("test world loading failed: world is already ready");
     }
     qDebug() << "setting block";
     for (int i = 0; i <= 100; i++) {
-        world.setBlock(QPoint(i, 0), "grass");
-    }
-    for (int i = 0; i <= 100; i++) {
-        for (int j = 1; j <= 15; j++) {
-            world.setBlock(QPoint(i, j), "dirt");
-        }
-    }
-
-    for (int i = 6; i <= 8; i++) {
-        for (int j = 6; j <= 8; j++) {
-            world.setBlock(QPoint(i, j), "air");
-        }
+        world.setBlock(QPoint(i, 15), i % 2 ? "grass" : "dirt");
     }
 
     qDebug() << "loading some entities";
 
-    auto e1 = QSharedPointer<TestEntity>(new TestEntity());
-    e1->placeBoundingBoxAt(QVector2D(7, 8));
-    world.addEntity(e1);
+    //    auto e1 = QSharedPointer<TestEntity>::create();
+    //    e1->placeBoundingBoxAt(QVector2D(9, 8));
+    //    world.addEntity(e1);
+
+    qDebug() << "loading player";
+
+    world.setSpawnPoint({ 7, 7 });
 
     qDebug() << "test world loaded";
     world.setReady(true);
 }
 
-void LocalWorldController::unloadWorld() {
+void LocalWorldController::unloadWorld() const {
     auto& world = World::instance();
     if (!world.isReady()) {
         throw std::exception("world not ready, cannot unload");
@@ -45,7 +47,7 @@ void LocalWorldController::unloadWorld() {
     world.setReady(false);
 }
 
-void LocalWorldController::explode(QPoint center, double power) {
+void LocalWorldController::explode(QPoint center, double power) const {
     if (power < 0) {
         return;
     }
@@ -57,8 +59,10 @@ void LocalWorldController::explode(QPoint center, double power) {
     double radius = power * EXPLOSION_RADIUS_MULTIPLIER;
     for (int i = center.x() - radius; i <= center.x() + radius; i++) {
         for (int j = center.y() - radius; j <= center.y() + radius; j++) {
-            if (geometry::compareDoubles(QVector2D(center - QPoint(i, j)).lengthSquared(), radius * radius) <= 0) {
-                world.setBlock(QPoint(i, j), "air");
+            auto distance = QVector2D(center - QPoint(i, j)).length();
+            auto block = registry::BlockRegistry::instance().getBlockByName(world.getBlock({ i, j }));
+            if (block != nullptr && geometry::compareDoubles(radius - distance, block->getExplosionResistance()) >= 0) {
+                world.setBlock({ i, j }, "air");
             }
         }
     }
@@ -67,12 +71,12 @@ void LocalWorldController::explode(QPoint center, double power) {
         if (geometry::compareDoubles(distance, radius) <= 0) {
             auto damage = (power * EXPLOSION_DAMAGE_MULTIPLIER / (radius * radius)) * (distance - radius) * (distance - radius);
             entity->damage(damage);
-            qDebug() << "DAMAGE = " << damage;
+            //            qDebug() << "DAMAGE = " << damage;
         }
     }
 }
 
-void LocalWorldController::tick() {
+void LocalWorldController::tick() const {
     //    qDebug() << "ticking LocalWorldController";
     auto& world = World::instance();
 
@@ -139,14 +143,16 @@ void LocalWorldController::tick() {
                 // 处理碰撞后实体的速度
                 switch (faceOfEntity) {
                 case Direction::UP:
+                    entity->setVelocity(QVector2D(entity->getVelocity().x(), -1.0f * entity->getVelocity().y())); // 特殊处理撞到底部
+                    entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
+                    break;
                 case Direction::DOWN:
-                    entity->setVelocity(QVector2D(entity->getVelocity().x(), 0));
+                    entity->setVelocity(QVector2D(entity->getVelocity().x(), BOUNCE_BOTTOM_ATTENUATION * entity->getVelocity().y()));
                     entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
                     break;
                 case Direction::LEFT:
-                case Direction::RIGHT:
                     entity->setVelocity(QVector2D(0, entity->getVelocity().y()));
-                    entity->setAcceleration(QVector2D(0, entity->getAcceleration().y()));
+                    entity->setAcceleration(QVector2D(0.3f * entity->getVelocity().x(), entity->getAcceleration().y()));
                     break;
                 }
                 // 处理碰撞后实体的位置，与方块碰撞盒脱离
@@ -207,6 +213,7 @@ void LocalWorldController::tick() {
     }
 
     // 4. 检查悬空的实体，设置其重力加速度
+    //    qDebug() << "4. setting gravity";
     for (auto entity : world.entities) {
         bool isFlying = true;
 
@@ -238,5 +245,18 @@ void LocalWorldController::tick() {
             entity->setAcceleration(entity->getAcceleration() + QVector2D(0, static_cast<float>(GRAVITY)));
         }
     }
+
+    // 5. 更新玩家控制器
+    //    qDebug() << "5. updating player controller";
+    playerController->tick();
+
+    // 6. 虚空伤害
+    for (const auto& entity : world.entities) {
+        if (entity->getPosition().y() > WORLD_HEIGHT) {
+            entity->setHp(entity->getHp() - VOID_DAMAGE_PER_TICK); // 直接采用setHp / getHp，是因为可能实体子类会覆写 damage() 实现无敌效果，而虚空伤害无视无敌效果
+        }
+    }
+
+    //    qDebug() << "World Controller ticking done";
 }
 }

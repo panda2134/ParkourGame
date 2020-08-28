@@ -39,6 +39,13 @@ void Entity::setOnFloor(bool value) {
     onFloor = value;
 }
 
+BoundingBoxWorld Entity::getBoundingBoxWorld() const {
+    QVector2D blockPosVect(this->getPosition());
+    BoundingBox bbox = this->getBoundingBox();
+    BoundingBoxWorld ret(blockPosVect, bbox);
+    return ret;
+}
+
 void Entity::updatePosition() {
     // 计算一个tick内的运动学变化
     this->setVelocity(this->getVelocity() + TICK_LENGTH * this->getAcceleration());

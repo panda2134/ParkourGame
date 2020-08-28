@@ -27,6 +27,7 @@ public:
     BoundingBoxWorld getBoundingBoxWorld() const override;
     void collide(const ICollidable&, Direction) override;
     QVector2D getVelocity() const override;
+    void setVelocity(const QVector2D&) override;
 
     bool isAir() { return block == nullptr; }
 };

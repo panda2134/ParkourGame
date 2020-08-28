@@ -56,7 +56,7 @@ public:
     void setPosition(const QVector2D& value);
 
     QVector2D getVelocity() const override;
-    void setVelocity(const QVector2D& value);
+    void setVelocity(const QVector2D& value) override;
 
     QVector2D getAcceleration() const;
     void setAcceleration(const QVector2D& value);
@@ -77,7 +77,8 @@ public:
     bool isOnFloor() const;
     void setOnFloor(bool value);
 
-signals:
+    BoundingBoxWorld getBoundingBoxWorld() const override final;
+    virtual BoundingBox getBoundingBox() const = 0;
 };
 }
 

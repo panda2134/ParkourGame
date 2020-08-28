@@ -3,6 +3,7 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+QMAKE_CXXFLAGS += /utf-8
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -17,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     controller/localworldcontroller.cpp \
+    controller/playercontroller.cpp \
     main.cpp \
     model/block.cpp \
     model/blockdelegate.cpp \
@@ -33,10 +35,13 @@ SOURCES += \
     utils/direction.cpp \
     utils/geometryhelper.cpp \
     view/gamerenderglwidget.cpp \
-    view/mainwindow.cpp
+    view/mainwindow.cpp \
+    view/scene/gamescene.cpp \
+    view/scene/iscene.cpp
 
 HEADERS += \
     controller/localworldcontroller.h \
+    controller/playercontroller.h \
     model/block.h \
     model/blockdelegate.h \
     model/blockdirt.h \
@@ -55,7 +60,9 @@ HEADERS += \
     utils/geometryhelper.h \
     utils/singleton.h \
     view/gamerenderglwidget.h \
-    view/mainwindow.h
+    view/mainwindow.h \
+    view/scene/gamescene.h \
+    view/scene/iscene.h
 
 FORMS += \
     view/mainwindow.ui

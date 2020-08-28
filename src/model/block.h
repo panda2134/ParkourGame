@@ -14,6 +14,7 @@ public:
 
     virtual QString getName() const = 0;
     virtual QString getResourceLocation() const = 0;
+    virtual double getExplosionResistance() const = 0;
 
     virtual void collide(QPoint, const Entity&, Direction) {};
     virtual BoundingBox getBoundingBox() const;

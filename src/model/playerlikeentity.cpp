@@ -14,5 +14,13 @@ void PlayerLikeEntity::jump() {
         this->setVelocity(QVector2D(this->getVelocity().x(), -JUMP_SPEED));
     }
 }
+void PlayerLikeEntity::goLeft() {
+    auto vx = qMin(1.0 * getVelocity().x(), -1 * WALK_SPEED);
+    setVelocity(QVector2D(vx, getVelocity().y()));
+}
 
+void PlayerLikeEntity::goRight() {
+    auto vx = qMax(1.0 * getVelocity().x(), WALK_SPEED);
+    setVelocity(QVector2D(vx, getVelocity().y()));
+}
 }

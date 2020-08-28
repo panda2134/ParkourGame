@@ -7,3 +7,13 @@ QString parkour::BlockDirt::getResourceLocation() const {
 QString parkour::BlockDirt::getName() const {
     return "dirt";
 }
+
+void parkour::BlockDirt::collide(QPoint blockPos, const parkour::Entity&, parkour::Direction dir) {
+    if (dir == Direction::DOWN) {
+        World::instance().setBlock(blockPos, "air");
+    }
+}
+
+double parkour::BlockDirt::getExplosionResistance() const {
+    return 1.0;
+}

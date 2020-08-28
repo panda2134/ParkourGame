@@ -31,9 +31,13 @@ public:
 
     const QHash<QSharedPointer<Entity>, int>& getDyingEntities() const;
 
+    QVector2D getSpawnPoint() const;
+    void setSpawnPoint(const QVector2D& value);
+
 private:
     bool ready = false;
     size_t ticksFromBirth = 0;
+    QVector2D spawnPoint;
     QList<QSharedPointer<Entity>> entities;
     QHash<QSharedPointer<Entity>, int> dyingEntities;
     QHash<QPair<int, int>, QString> blocks;

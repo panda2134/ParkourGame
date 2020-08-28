@@ -23,4 +23,8 @@ QVector2D BlockDelegate::getVelocity() const {
     return QVector2D(0, 0);
 }
 
+void BlockDelegate::setVelocity(const QVector2D&) {
+    // 方块始终静止，不能设置速度
+    return;
+}
 }

@@ -14,6 +14,7 @@ namespace parkour {
         virtual BoundingBoxWorld getBoundingBoxWorld() const = 0;
         virtual void collide(const ICollidable&, Direction) = 0;
         virtual QVector2D getVelocity() const = 0;
+        virtual void setVelocity(const QVector2D&) = 0;
         virtual Direction checkCollideWith(const ICollidable&) final;
     };
 }

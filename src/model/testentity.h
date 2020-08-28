@@ -20,11 +20,9 @@ public:
 
     QVector2D offset, dimensions;
 
-    BoundingBox getBoundingBox() const;
-    BoundingBoxWorld getBoundingBoxWorld() const override;
+    BoundingBox getBoundingBox() const override;
 
     void update() override;
-    void collide(const ICollidable&, Direction) override;
 };
 }
 

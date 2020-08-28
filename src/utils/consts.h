@@ -2,56 +2,125 @@
 #define CONSTS_H
 
 namespace parkour {
+/**
+ * @brief TICKS_PER_SEC 每秒游戏刻数目
+ */
 const int TICKS_PER_SEC = 300;
+
+/**
+ * @brief TICK_LENGTH 游戏刻长度（秒）
+ */
 const double TICK_LENGTH = 1.0 / TICKS_PER_SEC;
+
+/**
+ * @brief TICKS_PER_FRAME 每帧间游戏刻数目
+ */
 const int TICKS_PER_FRAME = 5;
+
+/**
+ * @brief TICKS_PER_FRAME 用于比较浮点数，差绝对值小于此值则认为相等
+ */
 const double EPSILON = 1e-5;
-const double STAND_UPON_DELTA = 0.05;
+
+/**
+ * @brief GRAVITY 重力加速度
+ */
 const double GRAVITY = 9.854;
+
+/**
+ * @brief STAND_UPON_DELTA 计算实体站立的阈值
+ */
+const double STAND_UPON_DELTA = 0.05;
+
 /**
  * @brief MAX_VELOCITY 速度分量的最大值
  */
 const double MAX_VELOCITY = 50;
+
 /**
  * @brief MAX_VELOCITY 加速度分量的最大值
  */
 const double MAX_ACCELERATION = 20;
+
 /**
  * @brief ENTITY_UPDATE_RANGE 实体碰撞计算更新范围
  */
 const double ENTITY_COLLISION_RANGE = 8;
+
 /**
  * @brief DYING_ANIMATION_TICKS 死亡动画渲染tick数目
  */
 const double DYING_ANIMATION_TICKS = TICKS_PER_SEC * 0.5;
+
 /**
  * @brief WORLD_HEIGHT 世界高度
  */
 const int WORLD_HEIGHT = 16;
+
 /**
  * @brief BLOCK_TEXTURE_SIZE 方块像素数目
  */
 const int BLOCK_TEXTURE_SIZE = 16;
+
 /**
  * @brief TEXTURE_MAP_SIZE 材质图像（拼接各个方块得到）的大小
  */
 const int TEXTURE_MAP_SIZE = 512;
+
 /**
  * @brief FALL_DAMAGE_MULTIPLIER 摔落伤害 / 纵向速度
  */
 const double FALL_DAMAGE_MULTIPLIER = .5;
+
 /**
  * @brief FALL_DAMAGE_SPEED 速率大于此数字时开始计算摔落伤害
  */
 const double FALL_DAMAGE_SPEED = 10.0;
+
 /**
  * @brief JUMP_SPEED 跳跃时纵向初速度大小
  */
 const double JUMP_SPEED = 8.0;
 
+/**
+ * @brief WALK_SPEED 步行速度
+ */
+const double WALK_SPEED = 6.0;
+
+/**
+ * @brief EXPLOSION_DAMAGE_MULTIPLIER 爆炸伤害计算因子
+ */
 const double EXPLOSION_DAMAGE_MULTIPLIER = 3.0;
 
+/**
+ * @brief EXPLOSION_RADIUS_MULTIPLIER 爆炸半径因子
+ */
 const double EXPLOSION_RADIUS_MULTIPLIER = 1.0;
+
+/**
+ * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的补偿因子
+ */
+const double BOUNCE_BOTTOM_ATTENUATION = 0.1;
+
+/**
+ * @brief VOID_DAMAGE_PER_TICK 每个游戏刻的虚空伤害
+ */
+const double VOID_DAMAGE_PER_TICK = 0.2;
+
+/**
+ * @brief CAMERA_MOVE_TICKS 玩家在画面外时，运镜的总渲染刻数
+ */
+const double CAMERA_MOVE_TICKS = 1 * (TICKS_PER_SEC / TICKS_PER_FRAME);
+
+/**
+ * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，开始摄像机移动的内边距
+ */
+const double SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER = 0.2;
+
+/**
+ * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，摄像机移动的终点内边距
+ */
+const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.3;
 }
 
 #endif // CONSTS_H

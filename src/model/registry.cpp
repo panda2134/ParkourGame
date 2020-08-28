@@ -6,7 +6,7 @@ namespace registry {
     BlockRegistry::BlockRegistry() {
 #define REGISTER_BLOCK(Cls)                              \
     {                                                    \
-        auto ptr = QSharedPointer<Cls>(new Cls());       \
+        auto ptr = QSharedPointer<Cls>::create();        \
         blockMap.insert(ptr->getName(), ptr);            \
         blockIds.push_back(ptr->getName());              \
         idMapping[ptr->getName()] = blockIds.size() - 1; \
