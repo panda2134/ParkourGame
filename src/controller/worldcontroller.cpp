@@ -48,7 +48,7 @@ void WorldController::loadTestWorld() const {
 
     qDebug() << "loading player";
 
-    world.setSpawnPoint({ 7, -25 });
+    world.setSpawnPoint({ 7, 13 });
 
     qDebug() << "test world loaded";
     world.setReady(true);
@@ -221,6 +221,29 @@ void WorldController::tick() const {
             auto newAcceleration = (entity->getAcceleration() + anotherEntity->getAcceleration()) / 2; // 默认质量相同
             entity->setAcceleration(newAcceleration);
             anotherEntity->setAcceleration(newAcceleration);
+
+
+			// 处理碰撞后实体的位置，与另一个脱离
+			float delta = 0.0f;
+			switch (faceOfEntity) {
+			case Direction::UP:
+				delta = anotherEntity->getBoundingBoxWorld().getMaxY() - entity->getBoundingBoxWorld().getMinY();
+				entity->setPosition(entity->getPosition() + QVector2D(0, delta));
+				break;
+			case Direction::DOWN:
+				delta = entity->getBoundingBoxWorld().getMaxY() - anotherEntity->getBoundingBoxWorld().getMinY();
+				entity->setPosition(entity->getPosition() - QVector2D(0, delta));
+				break;
+			case Direction::LEFT:
+				delta = anotherEntity->getBoundingBoxWorld().getMaxX() - entity->getBoundingBoxWorld().getMinX();
+				entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
+				break;
+			case Direction::RIGHT:
+				delta = entity->getBoundingBoxWorld().getMaxX() - anotherEntity->getBoundingBoxWorld().getMinX();
+				entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
+				break;
+			}
+
         }
     }
 

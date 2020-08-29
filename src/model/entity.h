@@ -26,7 +26,7 @@ public:
     /**
      * @brief 每个tick调用一次，用于更新位置；此后需要在collide中设置状态
      */
-    void updatePosition();
+	void updatePosition();
     /**
      * @brief 实体碰撞处理器，子类可以重写以实现特定的碰撞处理
      * @param dir 自己被撞到的方向
@@ -36,6 +36,10 @@ public:
      * @brief 由子类重写实现特定的每tick更新
      */
     virtual void update() {};
+	/**
+	 * @brief 是否显示死亡动画
+	*/
+	virtual bool showDeathAnimation() const;
 
     /**
      *  @brief 设置实体Bounding Box左下角

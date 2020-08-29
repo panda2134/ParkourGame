@@ -14,6 +14,11 @@ void EntityTNT::update() {
     ticksLeft--;
     if (ticksLeft < 0) {
         WorldController::instance().explode(getPosition().toPoint(), TNT_EXPLOSION_POWER);
+        this->setHp(-1);
+    }
+    if (this->isOnFloor()) {
+        const auto vx = this->getVelocity().x();
+        this->setAcceleration({ static_cast<float>(-1 * DRAG_FACTOR * vx * vx * vx / qAbs(vx)), this->getAcceleration().y() });
     }
 }
 
@@ -32,5 +37,8 @@ QVector2D EntityTNT::getTextureDimensions() {
 
 BoundingBox EntityTNT::getBoundingBox() const {
     return BoundingBox { QVector2D(0.1, 0.2), QVector2D(0.8, 0.8) };
+}
+bool EntityTNT::showDeathAnimation() const {
+	return false;
 }
 }

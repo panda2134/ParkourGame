@@ -7,5 +7,7 @@
         <file>assets/shaders/block.vert</file>
         <file>assets/blocks/tnt.png</file>
         <file>assets/entities/tnt.png</file>
+        <file>assets/entities/player.png</file>
+        <file>assets/entities/player-sneak.png</file>
     </qresource>
 </RCC>

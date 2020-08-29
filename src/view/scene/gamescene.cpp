@@ -26,7 +26,7 @@ void GameScene::loadTexture() {
         QImage textureBlock;
         if (!textureBlock.load(block->getResourceLocation())) {
             qDebug() << "failed to load texture of block " << block->getName() << ", fallback to Unknown Texture";
-            textureBlock.load(":/assets/blocks/no_texture.png");
+            textureBlock.load(NO_SUCH_TEXTURE);
         }
         texturePainter.drawImage(QPoint(BLOCK_TEXTURE_SIZE * i, 0), textureBlock);
         textureCount.push_back(textureBlock.height() / textureBlock.width());
@@ -111,7 +111,10 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
 
             auto blockId = static_cast<int>(blockRegistry.getBlockIdByName(block->getName()));
             int blockTextureCount = textureCount.at(blockId);
-            int currentFrame = world.getTicksFromBirth() / TICKS_PER_FRAME % blockTextureCount;
+			int currentFrame = block->getCurrentFrame();
+			if (currentFrame < 0 || currentFrame >= blockTextureCount) {
+				currentFrame = world.getTicksFromBirth() / TICKS_PER_FRAME % blockTextureCount;
+			}
             Q_ASSERT(blockTextureCount > 0);
 
             QPointF targetTopLeft(i * blockSizeOnScreen, j * blockSizeOnScreen);
@@ -136,7 +139,6 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     p.endNativePainting();
 
     // 渲染存活的实体
-    // 先画hitbox / 外层box，之后会做具体贴图渲染
     auto& entities = world.getEntities();
     auto& dyingEntities = world.getDyingEntities();
 
@@ -151,15 +153,14 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
               x2 = bbox.getMaxX(),
               y1 = bbox.getMinY(),
               y2 = bbox.getMaxY();
+		// texture box
+		auto texRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
+		p.drawImage(texRect, getEntityTextureForPath(entity->getResourceLocation()));
         // hit box
         QRect hitboxRect(QPoint(x1 * blockSizeOnScreen, y1 * blockSizeOnScreen),
             QPoint(x2 * blockSizeOnScreen, y2 * blockSizeOnScreen));
         p.setPen(Qt::blue);
         p.drawRect(hitboxRect);
-        // texture box
-        auto texRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
-        p.setPen(Qt::red);
-        p.drawRect(texRect);
         // hp? flying? pos? velocity?
         p.setPen(Qt::red);
         QFont font("Consolas");
@@ -175,7 +176,7 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     for (const auto& [entity, ticksLeft] : asKeyValueRange(dyingEntities)) {
         const auto& position = entity->getPosition();
         const auto& texBox = entity->getTextureDimensions();
-        if (!shouldRenderObject(position.x(), position.x() + texBox.x())) {
+        if (!shouldRenderObject(position.x(), position.x() + texBox.x()) || !entity->showDeathAnimation()) {
             continue;
         }
         // texture box
@@ -208,6 +209,18 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
         p.drawText(xMax - 100, 20, 100, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
         p.drawText(xMax - 100, 40, 100, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
     }
+}
+
+const QImage & GameScene::getEntityTextureForPath(const QString & path) {
+	if (entityTextureCache.count(path) > 0) {
+		return entityTextureCache[path];
+	} else {
+		auto image = QImage();
+		if (!image.load(path)) { 
+			image.load(NO_SUCH_TEXTURE);
+		}
+		return entityTextureCache[path] = image;
+	}
 }
 
 GameScene::GameScene(QObject* parent)

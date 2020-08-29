@@ -54,6 +54,10 @@ void Entity::updatePosition() {
     this->setPosition(this->getPosition() + TICK_LENGTH * this->getVelocity());
 }
 
+bool Entity::showDeathAnimation() const {
+	return true;
+}
+
 void Entity::placeBoundingBoxAt(const QVector2D& bottomLeft) {
     const auto& bboxWorld = this->getBoundingBoxWorld();
     this->setPosition(bottomLeft - QVector2D(0, bboxWorld.dimensions.y()) - bboxWorld.offset);

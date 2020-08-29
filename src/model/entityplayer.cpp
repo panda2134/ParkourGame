@@ -9,9 +9,9 @@ EntityPlayer::EntityPlayer()
 
 BoundingBox EntityPlayer::getBoundingBox() const {
     if (isSneak()) {
-        return BoundingBox { QVector2D(0.25, 1.05), QVector2D(0.5, 0.9) };
+        return BoundingBox { QVector2D(0.25, 1.00), QVector2D(0.5, 0.95) };
     } else {
-        return BoundingBox { QVector2D(0.25, 0.05), QVector2D(0.5, 1.9) };
+        return BoundingBox { QVector2D(0.25, 0.15), QVector2D(0.5, 1.8) };
     }
 }
 

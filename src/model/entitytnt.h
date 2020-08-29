@@ -10,6 +10,7 @@ public:
     EntityTNT();
 
     const int TICKS_BEFORE_EXPLOSION = TICKS_PER_SEC * 3;
+    const double DRAG_FACTOR = 0.2;
     int ticksLeft = 0;
 
 public:
@@ -19,6 +20,7 @@ public:
     QString getResourceLocation() override;
     QVector2D getTextureDimensions() override;
     BoundingBox getBoundingBox() const override;
+	bool showDeathAnimation() const override;
 };
 }
 

@@ -2,6 +2,7 @@
 #define GAMESCENE_H
 
 #include "iscene.h"
+#include <QHash>
 #include <QByteArray>
 #include <QEvent>
 #include <QKeyEvent>
@@ -37,8 +38,10 @@ class GameScene : public IScene {
     QOpenGLBuffer vertexBuf, textureBuf;
     QOpenGLShaderProgram program;
     QOpenGLTexture glTexture;
+	QHash<QString, QImage> entityTextureCache;
     QImage textureImg;
     QVector<int> textureCount;
+	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
     double blockSizeOnScreen = 0.0;
     double deviceWidth = 854.0;
     void loadTexture();
@@ -53,6 +56,8 @@ class GameScene : public IScene {
 
     void repaintWorld(QPainter&, QOpenGLContext&);
     void repaintHud(QPainter&, QOpenGLContext&);
+
+	const QImage& getEntityTextureForPath(const QString &path);
 
 public:
     explicit GameScene(QObject* parent = nullptr);
