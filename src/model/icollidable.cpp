@@ -1,4 +1,6 @@
 #include "./icollidable.h"
+#include "../utils/consts.h"
+#include "../utils/geometryhelper.h"
 
 namespace parkour {
 Direction ICollidable::checkCollideWith(const ICollidable& other) {

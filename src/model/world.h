@@ -11,11 +11,11 @@
 #include <QString>
 
 namespace parkour {
-class LocalWorldController;
+class WorldController;
 class World : public QObject, public Singleton<World> {
     Q_OBJECT
 
-    friend class LocalWorldController;
+    friend class WorldController;
 
 public:
     bool isReady() const;

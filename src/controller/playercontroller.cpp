@@ -1,15 +1,17 @@
 #include "playercontroller.h"
+#include "../model/world.h"
+#include "../utils/askeyvaluerange.h"
 
 namespace parkour {
 bool PlayerController::isAlive() const {
     return alive;
 }
 
-QSharedPointer<PlayerEntity> PlayerController::getPlayer() {
+QSharedPointer<EntityPlayer> PlayerController::getPlayer() {
     for (const auto& entity : World::instance().getEntities()) {
-        auto casted = dynamic_cast<PlayerEntity*>(entity.data());
+        auto casted = dynamic_cast<EntityPlayer*>(entity.data());
         if (casted != nullptr) {
-            return entity.objectCast<PlayerEntity>();
+            return entity.objectCast<EntityPlayer>();
         }
     }
     return nullptr;
@@ -27,11 +29,16 @@ void PlayerController::setGoingRight(bool value) {
     goingRight = value;
 }
 
+void PlayerController::setSneakingExpected(bool value) {
+    sneakingExpected = value;
+}
+
 PlayerController::PlayerController()
     : alive(false)
     , readyJump(false)
     , goingLeft(false)
-    , goingRight(false) {
+    , goingRight(false)
+    , sneakingExpected(false) {
 }
 
 void PlayerController::tick() {
@@ -42,7 +49,7 @@ void PlayerController::tick() {
 
     //    qDebug() << "start ticking in player controller";
 
-    QSharedPointer<PlayerEntity> player;
+    QSharedPointer<EntityPlayer> player;
 
     alive = false;
 
@@ -52,17 +59,17 @@ void PlayerController::tick() {
 
     if (!alive) {
         for (const auto& dyingEntity : world.getDyingEntities().keys()) {
-            auto casted = dynamic_cast<PlayerEntity*>(dyingEntity.data());
+            auto casted = dynamic_cast<EntityPlayer*>(dyingEntity.data());
             if (casted != nullptr) {
                 //                qDebug() << "player is dying";
-                player = dyingEntity.objectCast<PlayerEntity>();
+                player = dyingEntity.objectCast<EntityPlayer>();
             }
         }
 
         if (player == nullptr) {
             // 玩家已经死亡，在重生点重生
             qDebug() << "respawn!";
-            player = QSharedPointer<PlayerEntity>::create();
+            player = QSharedPointer<EntityPlayer>::create();
             player->setPosition(world.getSpawnPoint());
             world.addEntity(player);
             alive = true;
@@ -71,20 +78,18 @@ void PlayerController::tick() {
 
     if (alive) {
         if (readyJump) {
-            //            qDebug() << "jumping";
             player->jump();
         }
 
+        player->setSneak(sneakingExpected);
+
         if (goingLeft ^ goingRight) {
             if (goingLeft) {
-                //                qDebug() << "going left";
                 player->goLeft();
             } else {
-                //                qDebug() << "going right";
                 player->goRight();
             }
         } else {
-            //            qDebug() << "set to stop";
             player->setVelocity({ 0, player->getVelocity().y() });
         }
     }

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QOpenGLContext>
+#include <QOpenGLFunctions>
 #include <QPainter>
 
 namespace parkour {
@@ -14,6 +15,8 @@ public:
 
     virtual void calculate() {};
     virtual void repaint(QPainter&, QOpenGLContext&) = 0;
+
+    virtual void initializeGL() {};
 
 signals:
     void switchToScene(QString);

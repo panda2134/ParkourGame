@@ -1,8 +1,6 @@
 #ifndef BOUNDINGBOX_H
 #define BOUNDINGBOX_H
 
-#include "../utils/direction.h"
-#include "../utils/geometryhelper.h"
 #include <QVector2D>
 
 namespace parkour {
@@ -28,6 +26,11 @@ namespace parkour {
             this->dimensions = box_.dimensions;
         }
 
+        /**
+         * @brief in 两个碰撞箱严格相交
+         * @param other 另一个世界碰撞箱
+         * @return 是否严格相交
+         */
         bool in(const BoundingBoxWorld& other) const;
         bool standUpon(const BoundingBoxWorld& other) const;
         float getMinX() const;

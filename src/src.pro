@@ -17,40 +17,45 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    controller/localworldcontroller.cpp \
     controller/playercontroller.cpp \
+    controller/worldcontroller.cpp \
     main.cpp \
     model/block.cpp \
     model/blockdelegate.cpp \
     model/blockdirt.cpp \
     model/blockgrass.cpp \
+    model/blocktnt.cpp \
     model/boundingbox.cpp \
     model/entity.cpp \
+    model/entityplayer.cpp \
+    model/entitytnt.cpp \
     model/icollidable.cpp \
-    model/playerentity.cpp \
-    model/playerlikeentity.cpp \
     model/registry.cpp \
     model/testentity.cpp \
     model/world.cpp \
+    model/entityplayerlike.cpp \
     utils/direction.cpp \
     utils/geometryhelper.cpp \
+    utils/glhelper.cpp \
     view/gamerenderglwidget.cpp \
     view/mainwindow.cpp \
     view/scene/gamescene.cpp \
     view/scene/iscene.cpp
 
 HEADERS += \
-    controller/localworldcontroller.h \
     controller/playercontroller.h \
+    controller/worldcontroller.h \
     model/block.h \
     model/blockdelegate.h \
     model/blockdirt.h \
     model/blockgrass.h \
+    model/blocktnt.h \
     model/boundingbox.h \
     model/entity.h \
+    model/entityplayer.h \
+    model/entityplayerlike.h \
+    model/entitytnt.h \
     model/icollidable.h \
-    model/playerentity.h \
-    model/playerlikeentity.h \
     model/registry.h \
     model/testentity.h \
     model/world.h \
@@ -58,6 +63,7 @@ HEADERS += \
     utils/consts.h \
     utils/direction.h \
     utils/geometryhelper.h \
+    utils/glhelper.h \
     utils/singleton.h \
     view/gamerenderglwidget.h \
     view/mainwindow.h \

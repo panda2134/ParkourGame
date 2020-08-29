@@ -1,25 +1,43 @@
-#include "localworldcontroller.h"
+#include "worldcontroller.h"
+#include "../model/blockdelegate.h"
+#include "../model/entityplayer.h"
+#include "../model/registry.h"
 #include "../model/testentity.h"
+#include "../model/world.h"
+#include "../utils/consts.h"
+#include "../utils/geometryhelper.h"
 
 namespace parkour {
 
-QSharedPointer<PlayerController> LocalWorldController::getPlayerController() const
+QSharedPointer<PlayerController> WorldController::getPlayerController() const
 {
     return playerController;
 }
 
-LocalWorldController::LocalWorldController()
+WorldController::WorldController()
     : playerController(QSharedPointer<PlayerController>::create()) {
 }
 
-void LocalWorldController::loadTestWorld() const {
+void WorldController::loadTestWorld() const {
     auto& world = World::instance();
     if (world.isReady()) {
         throw std::exception("test world loading failed: world is already ready");
     }
     qDebug() << "setting block";
     for (int i = 0; i <= 100; i++) {
-        world.setBlock(QPoint(i, 15), i % 2 ? "grass" : "dirt");
+        world.setBlock(QPoint(i, 15), "grass");
+    }
+    for (int i = 15; i <= 19; i++) {
+        world.setBlock(QPoint(i, 13), "dirt");
+    }
+    for (int i = 21; i <= 23; i++) {
+        world.setBlock(QPoint(i, 11), "dirt");
+    }
+    for (int i = 25; i <= 26; i++) {
+        world.setBlock(QPoint(i, 9), "tnt");
+    }
+    for (int i = 28; i <= 33; i++) {
+        world.setBlock(QPoint(i, 9 + i - 28), "dirt");
     }
 
     qDebug() << "loading some entities";
@@ -30,13 +48,13 @@ void LocalWorldController::loadTestWorld() const {
 
     qDebug() << "loading player";
 
-    world.setSpawnPoint({ 7, 7 });
+    world.setSpawnPoint({ 7, -25 });
 
     qDebug() << "test world loaded";
     world.setReady(true);
 }
 
-void LocalWorldController::unloadWorld() const {
+void WorldController::unloadWorld() const {
     auto& world = World::instance();
     if (!world.isReady()) {
         throw std::exception("world not ready, cannot unload");
@@ -47,7 +65,7 @@ void LocalWorldController::unloadWorld() const {
     world.setReady(false);
 }
 
-void LocalWorldController::explode(QPoint center, double power) const {
+void WorldController::explode(QPoint center, double power) const {
     if (power < 0) {
         return;
     }
@@ -62,6 +80,7 @@ void LocalWorldController::explode(QPoint center, double power) const {
             auto distance = QVector2D(center - QPoint(i, j)).length();
             auto block = registry::BlockRegistry::instance().getBlockByName(world.getBlock({ i, j }));
             if (block != nullptr && geometry::compareDoubles(radius - distance, block->getExplosionResistance()) >= 0) {
+                block->onExplosion({ i, j }, radius - distance);
                 world.setBlock({ i, j }, "air");
             }
         }
@@ -71,12 +90,11 @@ void LocalWorldController::explode(QPoint center, double power) const {
         if (geometry::compareDoubles(distance, radius) <= 0) {
             auto damage = (power * EXPLOSION_DAMAGE_MULTIPLIER / (radius * radius)) * (distance - radius) * (distance - radius);
             entity->damage(damage);
-            //            qDebug() << "DAMAGE = " << damage;
         }
     }
 }
 
-void LocalWorldController::tick() const {
+void WorldController::tick() const {
     //    qDebug() << "ticking LocalWorldController";
     auto& world = World::instance();
 
@@ -242,7 +260,7 @@ void LocalWorldController::tick() const {
 
         if (isFlying) {
             entity->setOnFloor(false);
-            entity->setAcceleration(entity->getAcceleration() + QVector2D(0, static_cast<float>(GRAVITY)));
+            entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
         }
     }
 

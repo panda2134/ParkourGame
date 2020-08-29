@@ -1,25 +1,28 @@
 #include "registry.h"
+#include "blockdirt.h"
+#include "blockgrass.h"
+#include "blocktnt.h"
 
 namespace parkour {
 namespace registry {
 
-    BlockRegistry::BlockRegistry() {
-#define REGISTER_BLOCK(Cls)                              \
-    {                                                    \
-        auto ptr = QSharedPointer<Cls>::create();        \
-        blockMap.insert(ptr->getName(), ptr);            \
-        blockIds.push_back(ptr->getName());              \
-        idMapping[ptr->getName()] = blockIds.size() - 1; \
+    template <typename T>
+    void BlockRegistry::registerBlock() {
+        auto ptr = QSharedPointer<T>::create();
+        blockMap.insert(ptr->getName(), ptr);
+        blockIds.push_back(ptr->getName());
+        idMapping[ptr->getName()] = blockIds.size() - 1;
     }
+
+    BlockRegistry::BlockRegistry() {
 
         blockIds.push_back("air"); // 空出id=0给air
         idMapping["air"] = 0;
         // * block mapping start *
-        REGISTER_BLOCK(parkour::BlockGrass);
-        REGISTER_BLOCK(parkour::BlockDirt);
+        registerBlock<parkour::BlockGrass>();
+        registerBlock<parkour::BlockDirt>();
+        registerBlock<parkour::BlockTNT>();
         // * block mapping end   *
-
-#undef REGISTER_BLOCK
     }
 
     QSharedPointer<Block> BlockRegistry::getBlockByName(QString blockName) {

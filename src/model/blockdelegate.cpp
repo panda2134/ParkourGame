@@ -1,4 +1,6 @@
 #include "blockdelegate.h"
+#include "entity.h"
+#include "registry.h"
 
 namespace parkour {
 

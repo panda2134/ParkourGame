@@ -3,8 +3,6 @@
 
 #include "../utils/singleton.h"
 #include "block.h"
-#include "blockdirt.h"
-#include "blockgrass.h"
 #include <QHash>
 #include <QSharedDataPointer>
 #include <QString>
@@ -19,6 +17,9 @@ namespace registry {
         BlockMapType blockMap;
         QVector<QString> blockIds;
         QHash<QString, size_t> idMapping;
+
+        template <typename T>
+        void registerBlock();
 
     public:
         BlockRegistry();

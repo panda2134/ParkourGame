@@ -1,15 +1,18 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
-#include "../../controller/localworldcontroller.h"
-#include "../../model/world.h"
-#include "../../utils/askeyvaluerange.h"
-#include "../../utils/consts.h"
 #include "iscene.h"
+#include <QByteArray>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QMatrix4x4>
 #include <QMouseEvent>
 #include <QObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLDebugLogger>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 
 namespace parkour {
 
@@ -31,11 +34,15 @@ class GameScene : public IScene {
     };
 
     CameraInfo cameraInfo;
-    QImage texture;
+    QOpenGLBuffer vertexBuf, textureBuf;
+    QOpenGLShaderProgram program;
+    QOpenGLTexture glTexture;
+    QImage textureImg;
     QVector<int> textureCount;
     double blockSizeOnScreen = 0.0;
     double deviceWidth = 854.0;
     void loadTexture();
+    void writeQRectToOpenGLBuffer(QOpenGLBuffer& buf, const QRectF& rect);
     /**
      * @brief shouldRenderObject 判断是否应该渲染某个对象
      * @param xMin 游戏坐标系里 x 的最小值
@@ -52,6 +59,7 @@ public:
     void calculate() override;
     void repaint(QPainter&, QOpenGLContext&) override;
     bool event(QEvent* evt) override;
+    void initializeGL() override;
 };
 }
 

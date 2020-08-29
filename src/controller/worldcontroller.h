@@ -1,11 +1,6 @@
-#ifndef LOCALWORLDCONTROLLER_H
-#define LOCALWORLDCONTROLLER_H
+#ifndef WORLDCONTROLLER_H
+#define WORLDCONTROLLER_H
 
-#include "../model/blockdelegate.h"
-#include "../model/playerentity.h"
-#include "../model/registry.h"
-#include "../model/world.h"
-#include "../utils/consts.h"
 #include "../utils/singleton.h"
 #include "playercontroller.h"
 #include <QObject>
@@ -13,13 +8,13 @@
 #include <QTimer>
 
 namespace parkour {
-class LocalWorldController : public QObject, public Singleton<LocalWorldController> {
+class WorldController : public QObject, public Singleton<WorldController> {
     Q_OBJECT
 
     QSharedPointer<PlayerController> playerController;
 
 public:
-    LocalWorldController();
+    WorldController();
 
     void loadTestWorld() const;
     void unloadWorld() const;
@@ -33,4 +28,4 @@ signals:
 };
 }
 
-#endif // LOCALWORLDCONTROLLER_H
+#endif // WORLDCONTROLLER_H

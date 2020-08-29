@@ -25,7 +25,7 @@ const double EPSILON = 1e-5;
 /**
  * @brief GRAVITY 重力加速度
  */
-const double GRAVITY = 9.854;
+const double GRAVITY = 18;
 
 /**
  * @brief STAND_UPON_DELTA 计算实体站立的阈值
@@ -75,12 +75,12 @@ const double FALL_DAMAGE_MULTIPLIER = .5;
 /**
  * @brief FALL_DAMAGE_SPEED 速率大于此数字时开始计算摔落伤害
  */
-const double FALL_DAMAGE_SPEED = 10.0;
+const double FALL_DAMAGE_SPEED = 12.0;
 
 /**
  * @brief JUMP_SPEED 跳跃时纵向初速度大小
  */
-const double JUMP_SPEED = 8.0;
+const double JUMP_SPEED = 10.0;
 
 /**
  * @brief WALK_SPEED 步行速度
@@ -120,7 +120,11 @@ const double SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER = 0.2;
 /**
  * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，摄像机移动的终点内边距
  */
-const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.3;
+const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.45;
+/**
+ * @brief TNT_EXPLOSION_POWER TNT爆炸强度
+ */
+const double TNT_EXPLOSION_POWER = 7;
 }
 
 #endif // CONSTS_H

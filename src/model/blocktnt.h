@@ -1,0 +1,26 @@
+#ifndef BLOCKTNT_H
+#define BLOCKTNT_H
+
+#include "block.h"
+
+namespace parkour {
+class BlockTNT : public Block
+{
+    Q_OBJECT
+public:
+    BlockTNT();
+
+    // Block interface
+public:
+    QString getName() const override;
+    QString getResourceLocation() const override;
+    double getExplosionResistance() const override;
+
+    // Block interface
+public:
+    void onExplosion(QPoint blockPos, double power) override;
+    void collide(QPoint, const Entity&, Direction) override;
+};
+}
+
+#endif // BLOCKTNT_H

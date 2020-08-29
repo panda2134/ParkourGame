@@ -15,7 +15,18 @@ public:
     virtual QString getName() const = 0;
     virtual QString getResourceLocation() const = 0;
     virtual double getExplosionResistance() const = 0;
+    /**
+     * @brief getCurrentFrame 取得当前方块显示哪一帧
+     * @return 返回值<0，则每次屏幕刷新会切换到下一帧；否则显示指定帧（材质中从上往下排列，以0开始计数）
+     */
+    virtual int getCurrentFrame() const;
 
+    /**
+     * @brief onExplosion 爆炸时的回调函数
+     * @param blockPos 受到爆炸的方块位置
+     * @param power 此位置的爆炸强度
+     */
+    virtual void onExplosion(QPoint blockPos, double power);
     virtual void collide(QPoint, const Entity&, Direction) {};
     virtual BoundingBox getBoundingBox() const;
 signals:

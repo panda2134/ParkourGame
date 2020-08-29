@@ -1,6 +1,7 @@
 #ifndef ICOLLIDABLE_H
 #define ICOLLIDABLE_H
 
+#include "../utils/direction.h"
 #include "boundingbox.h"
 #include <QDebug>
 

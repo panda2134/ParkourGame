@@ -3,5 +3,9 @@
         <file>assets/blocks/grass.png</file>
         <file>assets/blocks/no_texture.png</file>
         <file>assets/blocks/dirt.png</file>
+        <file>assets/shaders/block.frag</file>
+        <file>assets/shaders/block.vert</file>
+        <file>assets/blocks/tnt.png</file>
+        <file>assets/entities/tnt.png</file>
     </qresource>
 </RCC>

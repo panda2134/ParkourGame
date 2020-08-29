@@ -1,9 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "../utils/consts.h"
 #include "../utils/direction.h"
-#include "../utils/geometryhelper.h"
 #include "boundingbox.h"
 #include "icollidable.h"
 #include <QObject>

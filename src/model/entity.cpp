@@ -1,4 +1,6 @@
 #include "entity.h"
+#include "../utils/consts.h"
+#include "../utils/geometryhelper.h"
 
 namespace parkour {
 

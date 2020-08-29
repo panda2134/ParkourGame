@@ -1,4 +1,5 @@
 #include "./geometryhelper.h"
+#include "consts.h"
 
 namespace parkour {
 namespace geometry {

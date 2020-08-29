@@ -2,9 +2,7 @@
 #define BLOCKDELEGATE_H
 
 #include "block.h"
-#include "entity.h"
 #include "icollidable.h"
-#include "registry.h"
 #include <QObject>
 #include <QString>
 #include <QVector2D>

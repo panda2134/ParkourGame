@@ -1,4 +1,7 @@
 #include "boundingbox.h"
+#include "../utils/consts.h"
+#include "../utils/direction.h"
+#include "../utils/geometryhelper.h"
 
 namespace parkour {
 

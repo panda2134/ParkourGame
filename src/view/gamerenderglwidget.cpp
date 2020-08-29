@@ -1,13 +1,16 @@
 #include "gamerenderglwidget.h"
+#include "../utils/consts.h"
+#include "./scene/gamescene.h"
 using namespace parkour;
 
 GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
     : QOpenGLWidget(parent)
     , renderTick(0)
     , lastUpdateTime(std::chrono::high_resolution_clock::now()) {
-    currentScene = QSharedPointer<GameScene>::create();
-
-    timer.setInterval(parkour::TICK_LENGTH * 1000);
+    QSurfaceFormat fmt(QSurfaceFormat::DebugContext);
+    setFormat(fmt);
+    currentScene = QSharedPointer<GameScene>::create(this);
+    timer.setInterval(TICK_LENGTH * 1000);
     connect(&timer, SIGNAL(timeout()), this, SLOT(tick()));
     timer.start();
 }
@@ -17,10 +20,9 @@ void GameRenderGLWidget::tick() {
     if (currentScene != nullptr) {
         currentScene->calculate();
     }
-    if ((renderTick++) % TICKS_PER_FRAME != 0)
-        return;
-    //    qDebug() << "ticking: start update in rendering";
-    this->update();
+    if ((renderTick++) % TICKS_PER_FRAME == 0) {
+        this->update();
+    }
 }
 
 bool GameRenderGLWidget::event(QEvent* e) {
@@ -32,13 +34,17 @@ bool GameRenderGLWidget::event(QEvent* e) {
         case QEvent::MouseButtonDblClick:
         case QEvent::KeyPress:
         case QEvent::KeyRelease:
-        case QEvent::Resize:
             return currentScene->event(e);
         default:
             break;
         }
     }
     return QOpenGLWidget::event(e);
+}
+
+void GameRenderGLWidget::resizeEvent(QResizeEvent* e) {
+    resizeGL(width(), height());
+    QOpenGLWidget::resizeEvent(e);
 }
 
 void GameRenderGLWidget::paintFps(QPainter& p) {
@@ -59,6 +65,9 @@ void GameRenderGLWidget::paintGL() {
     p.beginNativePainting();
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_SCISSOR_TEST); // 不渲染屏幕外的像素
+    glScissor(0, 0, width(), height());
+    glDisable(GL_MULTISAMPLE);
     p.endNativePainting();
 
     if (currentScene != nullptr) {
@@ -71,4 +80,7 @@ void GameRenderGLWidget::paintGL() {
 
 void GameRenderGLWidget::initializeGL() {
     initializeOpenGLFunctions();
+    if (currentScene != nullptr) {
+        currentScene->initializeGL();
+    }
 }

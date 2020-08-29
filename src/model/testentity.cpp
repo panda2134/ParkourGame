@@ -1,4 +1,8 @@
 #include "testentity.h"
+#include "../controller/worldcontroller.h"
+#include "../utils/consts.h"
+#include "./boundingbox.h"
+#include "world.h"
 
 namespace parkour {
 
@@ -21,7 +25,7 @@ BoundingBox TestEntity::getBoundingBox() const {
 void TestEntity::update() {
     goRight();
     if (World::instance().getTicksFromBirth() / TICKS_PER_SEC > 3 && World::instance().getTicksFromBirth() % TICKS_PER_SEC == 0) {
-        LocalWorldController::instance().explode((getPosition()).toPoint(), 7);
+        WorldController::instance().explode((getPosition()).toPoint(), 7);
     }
 }
 }

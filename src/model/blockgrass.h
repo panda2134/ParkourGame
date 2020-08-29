@@ -15,8 +15,6 @@ public:
     QString getName() const override;
     QString getResourceLocation() const override;
 
-    void collide(QPoint blockPos, const Entity& entity, Direction) override;
-
     double getExplosionResistance() const override;
 };
 }

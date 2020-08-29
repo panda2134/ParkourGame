@@ -1,7 +1,6 @@
 #ifndef GEOMETRYHELPER_H
 #define GEOMETRYHELPER_H
 
-#include "consts.h"
 #include <QVector2D>
 #include <QtMath>
 
