@@ -1,11 +1,12 @@
 #include "worldcontroller.h"
+#include "../vendor/aabbcc/AABB.h"
 #include "../model/blockdelegate.h"
 #include "../model/entityplayer.h"
 #include "../model/registry.h"
-#include "../model/entitymovingbrick.h"
 #include "../model/world.h"
 #include "../utils/consts.h"
 #include "../utils/geometryhelper.h"
+#include <algorithm>
 
 namespace parkour {
 
@@ -28,10 +29,10 @@ void WorldController::loadTestWorld() const {
         world.setBlock(QPoint(i, 15), "bedrock");
     }
 
-	for (int i = 33; i <= 106; i++) {
-		auto e = QSharedPointer<EntityMovingBrick>::create();
-		e->placeBoundingBoxAt({ static_cast<float>(i), 7 });
-		world.addEntity(e);
+	for (int i = 33; i <= 56; i++) {
+		for (int j = 6; j <= 11; j++) {
+			world.setBlock(QPoint(i, j), "tnt");
+		}
 	}
 
 	for (int j = 13; j >= 6; j--) {
@@ -54,9 +55,7 @@ void WorldController::unloadWorld() const {
     if (!world.isReady()) {
         throw std::exception("world not ready, cannot unload");
     }
-    world.entities.clear();
-    world.dyingEntities.clear();
-    world.blocks.clear();
+	world.clear();
     world.setReady(false);
 }
 
@@ -88,10 +87,13 @@ void WorldController::handleExplosion(QPoint center, double power) const {
         }
     }
     for (auto& entity : world.getEntities()) {
-        auto distance = QVector2D(entity->getPosition().toPointF() - center).length();
+		const auto& entityPointF = entity->getPosition().toPointF();
+        auto distance = QVector2D(entityPointF - center).length();
         if (geometry::compareDoubles(distance, radius) <= 0) {
             auto damage = (power * EXPLOSION_DAMAGE_MULTIPLIER / (radius * radius)) * (distance - radius) * (distance - radius);
+			auto velocity = (power * EXPLOSION_VELOCITY_MULTIPLIER) * QVector2D(entityPointF - center).normalized() * (radius - distance);
             entity->damage(damage);
+			entity->setVelocity(entity->getVelocity() + velocity);
         }
     }
 }
@@ -137,121 +139,145 @@ void WorldController::tick() const {
 	}
 
     // 3. 计算方块与实体、实体与实体之间的碰撞
-    for (int index = 0; index < world.entities.size(); index++) {
-        // 方块与实体
-        auto entity = world.entities[index];
-        auto entityPosition = entity->getPosition();
-        int centerBlockX = static_cast<int>(entityPosition.x()),
-            centerBlockY = static_cast<int>(entityPosition.y());
-        for (int i = centerBlockX - ENTITY_COLLISION_RANGE; i <= centerBlockX + ENTITY_COLLISION_RANGE; i++) {
-            for (int j = centerBlockY - ENTITY_COLLISION_RANGE; j <= centerBlockY + ENTITY_COLLISION_RANGE; j++) {
-                BlockDelegate blockDelegate(world.getBlock(QPoint(i, j)), QPoint(i, j));
-                if (blockDelegate.isAir()) {
-                    continue; // 空气方块，跳过检查
-                }
-                Direction faceOfEntity = entity->checkCollideWith(blockDelegate);
-                Direction faceOfBlock = blockDelegate.checkCollideWith(*entity);
-                if (faceOfEntity == Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfBlock) {
-                    continue; // 未碰撞 / 嵌入其中
-                }
-                if (faceOfEntity == Direction::DOWN) { // 落地：碰到方块
-                    entity->setOnFloor(true);
-                }
-                // 调用相应的碰撞处理
-                entity->collide(blockDelegate, faceOfEntity);
-                blockDelegate.collide(*entity, getOppositeFace(faceOfEntity));
-                // 处理碰撞后实体的速度
-                switch (faceOfEntity) {
-                case Direction::UP:
-                    entity->setVelocity(QVector2D(entity->getVelocity().x(), -1.0f * entity->getVelocity().y())); // 特殊处理撞到底部
-                    entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
-                    break;
-                case Direction::DOWN:
-                    entity->setVelocity(QVector2D(entity->getVelocity().x(), -1.0f * BOUNCE_BOTTOM_ATTENUATION * entity->getVelocity().y()));
-                    entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
-                    break;
-                case Direction::LEFT:
+	if (world.entities.size() > 0) {
+		//long long p = 0, q = 0;
+		aabb::Tree aabbTree(2, 0.05, world.entities.size());
+		for (int index = 0; index < world.entities.size(); index++) {
+			// 方块与实体
+			auto entity = world.entities[index];
+			auto entityPosition = entity->getPosition();
+			auto bbox = entity->getBoundingBoxWorld();
+			aabbTree.insertParticle(index, { bbox.getMinX(), bbox.getMinY() }, { bbox.getMaxX(), bbox.getMaxY() });
+			int centerBlockX = static_cast<int>(entityPosition.x()),
+				centerBlockY = static_cast<int>(entityPosition.y());
+			int range = std::max({ static_cast<float>(ENTITY_COLLISION_RANGE), bbox.getMaxY() - bbox.getMinY() + 1.0f, bbox.getMaxX() - bbox.getMinX() + 1.0f });
+
+			for (int i = centerBlockX - range; i <= centerBlockX + range; i++) {
+				for (int j = centerBlockY - range; j <= centerBlockY + range; j++) {
+					const auto& blockName = world.getBlock(QPoint(i, j));
+					/*QElapsedTimer t31;
+					t31.start();*/
+					BlockDelegate blockDelegate(blockName, QPoint(i, j));
+					/*p += t31.nsecsElapsed();*/
+
+					if (blockDelegate.isAir()) {
+						continue; // 空气方块，跳过检查
+					}
+					Direction faceOfEntity = entity->checkCollideWith(blockDelegate);
+					Direction faceOfBlock = blockDelegate.checkCollideWith(*entity);
+					if (faceOfEntity == Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfBlock) {
+						continue; // 未碰撞 / 嵌入其中
+					}
+					if (faceOfEntity == Direction::DOWN) { // 落地：碰到方块
+						entity->setOnFloor(true);
+					}
+					// 调用相应的碰撞处理
+					entity->collide(blockDelegate, faceOfEntity);
+					blockDelegate.collide(*entity, getOppositeFace(faceOfEntity));
+
+					// 处理碰撞后实体的速度
+					switch (faceOfEntity) {
+					case Direction::UP:
+						entity->setVelocity(QVector2D(entity->getVelocity().x(), -1.0f * entity->getVelocity().y())); // 特殊处理撞到底部
+						entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
+						break;
+					case Direction::DOWN:
+						entity->setVelocity(QVector2D(entity->getVelocity().x(), -1.0f * BOUNCE_BOTTOM_ATTENUATION * entity->getVelocity().y()));
+						entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
+						break;
+					case Direction::LEFT:
+					case Direction::RIGHT:
+						entity->setVelocity(QVector2D(-1.0f * BOUNCE_SIDE_ATTENUATION * entity->getVelocity().x(), entity->getVelocity().y()));
+						entity->setAcceleration(QVector2D(0, entity->getAcceleration().y()));
+						break;
+					}
+					// 处理碰撞后实体的位置，与方块碰撞盒脱离
+					float delta = 0.0f;
+					switch (faceOfEntity) {
+					case Direction::UP:
+						delta = blockDelegate.getBoundingBoxWorld().getMaxY() - entity->getBoundingBoxWorld().getMinY();
+						entity->setPosition(entity->getPosition() + QVector2D(0, delta));
+						break;
+					case Direction::DOWN:
+						delta = entity->getBoundingBoxWorld().getMaxY() - blockDelegate.getBoundingBoxWorld().getMinY();
+						entity->setPosition(entity->getPosition() - QVector2D(0, delta));
+						break;
+					case Direction::LEFT:
+						delta = blockDelegate.getBoundingBoxWorld().getMaxX() - entity->getBoundingBoxWorld().getMinX();
+						entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
+						break;
+					case Direction::RIGHT:
+						delta = entity->getBoundingBoxWorld().getMaxX() - blockDelegate.getBoundingBoxWorld().getMinX();
+						entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
+						break;
+					}
+				}
+			}
+
+			//QElapsedTimer t32;
+			//t32.start();
+
+			// 实体与实体，注意避免重复计算
+			
+			for (auto collideId : aabbTree.query(index)) {
+				if (collideId == index) {
+					continue; // 跳过自己
+				}
+				auto anotherEntity = world.entities[collideId];
+
+				auto faceOfEntity = entity->checkCollideWith(*anotherEntity);
+				auto faceOfAnotherEntity = anotherEntity->checkCollideWith(*entity);
+
+				if (faceOfEntity == Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfAnotherEntity) {
+					continue;
+				}
+				if (faceOfEntity == Direction::DOWN) { // 落地：碰到实体
+					entity->setOnFloor(true);
+				}
+				entity->collide(*anotherEntity, faceOfEntity);
+				anotherEntity->collide(*entity, getOppositeFace(faceOfEntity));
+
+				auto m1 = entity->getMass(), m2 = anotherEntity->getMass();
+
+				auto v1 = (m1 - m2) / (m1 + m2) * entity->getVelocity(),
+					v2 = (2 * m1) / (m1 + m2) * anotherEntity->getVelocity();
+
+				switch (faceOfEntity) {
+				case Direction::UP: case Direction::DOWN:
+					entity->setVelocity({ entity->getVelocity().x(), v1.y() });
+					anotherEntity->setVelocity({ anotherEntity->getVelocity().x(), v2.y() });
+					break;
+				case Direction::LEFT: case Direction::RIGHT:
+					entity->setVelocity({ v1.x(), entity->getVelocity().y() });
+					anotherEntity->setVelocity({ v2.x(), anotherEntity->getVelocity().y() });
+					break;
+				}
+
+				float delta = 0.0f;
+				switch (faceOfEntity) {
+				case Direction::UP:
+					delta = anotherEntity->getBoundingBoxWorld().getMaxY() - entity->getBoundingBoxWorld().getMinY();
+					entity->setPosition(entity->getPosition() + QVector2D(0, delta));
+					break;
+				case Direction::DOWN:
+					delta = entity->getBoundingBoxWorld().getMaxY() - anotherEntity->getBoundingBoxWorld().getMinY();
+					entity->setPosition(entity->getPosition() - QVector2D(0, delta));
+					break;
+				case Direction::LEFT:
+					delta = anotherEntity->getBoundingBoxWorld().getMaxX() - entity->getBoundingBoxWorld().getMinX();
+					entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
+					break;
 				case Direction::RIGHT:
-                    entity->setVelocity(QVector2D(-1.0f * BOUNCE_SIDE_ATTENUATION * entity->getVelocity().x(), entity->getVelocity().y()));
-                    entity->setAcceleration(QVector2D(0, entity->getAcceleration().y()));
-                    break;
-                }
-                // 处理碰撞后实体的位置，与方块碰撞盒脱离
-                float delta = 0.0f;
-                switch (faceOfEntity) {
-                case Direction::UP:
-                    delta = blockDelegate.getBoundingBoxWorld().getMaxY() - entity->getBoundingBoxWorld().getMinY();
-                    entity->setPosition(entity->getPosition() + QVector2D(0, delta));
-                    break;
-                case Direction::DOWN:
-                    delta = entity->getBoundingBoxWorld().getMaxY() - blockDelegate.getBoundingBoxWorld().getMinY();
-                    entity->setPosition(entity->getPosition() - QVector2D(0, delta));
-                    break;
-                case Direction::LEFT:
-                    delta = blockDelegate.getBoundingBoxWorld().getMaxX() - entity->getBoundingBoxWorld().getMinX();
-                    entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
-                    break;
-                case Direction::RIGHT:
-                    delta = entity->getBoundingBoxWorld().getMaxX() - blockDelegate.getBoundingBoxWorld().getMinX();
-                    entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
-                    break;
-                }
-            }
-        }
-        // 实体与实体，注意避免重复计算
-        for (int prev = 0; prev < index; prev++) {
-            auto anotherEntity = world.entities[prev];
+					delta = entity->getBoundingBoxWorld().getMaxX() - anotherEntity->getBoundingBoxWorld().getMinX();
+					entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
+					break;
+				}
 
-            auto faceOfEntity = entity->checkCollideWith(*anotherEntity);
-            auto faceOfAnotherEntity = anotherEntity->checkCollideWith(*entity);
-
-            if (faceOfEntity == Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfAnotherEntity) {
-				continue;
-            }
-            if (faceOfEntity == Direction::DOWN) { // 落地：碰到实体
-                entity->setOnFloor(true);
-            }
-            entity->collide(*anotherEntity, faceOfEntity);
-            anotherEntity->collide(*entity, getOppositeFace(faceOfEntity));
-
-			auto m1 = entity->getMass(), m2 = anotherEntity->getMass();
-
-			auto v1 = (m1 - m2) / (m1 + m2) * entity->getVelocity(),
-				v2 = (2 * m1) / (m1 + m2) * anotherEntity->getVelocity();
-
-			switch (faceOfEntity) {
-			case Direction::UP: case Direction::DOWN:
-				entity->setVelocity({ entity->getVelocity().x(), v1.y() });
-				anotherEntity->setVelocity({ anotherEntity->getVelocity().x(), v2.y() });
-				break;
-			case Direction::LEFT: case Direction::RIGHT:
-				entity->setVelocity({ v1.x(), entity->getVelocity().y() });
-				anotherEntity->setVelocity({ v2.x(), anotherEntity->getVelocity().y() });
-				break;
 			}
-
-			float delta = 0.0f;
-			switch (faceOfEntity) {
-			case Direction::UP:
-				delta = anotherEntity->getBoundingBoxWorld().getMaxY() - entity->getBoundingBoxWorld().getMinY();
-				entity->setPosition(entity->getPosition() + QVector2D(0, delta));
-				break;
-			case Direction::DOWN:
-				delta = entity->getBoundingBoxWorld().getMaxY() - anotherEntity->getBoundingBoxWorld().getMinY();
-				entity->setPosition(entity->getPosition() - QVector2D(0, delta));
-				break;
-			case Direction::LEFT:
-				delta = anotherEntity->getBoundingBoxWorld().getMaxX() - entity->getBoundingBoxWorld().getMinX();
-				entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
-				break;
-			case Direction::RIGHT:
-				delta = entity->getBoundingBoxWorld().getMaxX() - anotherEntity->getBoundingBoxWorld().getMinX();
-				entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
-				break;
-			}
-
-        }
-    }
+			//q += t32.nsecsElapsed();
+		}
+		//qDebug() << "step3: " << p / 1e6 << q / 1e6;
+	}
 
     // 4. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
     //    qDebug() << "4. calling update() of entities";
@@ -261,41 +287,54 @@ void WorldController::tick() const {
 
     // 5. 检查悬空的实体，设置其重力加速度
     //    qDebug() << "5. setting gravity";
-    for (auto entity : world.entities) {
-        bool isFlying = true;
+	{
+		aabb::Tree aabbTree(2);
+		for (int i = 0; i < world.entities.size(); i++) {
+			auto& entity = world.entities[i];
+			const auto& bbox = entity->getBoundingBoxWorld();
 
-        for (auto other : world.entities) {
-            if (entity->getBoundingBoxWorld().standUpon(other->getBoundingBoxWorld())) {
-                isFlying = false;
-                break;
-            }
-        }
+			aabbTree.insertParticle(i, { bbox.getMinX(), bbox.getMinY() }, { bbox.getMaxX(), bbox.getMaxY() });
 
-        int centerBlockX = static_cast<int>(entity->getPosition().x()),
-            centerBlockY = static_cast<int>(entity->getPosition().y());
-        for (int i = centerBlockX - ENTITY_COLLISION_RANGE; i <= centerBlockX + ENTITY_COLLISION_RANGE; i++) {
-            for (int j = centerBlockY - ENTITY_COLLISION_RANGE; j <= centerBlockY + ENTITY_COLLISION_RANGE; j++) {
-				const auto &blockName = world.getBlock(QPoint(i, j));
-                BlockDelegate blockDelegate(blockName, QPoint(i, j));
-                if (blockDelegate.isAir()) {
-                    continue; // 空气方块，跳过检查
-                }
-                if (entity->getBoundingBoxWorld().standUpon(blockDelegate.getBoundingBoxWorld())) {
-                    isFlying = false;
-					auto block = registry::BlockRegistry::instance().getBlockByName(blockName);
-					// block != null, since it is not air
-					block->onStand({ i, j }, *entity);
-                }
-            }
-        }
+			bool isFlying = true;
 
-        if (isFlying) {
-            entity->setOnFloor(false);
-			if (entity->isAffectedByGravity()) {
-				entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
+			for (auto j : aabbTree.query(i)) {
+				if (i == j) {
+					continue;
+				}
+				auto& other = world.entities[j];
+				if (entity->getBoundingBoxWorld().standUpon(other->getBoundingBoxWorld())) {
+					isFlying = false;
+					break;
+				}
 			}
-        }
-    }
+
+			int centerBlockX = static_cast<int>(entity->getPosition().x()),
+				centerBlockY = static_cast<int>(entity->getPosition().y());
+			int range = std::max({ static_cast<float>(ENTITY_COLLISION_RANGE), bbox.getMaxY() - bbox.getMinY() + 1.0f, bbox.getMaxX() - bbox.getMinX() + 1.0f });
+			for (int i = centerBlockX - range; i <= centerBlockX + range; i++) {
+				for (int j = centerBlockY - range; j <= centerBlockY + range; j++) {
+					const auto &blockName = world.getBlock(QPoint(i, j));
+					BlockDelegate blockDelegate(blockName, QPoint(i, j));
+					if (blockDelegate.isAir()) {
+						continue; // 空气方块，跳过检查
+					}
+					if (entity->getBoundingBoxWorld().standUpon(blockDelegate.getBoundingBoxWorld())) {
+						isFlying = false;
+						auto block = registry::BlockRegistry::instance().getBlockByName(blockName);
+						// block != null, since it is not air
+						block->onStand({ i, j }, *entity);
+					}
+				}
+			}
+
+			if (isFlying) {
+				entity->setOnFloor(false);
+				if (entity->isAffectedByGravity()) {
+					entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
+				}
+			}
+		}
+	}
 
     // 6. 更新玩家控制器
     playerController->tick();

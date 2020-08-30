@@ -40,7 +40,9 @@ SOURCES += \
     view/gamerenderglwidget.cpp \
     view/mainwindow.cpp \
     view/scene/gamescene.cpp \
-    view/scene/iscene.cpp
+    view/scene/iscene.cpp \
+	vendor/aabbcc/AABB.cpp
+
 
 HEADERS += \
     controller/playercontroller.h \
@@ -68,7 +70,8 @@ HEADERS += \
     view/gamerenderglwidget.h \
     view/mainwindow.h \
     view/scene/gamescene.h \
-    view/scene/iscene.h
+    view/scene/iscene.h \
+	vendor/aabbcc/AABB.h
 
 FORMS += \
     view/mainwindow.ui

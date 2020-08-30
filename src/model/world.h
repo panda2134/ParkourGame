@@ -2,7 +2,9 @@
 #define WORLD_H
 
 #include "../utils/singleton.h"
+#include "../utils/consts.h"
 #include "entity.h"
+#include <map>
 #include <QDebug>
 #include <QHash>
 #include <QList>
@@ -20,6 +22,36 @@ class World : public QObject, public Singleton<World> {
 		QPoint center;
 		double power;
 		ExplosionInfo(QPoint center_, double power_): center(center_), power(power_) {}
+	};
+
+	template<typename T>
+	class ChunkStorage {
+		static const size_t CHUNK_COUNT = static_cast<size_t>((1.0 * WORLD_WIDTH) / CHUNK_SIZE + 0.5);
+		T *data[CHUNK_COUNT];
+
+	public:
+		ChunkStorage() {
+			for (int i = 0; i < CHUNK_COUNT; i++) {
+				data[i] = nullptr;
+			}
+		}
+		T& get(int x, int y) {
+			Q_ASSERT(x >= 0 && x < WORLD_WIDTH && y >= 0 && y < WORLD_HEIGHT);
+			auto chunkNum = x / CHUNK_SIZE;
+			if (data[chunkNum] == nullptr) {
+				data[chunkNum] = new T[CHUNK_SIZE * WORLD_HEIGHT];
+			}
+			return data[chunkNum][y * CHUNK_SIZE + (x % CHUNK_SIZE)];
+		}
+		void clear() {
+			for (int i = 0; i < CHUNK_COUNT; i++) {
+				delete[] data[i];
+				data[i] = nullptr;
+			}
+		}
+		~ChunkStorage() {
+			clear();
+		}
 	};
 
     friend class WorldController;
@@ -42,8 +74,9 @@ private:
     QVector2D spawnPoint;
     QList<QSharedPointer<Entity>> entities;
     QHash<QSharedPointer<Entity>, int> dyingEntities;
-    QHash<QPair<int, int>, QString> blocks;
+	ChunkStorage<QString> chunks;
 	QQueue<ExplosionInfo> explosionQueue;
+	void clear();
 };
 }
 

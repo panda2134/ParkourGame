@@ -2,6 +2,7 @@
 #define WORLDCONTROLLER_H
 
 #include "../utils/singleton.h"
+#include "../vendor/aabbcc/AABB.h"
 #include "playercontroller.h"
 #include <QObject>
 #include <QSharedPointer>

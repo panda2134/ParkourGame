@@ -58,6 +58,16 @@ const double DYING_ANIMATION_TICKS = TICKS_PER_SEC * 0.5;
 const int WORLD_HEIGHT = 16;
 
 /**
+ * @brief WORLD_WIDTH 世界最大宽度
+ */
+const int WORLD_WIDTH = 4096;
+
+/**
+ * @brief CHUNK_SIZE 区块（横向划分）大小
+ */
+const int CHUNK_SIZE = 256;
+
+/**
  * @brief BLOCK_TEXTURE_SIZE 方块像素数目
  */
 const int BLOCK_TEXTURE_SIZE = 16;
@@ -91,6 +101,11 @@ const double WALK_SPEED = 6.0;
  * @brief EXPLOSION_DAMAGE_MULTIPLIER 爆炸伤害计算因子
  */
 const double EXPLOSION_DAMAGE_MULTIPLIER = 3.0;
+
+/**
+ * @brief EXPLOSION_VELOCITY_MULTIPLIER 爆炸冲量产生的速度的计算因子
+ */
+const double EXPLOSION_VELOCITY_MULTIPLIER = 0.1;
 
 /**
  * @brief EXPLOSION_RADIUS_MULTIPLIER 爆炸半径因子

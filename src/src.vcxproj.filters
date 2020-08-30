@@ -128,6 +128,9 @@
     <ClCompile Include="model\blockstonebrick.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="vendor\aabbcc\AABB.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -206,6 +209,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClInclude Include="model\blockstonebrick.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\aabbcc\AABB.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

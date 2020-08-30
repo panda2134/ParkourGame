@@ -64,6 +64,8 @@
     <TargetName>src</TargetName>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>msvc2017_64</QtInstall>
@@ -97,6 +99,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -112,6 +115,7 @@
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <StackReserveSize>4194304</StackReserveSize>
+      <Profile>true</Profile>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -220,6 +224,7 @@
     <ClCompile Include="model\entityplayer.cpp" />
     <ClCompile Include="model\entityplayerlike.cpp" />
     <ClCompile Include="model\entitytnt.cpp" />
+    <ClCompile Include="vendor\aabbcc\AABB.cpp" />
     <ClCompile Include="view\gamerenderglwidget.cpp" />
     <ClCompile Include="view\scene\gamescene.cpp" />
     <ClCompile Include="utils\geometryhelper.cpp" />
@@ -235,6 +240,7 @@
     <ClCompile Include="controller\worldcontroller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="vendor\aabbcc\AABB.h" />
     <QtMoc Include="model\blocksaw.h" />
     <QtMoc Include="model\blockbedrock.h" />
     <ClInclude Include="model\blockstonebrick.h" />

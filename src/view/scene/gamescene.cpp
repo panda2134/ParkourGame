@@ -103,7 +103,7 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     for (int i = cameraInfo.getXMinOfViewport() / blockSizeOnScreen - PRELOAD_BLOCK_COUNT;
          i <= (cameraInfo.getXMinOfViewport() + deviceWidth) / blockSizeOnScreen + PRELOAD_BLOCK_COUNT;
          i++) {
-        for (int j = 0; j <= WORLD_HEIGHT; j++) {
+        for (int j = 0; j < WORLD_HEIGHT; j++) {
             auto block = blockRegistry.getBlockByName(world.getBlock(QPoint(i, j)));
             if (block == nullptr) {
                 continue; // air block

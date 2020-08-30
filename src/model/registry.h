@@ -3,20 +3,21 @@
 
 #include "../utils/singleton.h"
 #include "block.h"
-#include <QHash>
+#include <map>
+#include <string>
 #include <QSharedDataPointer>
 #include <QString>
 
 namespace parkour {
 
 namespace registry {
-    typedef QHash<QString, QSharedPointer<Block>> BlockMapType;
+    typedef std::map<std::string, QSharedPointer<Block>> BlockMapType;
 
     class BlockRegistry : public QObject, public Singleton<BlockRegistry> {
         Q_OBJECT
         BlockMapType blockMap;
         QVector<QString> blockIds;
-        QHash<QString, size_t> idMapping;
+        std::map<std::string, size_t> idMapping;
 
         template <typename T>
         void registerBlock();

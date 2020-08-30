@@ -11,16 +11,23 @@ void World::setReady(bool value) {
 }
 
 void World::setBlock(QPoint blockPos, QString blockName) {
-    auto pair = qMakePair(blockPos.x(), blockPos.y());
-    blocks[pair] = blockName;
+	if (blockPos.x() < 0 || blockPos.x() >= WORLD_WIDTH || 
+		blockPos.y() < 0 || blockPos.y() >= WORLD_HEIGHT) {
+		return;
+	}
+	chunks.get(blockPos.x(), blockPos.y()) = blockName;
 }
 
 QString World::getBlock(QPoint blockPos) {
-    auto pair = qMakePair(blockPos.x(), blockPos.y());
-    if (blocks.count(pair)) {
-        return blocks[pair];
-    } else {
-        return "air";
+	if (blockPos.x() < 0 || blockPos.x() >= WORLD_WIDTH || 
+		blockPos.y() < 0 || blockPos.y() >= WORLD_HEIGHT) {
+		return "air";
+	} else {
+		auto& res = chunks.get(blockPos.x(), blockPos.y());
+		if (res.size() == 0) {
+			res = "air";
+		}
+        return res;
     }
 }
 
@@ -52,4 +59,12 @@ QVector2D World::getSpawnPoint() const {
 void World::setSpawnPoint(const QVector2D& value) {
     spawnPoint = value;
 }
+void World::clear() {
+	entities.clear();
+	dyingEntities.clear();
+	for (int j = 0; j < WORLD_HEIGHT; j++) {
+		chunks.clear();
+	}
+}
+
 }

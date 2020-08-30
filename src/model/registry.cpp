@@ -1,4 +1,5 @@
 #include "registry.h"
+#include "block.h"
 #include "blockdirt.h"
 #include "blockgrass.h"
 #include "blocktnt.h"
@@ -11,10 +12,10 @@ namespace registry {
 
     template <typename T>
     void BlockRegistry::registerBlock() {
-        auto ptr = QSharedPointer<T>::create();
-        blockMap.insert(ptr->getName(), ptr);
+        QSharedPointer<Block> ptr = QSharedPointer<T>::create();
+        blockMap[ptr->getName().toStdString()] = ptr;
         blockIds.push_back(ptr->getName());
-        idMapping[ptr->getName()] = blockIds.size() - 1;
+        idMapping[ptr->getName().toStdString()] = blockIds.size() - 1;
     }
 
     BlockRegistry::BlockRegistry() {
@@ -34,15 +35,18 @@ namespace registry {
     QSharedPointer<Block> BlockRegistry::getBlockByName(QString blockName) {
         if (blockName == "air") {
             return nullptr;
-        } else if (blockMap.count(blockName) == 0) {
-            throw std::exception((blockName + ": no such block!").toStdString().c_str());
-        } else {
-            return blockMap[blockName];
-        }
+		} else {
+			const auto &blockNameStd = blockName.toStdString();
+			if (blockMap.count(blockNameStd) == 0) {
+				throw std::exception((blockName + ": no such block!").toStdString().c_str());
+			} else {
+				return blockMap[blockNameStd];
+			}
+		}
     }
 
     size_t BlockRegistry::getBlockIdByName(QString blockName) {
-        return idMapping[blockName];
+        return idMapping[blockName.toStdString()];
     }
 
     const QVector<QString>& BlockRegistry::getBlockIds() {

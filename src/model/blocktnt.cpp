@@ -29,9 +29,7 @@ void parkour::BlockTNT::collide(QPoint blockPos, Entity& entity, Direction dir) 
     Q_UNUSED(entity)
     Q_UNUSED(dir)
 
-	try {
-		auto &player = dynamic_cast<EntityPlayer&>(entity);
-	} catch (std::bad_cast) {
+	if (entity.getName() != "player") {
 		return;
 	}
 
