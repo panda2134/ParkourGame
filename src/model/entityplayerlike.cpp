@@ -5,12 +5,14 @@
 #include "world.h"
 
 namespace parkour {
-
-EntityPlayerLike::EntityPlayerLike() {
+	double EntityPlayerLike::getWalkSpeed() const {
+		return WALK_SPEED;
+	}
+	EntityPlayerLike::EntityPlayerLike() {
     sneak = false;
 }
 
-void EntityPlayerLike::collide(const ICollidable& other, Direction dir) {
+void EntityPlayerLike::collide(ICollidable& other, Direction dir) {
     Q_UNUSED(other)
     if (dir == Direction::DOWN) {
         this->damage(qMax(.0, (this->getVelocity().y() - FALL_DAMAGE_SPEED) * FALL_DAMAGE_MULTIPLIER));
@@ -22,13 +24,14 @@ void EntityPlayerLike::jump() {
         this->setVelocity(QVector2D(this->getVelocity().x(), -JUMP_SPEED));
     }
 }
+
 void EntityPlayerLike::goLeft() {
-    auto vx = qMin(1.0 * getVelocity().x(), -1 * WALK_SPEED);
+    auto vx = qMin(1.0 * getVelocity().x(), -1 * getWalkSpeed());
     setVelocity(QVector2D(vx, getVelocity().y()));
 }
 
 void EntityPlayerLike::goRight() {
-    auto vx = qMax(1.0 * getVelocity().x(), WALK_SPEED);
+    auto vx = qMax(1.0 * getVelocity().x(), getWalkSpeed());
     setVelocity(QVector2D(vx, getVelocity().y()));
 }
 

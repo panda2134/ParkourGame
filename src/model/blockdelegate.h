@@ -23,7 +23,7 @@ public:
     BlockDelegate(QString blockName_, QPoint blockPos_);
 
     BoundingBoxWorld getBoundingBoxWorld() const override;
-    void collide(const ICollidable&, Direction) override;
+    void collide(ICollidable&, Direction) override;
     QVector2D getVelocity() const override;
     void setVelocity(const QVector2D&) override;
 

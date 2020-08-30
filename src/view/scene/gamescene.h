@@ -35,12 +35,12 @@ class GameScene : public IScene {
     };
 
     CameraInfo cameraInfo;
-    QOpenGLBuffer vertexBuf, textureBuf;
-    QOpenGLShaderProgram program;
-    QOpenGLTexture glTexture;
+    QOpenGLBuffer vertexBuf, blockTextureBuf;
+    QOpenGLShaderProgram blockShader;
+    QOpenGLTexture glBlockTexture;
+    QImage blockTextureImg;
+	QVector<int> blockTextureCount;
 	QHash<QString, QImage> entityTextureCache;
-    QImage textureImg;
-    QVector<int> textureCount;
 	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
     double blockSizeOnScreen = 0.0;
     double deviceWidth = 854.0;

@@ -110,13 +110,19 @@
     <ClCompile Include="model\registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model\testentity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="model\world.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="controller\worldcontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blocksaw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockbedrock.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entitymovingbrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -190,9 +196,6 @@
     <ClInclude Include="utils\singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <QtMoc Include="model\testentity.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="model\world.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -238,10 +241,22 @@
     <None Include="assets\entities\tnt.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\entities\player.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="model\blocksaw.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockbedrock.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entitymovingbrick.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ Direction ICollidable::checkCollideWith(const ICollidable& other) {
     // Judge Down & Up
     const float deltaDown = this->getBoundingBoxWorld().getMaxY() - other.getBoundingBoxWorld().getMinY();
     const float deltaUp = other.getBoundingBoxWorld().getMaxY() - this->getBoundingBoxWorld().getMinY();
-    //    qDebug() << deltaDown << deltaUp;
+    qDebug() << deltaDown << deltaUp;
     if (deltaDown > 0 || deltaUp > 0) {
         const float ratio = qAbs((deltaDown < deltaUp ? deltaDown : deltaUp) / deltaPosition.y());
         const float left = this->getBoundingBoxWorld().getMinX() - deltaPosition.x() * ratio,
@@ -28,11 +28,12 @@ Direction ICollidable::checkCollideWith(const ICollidable& other) {
     // Judge Left & Right
     const float deltaRight = this->getBoundingBoxWorld().getMaxX() - other.getBoundingBoxWorld().getMinX();
     const float deltaLeft = other.getBoundingBoxWorld().getMaxX() - this->getBoundingBoxWorld().getMinX();
-    //    qDebug() << deltaRight << deltaLeft;
+    qDebug() << deltaRight << deltaLeft;
     if ((deltaRight > 0 || deltaLeft > 0) && geometry::compareDoubles(qMin(deltaLeft, deltaRight), qMin(deltaUp, deltaDown)) < 0) {
         const float ratio = qAbs((deltaRight < deltaLeft ? deltaRight : deltaLeft) / deltaPosition.x());
         const float up = this->getBoundingBoxWorld().getMinY() - deltaPosition.y() * ratio,
                     down = this->getBoundingBoxWorld().getMaxY() - deltaPosition.y() * ratio;
+		qDebug() << ">" << up << down << other.getBoundingBoxWorld().getMaxY() << other.getBoundingBoxWorld().getMinY();
         if (geometry::compareDoubles(other.getBoundingBoxWorld().getMaxY(), up) < 0
             || geometry::compareDoubles(other.getBoundingBoxWorld().getMinY(), down) > 0) {
             /* 不是从此方向碰撞，do nothing */
@@ -40,6 +41,7 @@ Direction ICollidable::checkCollideWith(const ICollidable& other) {
             dir = deltaRight < deltaLeft ? Direction::RIGHT : Direction::LEFT;
         }
     }
+	qDebug() << "DIR =" << dir;
     return dir;
 }
 }

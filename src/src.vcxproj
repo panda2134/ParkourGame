@@ -78,7 +78,7 @@
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\release\.moc;..\bin\debug\.ui;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\release\.moc;..\bin\debug\.ui;/include;.\model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>..\bin\release\.obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -111,6 +111,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -143,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\debug\.moc;..\bin\debug\.ui;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\debug\.moc;..\bin\debug\.ui;/include;.\model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>..\bin\debug\.obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -172,6 +173,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <StackReserveSize>4194304</StackReserveSize>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -204,9 +206,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="model\block.cpp" />
+    <ClCompile Include="model\blockbedrock.cpp" />
     <ClCompile Include="model\blockdelegate.cpp" />
     <ClCompile Include="model\blockdirt.cpp" />
     <ClCompile Include="model\blockgrass.cpp" />
+    <ClCompile Include="model\blocksaw.cpp" />
     <ClCompile Include="model\blocktnt.cpp" />
     <ClCompile Include="model\boundingbox.cpp" />
     <ClCompile Include="utils\direction.cpp" />
@@ -224,11 +228,13 @@
     <ClCompile Include="view\mainwindow.cpp" />
     <ClCompile Include="controller\playercontroller.cpp" />
     <ClCompile Include="model\registry.cpp" />
-    <ClCompile Include="model\testentity.cpp" />
+    <ClCompile Include="model\entitymovingbrick.cpp" />
     <ClCompile Include="model\world.cpp" />
     <ClCompile Include="controller\worldcontroller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="model\blocksaw.h" />
+    <QtMoc Include="model\blockbedrock.h" />
     <ClInclude Include="utils\askeyvaluerange.h" />
     <QtMoc Include="model\block.h">
     </QtMoc>
@@ -266,7 +272,7 @@
     <QtMoc Include="model\registry.h">
     </QtMoc>
     <ClInclude Include="utils\singleton.h" />
-    <QtMoc Include="model\testentity.h">
+    <QtMoc Include="model\entitymovingbrick.h">
     </QtMoc>
     <QtMoc Include="model\world.h">
     </QtMoc>
@@ -301,6 +307,7 @@
     <None Include="assets\blocks\dirt.png" />
     <None Include="assets\blocks\grass.png" />
     <None Include="assets\blocks\no_texture.png" />
+    <None Include="cpp.hint" />
     <QtRcc Include="res.qrc">
     </QtRcc>
     <None Include="assets\blocks\tnt.png" />

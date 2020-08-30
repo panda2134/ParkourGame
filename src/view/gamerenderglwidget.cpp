@@ -63,7 +63,7 @@ void GameRenderGLWidget::paintGL() {
 
     // clear screen
     p.beginNativePainting();
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_SCISSOR_TEST); // 不渲染屏幕外的像素
     glScissor(0, 0, width(), height());

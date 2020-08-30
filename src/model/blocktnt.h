@@ -19,7 +19,7 @@ public:
     // Block interface
 public:
     void onExplosion(QPoint blockPos, double power) override;
-    void collide(QPoint, const Entity&, Direction) override;
+    void collide(QPoint, Entity&, Direction) override;
 };
 }
 

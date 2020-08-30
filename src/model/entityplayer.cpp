@@ -31,4 +31,16 @@ QVector2D EntityPlayer::getTextureDimensions() {
     return QVector2D(1, 2);
 }
 
+void EntityPlayer::update() {
+	if (this->isOnFloor()) {
+		const float vx = this->getVelocity().x();
+		if (qAbs(vx) < GROUND_STOP_THRESHOLD) {
+			this->setVelocity({ 0.0f, this->getVelocity().y() });
+			this->setAcceleration({ 0.0f, this->getAcceleration().y() });
+		} else {
+			this->setAcceleration({ static_cast<float>(-1 * DRAG_FACTOR * vx * vx * vx / qAbs(vx)), this->getAcceleration().y() });
+		}
+	}
+}
+
 }

@@ -2,6 +2,8 @@
 #include "blockdirt.h"
 #include "blockgrass.h"
 #include "blocktnt.h"
+#include "blocksaw.h"
+#include "blockbedrock.h"
 
 namespace parkour {
 namespace registry {
@@ -22,6 +24,8 @@ namespace registry {
         registerBlock<parkour::BlockGrass>();
         registerBlock<parkour::BlockDirt>();
         registerBlock<parkour::BlockTNT>();
+		registerBlock<parkour::BlockSaw>();
+		registerBlock<parkour::BlockBedrock>();
         // * block mapping end   *
     }
 

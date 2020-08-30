@@ -31,7 +31,7 @@ public:
      * @brief 实体碰撞处理器，子类可以重写以实现特定的碰撞处理
      * @param dir 自己被撞到的方向
      */
-    virtual void collide(const ICollidable&, Direction) override {};
+    virtual void collide(ICollidable&, Direction) override {};
     /**
      * @brief 由子类重写实现特定的每tick更新
      */
@@ -40,6 +40,11 @@ public:
 	 * @brief 是否显示死亡动画
 	*/
 	virtual bool showDeathAnimation() const;
+	/**
+	 * @brief 是否受到重力
+	*/
+	virtual bool isAffectedByGravity() const;
+
 
     /**
      *  @brief 设置实体Bounding Box左下角

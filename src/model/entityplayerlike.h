@@ -12,12 +12,14 @@ class EntityPlayerLike : public Entity {
 
     bool sneak;
 
+	virtual double getWalkSpeed() const;
+
 public:
     EntityPlayerLike();
     /**
      * @brief collide 设置摔落伤害等 子类若重载，则必须首先调用此方法！
      */
-    void collide(const ICollidable&, Direction) override;
+    void collide(ICollidable&, Direction) override;
 
     virtual void jump();
     virtual void goLeft();

@@ -11,13 +11,19 @@ BlockDelegate::BlockDelegate(QString blockName, QPoint blockPos_)
 
 BoundingBoxWorld BlockDelegate::getBoundingBoxWorld() const {
     QVector2D blockPosVect(blockPos);
+	Q_ASSERT(block != nullptr);
     BoundingBox bbox = block->getBoundingBox();
     BoundingBoxWorld ret(blockPosVect, bbox);
     return ret;
 }
 
-void BlockDelegate::collide(const ICollidable& other, Direction dir) {
-    block->collide(this->blockPos, dynamic_cast<const Entity&>(other), dir);
+void BlockDelegate::collide(ICollidable& other, Direction dir) {
+	Q_ASSERT(block != nullptr);
+	try {
+		block->collide(this->blockPos, dynamic_cast<Entity&>(other), dir);
+	} catch (std::bad_cast) {
+		qDebug() << "WARNING: casting failed";
+	}
 }
 
 QVector2D BlockDelegate::getVelocity() const {

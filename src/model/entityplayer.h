@@ -6,15 +6,17 @@
 
 namespace parkour {
 class EntityPlayer : public EntityPlayerLike {
-    Q_OBJECT
+	Q_OBJECT
+
+	const double DRAG_FACTOR = 5;
+	const double GROUND_STOP_THRESHOLD = 3;
 public:
     EntityPlayer();
-
-public:
     BoundingBox getBoundingBox() const override;
     QString getName() const override;
     QString getResourceLocation() override;
     QVector2D getTextureDimensions() override;
+	void update() override;
 };
 }
 

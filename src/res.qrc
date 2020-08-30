@@ -3,10 +3,14 @@
         <file>assets/blocks/grass.png</file>
         <file>assets/blocks/no_texture.png</file>
         <file>assets/blocks/dirt.png</file>
+        <file>assets/blocks/saw.png</file>
+        <file>assets/blocks/stone_brick.png</file>
+        <file>assets/blocks/bedrock.png</file>
         <file>assets/shaders/block.frag</file>
         <file>assets/shaders/block.vert</file>
         <file>assets/blocks/tnt.png</file>
         <file>assets/entities/tnt.png</file>
+        <file>assets/entities/moving_brick.png</file>
         <file>assets/entities/player.png</file>
         <file>assets/entities/player-sneak.png</file>
     </qresource>

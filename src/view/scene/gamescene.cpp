@@ -12,12 +12,12 @@ void GameScene::loadTexture() {
     auto& blockRegistry = registry::BlockRegistry::instance();
     auto& blockIds = blockRegistry.getBlockIds();
     qDebug() << "initializing texture: " << BLOCK_TEXTURE_SIZE * blockIds.size() << BLOCK_TEXTURE_SIZE;
-    textureImg.fill(Qt::black);
-    if (textureImg.isNull()) {
+	blockTextureImg.fill(0x00000000);
+    if (blockTextureImg.isNull()) {
         qDebug() << "failed to initialize texture";
     }
-    QPainter texturePainter(&textureImg);
-    textureCount.resize(1);
+    QPainter texturePainter(&blockTextureImg);
+    blockTextureCount.resize(1);
     for (int i = 1; i < blockIds.size(); i++) {
         auto block = blockRegistry.getBlockByName(blockIds[i]);
         if (block == nullptr) {
@@ -29,7 +29,7 @@ void GameScene::loadTexture() {
             textureBlock.load(NO_SUCH_TEXTURE);
         }
         texturePainter.drawImage(QPoint(BLOCK_TEXTURE_SIZE * i, 0), textureBlock);
-        textureCount.push_back(textureBlock.height() / textureBlock.width());
+        blockTextureCount.push_back(textureBlock.height() / textureBlock.width());
     }
 }
 
@@ -69,20 +69,20 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     auto glFuncs = ctx.functions();
     glFuncs->glEnable(GL_TEXTURE_2D);
     glFuncs->glEnable(GL_BLEND);
-    glFuncs->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glFuncs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glFuncs->glViewport(0, 0, p.device()->width(), p.device()->height());
 
-    program.bind();
-    if (!program.isLinked()) {
-        program.link();
+    blockShader.bind();
+    if (!blockShader.isLinked()) {
+        blockShader.link();
     }
     vertexBuf.bind();
-    program.enableAttributeArray("a_vertPos");
-    program.setAttributeBuffer("a_vertPos", GL_FLOAT, 0, 2); // 一次读入2个float作为坐标
+    blockShader.enableAttributeArray("a_vertPos");
+    blockShader.setAttributeBuffer("a_vertPos", GL_FLOAT, 0, 2); // 一次读入2个float作为坐标
 
-    textureBuf.bind();
-    program.enableAttributeArray("a_texCoord");
-    program.setAttributeBuffer("a_texCoord", GL_FLOAT, 0, 2);
+    blockTextureBuf.bind();
+    blockShader.enableAttributeArray("a_texCoord");
+    blockShader.setAttributeBuffer("a_texCoord", GL_FLOAT, 0, 2);
 
     double deviceWidth = p.device()->width(), deviceHeight = p.device()->height();
     QMatrix4x4 projectionMatrix(
@@ -91,15 +91,15 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
         0, 0, 0, 0,
         0, 0, 0, 1);
     auto viewMatrix = projectionMatrix * QMatrix4x4(p.worldTransform());
-    program.setUniformValue("u_viewMatrix", viewMatrix);
+    blockShader.setUniformValue("u_viewMatrix", viewMatrix);
 
-    program.setUniformValue("u_texWidth", textureImg.width());
-    program.setUniformValue("u_texHeight", textureImg.height());
+    blockShader.setUniformValue("u_texWidth", blockTextureImg.width());
+    blockShader.setUniformValue("u_texHeight", blockTextureImg.height());
 
     glFuncs->glDisable(GL_MULTISAMPLE);
-    glTexture.setMinificationFilter(QOpenGLTexture::Nearest);
-    glTexture.setMagnificationFilter(QOpenGLTexture::Nearest);
-    glTexture.setWrapMode(QOpenGLTexture::ClampToEdge);
+    glBlockTexture.setMinificationFilter(QOpenGLTexture::Nearest);
+    glBlockTexture.setMagnificationFilter(QOpenGLTexture::Nearest);
+    glBlockTexture.setWrapMode(QOpenGLTexture::ClampToEdge);
     for (int i = cameraInfo.getXMinOfViewport() / blockSizeOnScreen - PRELOAD_BLOCK_COUNT;
          i <= (cameraInfo.getXMinOfViewport() + deviceWidth) / blockSizeOnScreen + PRELOAD_BLOCK_COUNT;
          i++) {
@@ -110,32 +110,32 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
             }
 
             auto blockId = static_cast<int>(blockRegistry.getBlockIdByName(block->getName()));
-            int blockTextureCount = textureCount.at(blockId);
+            int currentBlockTextureCount = this->blockTextureCount.at(blockId);
 			int currentFrame = block->getCurrentFrame();
-			if (currentFrame < 0 || currentFrame >= blockTextureCount) {
-				currentFrame = world.getTicksFromBirth() / TICKS_PER_FRAME % blockTextureCount;
+			if (currentFrame < 0 || currentFrame >= currentBlockTextureCount) {
+				currentFrame = world.getTicksFromBirth() / TICKS_PER_FRAME % currentBlockTextureCount;
 			}
-            Q_ASSERT(blockTextureCount > 0);
+            Q_ASSERT(currentBlockTextureCount > 0);
 
             QPointF targetTopLeft(i * blockSizeOnScreen, j * blockSizeOnScreen);
-            QPointF sourceTopLeft(blockId * BLOCK_TEXTURE_SIZE, currentFrame * BLOCK_TEXTURE_SIZE);
-            QRectF targetRect(targetTopLeft, QSize(blockSizeOnScreen, blockSizeOnScreen));
-            QRectF sourceRect(sourceTopLeft, QSize(BLOCK_TEXTURE_SIZE, BLOCK_TEXTURE_SIZE));
+            QPointF sourceTopLeft(blockId * BLOCK_TEXTURE_SIZE + 0.001, currentFrame * BLOCK_TEXTURE_SIZE);
+            QRectF targetRect(targetTopLeft, QSizeF(blockSizeOnScreen, blockSizeOnScreen));
+            QRectF sourceRect(sourceTopLeft, QSizeF(BLOCK_TEXTURE_SIZE, BLOCK_TEXTURE_SIZE));
 
             writeQRectToOpenGLBuffer(vertexBuf, targetRect);
-            writeQRectToOpenGLBuffer(textureBuf, sourceRect);
+            writeQRectToOpenGLBuffer(blockTextureBuf, sourceRect);
 
             glFuncs->glActiveTexture(GL_TEXTURE0);
-            program.setUniformValue("u_tex", 0);
-            glTexture.bind();
+            blockShader.setUniformValue("u_tex", 0);
+            glBlockTexture.bind();
 
             glFuncs->glDrawArrays(GL_TRIANGLES, 0, 6); // 画6个顶点
         }
     }
-    textureBuf.release();
+    blockTextureBuf.release();
     vertexBuf.release();
-    program.release();
-    glTexture.release();
+    blockShader.release();
+    glBlockTexture.release();
     p.endNativePainting();
 
     // 渲染存活的实体
@@ -145,6 +145,7 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     for (const auto& entity : entities) {
         const auto& bbox = entity->getBoundingBoxWorld();
         const auto& position = entity->getPosition();
+		const auto& velocity = entity->getVelocity();
         const auto& texBox = entity->getTextureDimensions();
         if (!shouldRenderObject(position.x(), position.x() + texBox.x())) {
             continue;
@@ -165,7 +166,7 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
         p.setPen(Qt::red);
         QFont font("Consolas");
         QString info;
-        info = QString("%1 %2 %3 %4").arg(QString::number(entity->getHp()), QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(position.x()), QString::number(position.y()));
+        info = QString("%1 %2 %3 %4").arg(QString::number(entity->getHp()), QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(velocity.x()), QString::number(velocity.y()));
         font.setPixelSize(10);
         p.setFont(font);
         p.drawText(QPoint(texRect.left(), texRect.top()), info);
@@ -181,14 +182,13 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
         }
         // texture box
         auto texRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
-        p.setPen(Qt::red);
 
         QTransform transform;
         transform.translate(texRect.right(), texRect.bottom());
         transform.rotate(90 * (DYING_ANIMATION_TICKS - ticksLeft) / DYING_ANIMATION_TICKS);
 
         p.setTransform(transform, true);
-        p.drawRect(QRectF(QPoint(-texRect.width(), -texRect.height()), texRect.size()));
+		p.drawImage(QRectF(QPointF(-texRect.width(), -texRect.height()), texRect.size()), getEntityTextureForPath(entity->getResourceLocation()));
         p.setTransform(transform.inverted(), true);
     }
 }
@@ -205,9 +205,9 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
         QFont font("Consolas");
         font.setPixelSize(16);
         p.setFont(font);
-        p.drawText(xMax - 100, 0, 100, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(position[0], 'g', 4), QString::number(position[1], 'g', 4)));
-        p.drawText(xMax - 100, 20, 100, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
-        p.drawText(xMax - 100, 40, 100, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
+        p.drawText(xMax - 300, 0, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(position[0], 'g', 4), QString::number(position[1], 'g', 4)));
+        p.drawText(xMax - 300, 20, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
+        p.drawText(xMax - 300, 40, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
     }
 }
 
@@ -225,8 +225,8 @@ const QImage & GameScene::getEntityTextureForPath(const QString & path) {
 
 GameScene::GameScene(QObject* parent)
     : IScene(parent)
-    , glTexture(QOpenGLTexture::Target2D)
-    , textureImg(TEXTURE_MAP_SIZE, TEXTURE_MAP_SIZE, QImage::Format::Format_ARGB32_Premultiplied) {
+    , glBlockTexture(QOpenGLTexture::Target2D)
+    , blockTextureImg(TEXTURE_MAP_SIZE, TEXTURE_MAP_SIZE, QImage::Format::Format_RGBA8888) {
     qDebug() << "loading test world...";
     WorldController::instance().loadTestWorld();
     qDebug() << "loading texture...";
@@ -319,13 +319,13 @@ bool GameScene::event(QEvent* event) {
 
 void GameScene::initializeGL() {
     // 加载显卡上的材质
-    if (!glTexture.create()) {
+    if (!glBlockTexture.create()) {
         throw "Failed to initialize OpenGL Texture";
     }
-    glTexture.setSize(textureImg.width(), textureImg.height());
-    glTexture.setFormat(QOpenGLTexture::RGBA8_UNorm);
-    glTexture.setWrapMode(QOpenGLTexture::ClampToEdge);
-    glTexture.setData(textureImg, QOpenGLTexture::DontGenerateMipMaps);
+    glBlockTexture.setSize(blockTextureImg.width(), blockTextureImg.height());
+    // glBlockTexture.setFormat(QOpenGLTexture::RGBA8_UNorm);
+    glBlockTexture.setWrapMode(QOpenGLTexture::ClampToEdge);
+    glBlockTexture.setData(blockTextureImg, QOpenGLTexture::DontGenerateMipMaps);
 
     // 加载顶点缓冲
     vertexBuf.create();
@@ -333,21 +333,21 @@ void GameScene::initializeGL() {
     vertexBuf.bind();
     vertexBuf.allocate(2 * 3 * sizeof(float) * 2); // 2个三角形，对每个三角形有x, y坐标
     vertexBuf.release();
-    // 加载材质缓冲
-    textureBuf.create();
-    textureBuf.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    textureBuf.bind();
-    textureBuf.allocate(2 * 3 * sizeof(float) * 2);
-    textureBuf.release();
+    // 加载材质顶点缓冲
+    blockTextureBuf.create();
+    blockTextureBuf.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    blockTextureBuf.bind();
+    blockTextureBuf.allocate(2 * 3 * sizeof(float) * 2);
+    blockTextureBuf.release();
 
     // 加载方块着色器
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/block.vert")) {
+    if (!blockShader.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/assets/shaders/block.vert")) {
         throw "failed to load block vertex shaders";
     }
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/block.frag")) {
+    if (!blockShader.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/assets/shaders/block.frag")) {
         throw "failed to load block fragment shaders";
     }
-    if (!program.link()) {
+    if (!blockShader.link()) {
         throw "failed to link shaders";
     }
 }

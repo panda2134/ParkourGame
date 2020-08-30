@@ -5,7 +5,7 @@ namespace parkour {
 /**
  * @brief TICKS_PER_SEC 每秒游戏刻数目
  */
-const int TICKS_PER_SEC = 300;
+const int TICKS_PER_SEC = 60;
 
 /**
  * @brief TICK_LENGTH 游戏刻长度（秒）
@@ -15,17 +15,17 @@ const double TICK_LENGTH = 1.0 / TICKS_PER_SEC;
 /**
  * @brief TICKS_PER_FRAME 每帧间游戏刻数目
  */
-const int TICKS_PER_FRAME = 5;
+const int TICKS_PER_FRAME = 2;
 
 /**
  * @brief TICKS_PER_FRAME 用于比较浮点数，差绝对值小于此值则认为相等
  */
-const double EPSILON = 1e-5;
+const double EPSILON = 1e-6;
 
 /**
  * @brief GRAVITY 重力加速度
  */
-const double GRAVITY = 18;
+const double GRAVITY = 30;
 
 /**
  * @brief STAND_UPON_DELTA 计算实体站立的阈值
@@ -43,9 +43,9 @@ const double MAX_VELOCITY = 50;
 const double MAX_ACCELERATION = 20;
 
 /**
- * @brief ENTITY_UPDATE_RANGE 实体碰撞计算更新范围
+ * @brief ENTITY_COLLISION_RANGE 实体碰撞计算更新范围
  */
-const double ENTITY_COLLISION_RANGE = 8;
+const double ENTITY_COLLISION_RANGE = 2;
 
 /**
  * @brief DYING_ANIMATION_TICKS 死亡动画渲染tick数目
@@ -100,7 +100,7 @@ const double EXPLOSION_RADIUS_MULTIPLIER = 1.0;
 /**
  * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的补偿因子
  */
-const double BOUNCE_BOTTOM_ATTENUATION = 0.1;
+const double BOUNCE_BOTTOM_ATTENUATION = 0.5;
 
 /**
  * @brief VOID_DAMAGE_PER_TICK 每个游戏刻的虚空伤害

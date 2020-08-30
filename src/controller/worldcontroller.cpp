@@ -2,7 +2,7 @@
 #include "../model/blockdelegate.h"
 #include "../model/entityplayer.h"
 #include "../model/registry.h"
-#include "../model/testentity.h"
+#include "../model/entitymovingbrick.h"
 #include "../model/world.h"
 #include "../utils/consts.h"
 #include "../utils/geometryhelper.h"
@@ -25,26 +25,24 @@ void WorldController::loadTestWorld() const {
     }
     qDebug() << "setting block";
     for (int i = 0; i <= 100; i++) {
-        world.setBlock(QPoint(i, 15), "grass");
+        world.setBlock(QPoint(i, 15), "bedrock");
     }
-    for (int i = 15; i <= 19; i++) {
-        world.setBlock(QPoint(i, 13), "dirt");
-    }
-    for (int i = 21; i <= 23; i++) {
-        world.setBlock(QPoint(i, 11), "dirt");
-    }
-    for (int i = 25; i <= 26; i++) {
-        world.setBlock(QPoint(i, 9), "tnt");
-    }
-    for (int i = 28; i <= 33; i++) {
-        world.setBlock(QPoint(i, 9 + i - 28), "dirt");
+
+	for (int j = 13; j >= 6; j--) {
+		world.setBlock(QPoint(30 - j, j), "bedrock");
+	}
+
+    for (int i = 25; i <= 25; i++) {
+		for (int j = 13; j <= 13; j++) {
+			world.setBlock(QPoint(i, j), "tnt");
+		}
     }
 
     qDebug() << "loading some entities";
 
-    //    auto e1 = QSharedPointer<TestEntity>::create();
-    //    e1->placeBoundingBoxAt(QVector2D(9, 8));
-    //    world.addEntity(e1);
+    auto e1 = QSharedPointer<EntityMovingBrick>::create();
+    e1->placeBoundingBoxAt(QVector2D(9, 14));
+    world.addEntity(e1);
 
     qDebug() << "loading player";
 
@@ -80,7 +78,9 @@ void WorldController::explode(QPoint center, double power) const {
             auto distance = QVector2D(center - QPoint(i, j)).length();
             auto block = registry::BlockRegistry::instance().getBlockByName(world.getBlock({ i, j }));
             if (block != nullptr && geometry::compareDoubles(radius - distance, block->getExplosionResistance()) >= 0) {
-                block->onExplosion({ i, j }, radius - distance);
+				if (QPoint(i, j) != center) {
+					block->onExplosion({ i, j }, radius - distance);
+				}
                 world.setBlock({ i, j }, "air");
             }
         }
@@ -202,8 +202,8 @@ void WorldController::tick() const {
             auto faceOfEntity = entity->checkCollideWith(*anotherEntity);
             auto faceOfAnotherEntity = anotherEntity->checkCollideWith(*entity);
 
-            if (faceOfEntity == parkour::Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfAnotherEntity) {
-                continue;
+            if (faceOfEntity == Direction::UNKNOWN || getOppositeFace(faceOfEntity) != faceOfAnotherEntity) {
+				continue;
             }
             if (faceOfEntity == Direction::DOWN) { // 落地：碰到实体
                 entity->setOnFloor(true);
@@ -211,19 +211,22 @@ void WorldController::tick() const {
             entity->collide(*anotherEntity, faceOfEntity);
             anotherEntity->collide(*entity, getOppositeFace(faceOfEntity));
 
-            entity->setPosition(entity->getPosition() - entity->getVelocity() * parkour::TICK_LENGTH);
-            anotherEntity->setPosition(anotherEntity->getPosition() - anotherEntity->getVelocity() * parkour::TICK_LENGTH);
+            //entity->setPosition(entity->getPosition() - entity->getVelocity() * parkour::TICK_LENGTH);
+            //anotherEntity->setPosition(anotherEntity->getPosition() - anotherEntity->getVelocity() * parkour::TICK_LENGTH);
 
-            auto newVelocity = (entity->getVelocity() + anotherEntity->getVelocity()) / 2;
-            entity->setVelocity(newVelocity);
-            anotherEntity->setVelocity(newVelocity);
+			auto newVelocity = (entity->getVelocity() + anotherEntity->getVelocity()) / 2;
 
-            auto newAcceleration = (entity->getAcceleration() + anotherEntity->getAcceleration()) / 2; // 默认质量相同
-            entity->setAcceleration(newAcceleration);
-            anotherEntity->setAcceleration(newAcceleration);
+			switch (faceOfEntity) {
+			case Direction::UP: case Direction::DOWN:
+				entity->setVelocity({ entity->getVelocity().x(), newVelocity.y() });
+				anotherEntity->setVelocity({ anotherEntity->getVelocity().x(), newVelocity.y() });
+				break;
+			case Direction::LEFT: case Direction::RIGHT:
+				entity->setVelocity({ newVelocity.x(), entity->getVelocity().y() });
+				anotherEntity->setVelocity({ newVelocity.x(), anotherEntity->getVelocity().y() });
+				break;
+			}
 
-
-			// 处理碰撞后实体的位置，与另一个脱离
 			float delta = 0.0f;
 			switch (faceOfEntity) {
 			case Direction::UP:
@@ -283,7 +286,9 @@ void WorldController::tick() const {
 
         if (isFlying) {
             entity->setOnFloor(false);
-            entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
+			if (entity->isAffectedByGravity()) {
+				entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
+			}
         }
     }
 

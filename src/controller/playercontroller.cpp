@@ -89,9 +89,7 @@ void PlayerController::tick() {
             } else {
                 player->goRight();
             }
-        } else {
-            player->setVelocity({ 0, player->getVelocity().y() });
-        }
+		}
     }
 }
 

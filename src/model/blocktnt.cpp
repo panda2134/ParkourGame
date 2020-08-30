@@ -25,9 +25,16 @@ void parkour::BlockTNT::onExplosion(QPoint blockPos, double power) {
     WorldController::instance().explode(blockPos, TNT_EXPLOSION_POWER);
 }
 
-void parkour::BlockTNT::collide(QPoint blockPos, const Entity& entity, Direction dir) {
+void parkour::BlockTNT::collide(QPoint blockPos, Entity& entity, Direction dir) {
     Q_UNUSED(entity)
     Q_UNUSED(dir)
+
+	try {
+		auto &player = dynamic_cast<EntityPlayer&>(entity);
+	} catch (std::bad_cast) {
+		return;
+	}
+
     auto& world = World::instance();
     world.setBlock(blockPos, "air");
     auto entityTnt = QSharedPointer<EntityTNT>::create();

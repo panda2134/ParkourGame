@@ -15,11 +15,9 @@ bool BoundingBoxWorld::in(const BoundingBoxWorld& other) const {
 }
 
 bool BoundingBoxWorld::standUpon(const BoundingBoxWorld& other) const {
-    float xMin = qMax(getMinX(), other.getMinX()),
-          yMin = qMax(getMinY(), other.getMinY()),
-          xMax = qMin(getMaxX(), other.getMaxX()),
-          yMax = qMin(getMaxY(), other.getMaxY());
-    return qAbs(yMax - yMin) <= STAND_UPON_DELTA && geometry::compareDoubles(xMax, xMin) > 0;
+	float xMin = qMax(getMinX(), other.getMinX()),
+		xMax = qMin(getMaxX(), other.getMaxX());
+    return qAbs(getMaxY() - other.getMinY()) <= STAND_UPON_DELTA && geometry::compareDoubles(xMax, xMin) > 0;
 }
 
 float BoundingBoxWorld::getMinX() const {
