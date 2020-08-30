@@ -36,7 +36,7 @@ QVector2D EntityTNT::getTextureDimensions() {
 }
 
 BoundingBox EntityTNT::getBoundingBox() const {
-    return BoundingBox { QVector2D(0.1, 0.2), QVector2D(0.8, 0.8) };
+    return BoundingBox { QVector2D(0.1, 0.9), QVector2D(0.8, 0.1) };
 }
 bool EntityTNT::showDeathAnimation() const {
 	return false;

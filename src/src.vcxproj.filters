@@ -125,6 +125,9 @@
     <ClCompile Include="model\entitymovingbrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\blockstonebrick.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -202,6 +205,9 @@
     <QtMoc Include="controller\worldcontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <ClInclude Include="model\blockstonebrick.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\bin\debug\.moc\moc_predefs.h.cbt">

@@ -16,6 +16,7 @@
 #include <QTimer>
 #include <QVector2D>
 #include <QWindow>
+#include <QThread>
 #include <chrono>
 
 class GameRenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -25,13 +26,14 @@ class GameRenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
      * @brief renderTick 渲染时世界不一定已加载，故渲染组件需要单独维护一个tick计数
      */
     size_t renderTick;
-    QTimer timer;
+	QThread timerThread;
     QSharedPointer<parkour::IScene> currentScene;
     std::chrono::time_point<std::chrono::steady_clock> lastUpdateTime;
     void paintFps(QPainter&);
 
 public:
     GameRenderGLWidget(QWidget* parent = nullptr);
+	~GameRenderGLWidget();
 public slots:
     void tick();
 

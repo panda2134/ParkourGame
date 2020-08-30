@@ -5,7 +5,7 @@ namespace parkour {
 /**
  * @brief TICKS_PER_SEC 每秒游戏刻数目
  */
-const int TICKS_PER_SEC = 60;
+const int TICKS_PER_SEC = 120;
 
 /**
  * @brief TICK_LENGTH 游戏刻长度（秒）
@@ -18,9 +18,9 @@ const double TICK_LENGTH = 1.0 / TICKS_PER_SEC;
 const int TICKS_PER_FRAME = 2;
 
 /**
- * @brief TICKS_PER_FRAME 用于比较浮点数，差绝对值小于此值则认为相等
+ * @brief EPSILON 用于比较浮点数，差绝对值小于此值则认为相等
  */
-const double EPSILON = 1e-6;
+const double EPSILON = 1e-8;
 
 /**
  * @brief GRAVITY 重力加速度
@@ -28,14 +28,14 @@ const double EPSILON = 1e-6;
 const double GRAVITY = 30;
 
 /**
- * @brief STAND_UPON_DELTA 计算实体站立的阈值
+ * @brief INTERSECT_DELTA 计算实体站立的阈值
  */
-const double STAND_UPON_DELTA = 0.05;
+const double INTERSECT_DELTA = 0.05;
 
 /**
  * @brief MAX_VELOCITY 速度分量的最大值
  */
-const double MAX_VELOCITY = 50;
+const double MAX_VELOCITY = 25;
 
 /**
  * @brief MAX_VELOCITY 加速度分量的最大值
@@ -98,9 +98,15 @@ const double EXPLOSION_DAMAGE_MULTIPLIER = 3.0;
 const double EXPLOSION_RADIUS_MULTIPLIER = 1.0;
 
 /**
- * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的补偿因子
+ * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的速度补偿因子
  */
-const double BOUNCE_BOTTOM_ATTENUATION = 0.5;
+const double BOUNCE_BOTTOM_ATTENUATION = 5e-3;
+
+/**
+ * @brief BOUNCE_SIDE_ATTENUATION 防止嵌入方块，撞到方块两侧时的速度补偿因子
+ */
+const double BOUNCE_SIDE_ATTENUATION = 0.5;
+
 
 /**
  * @brief VOID_DAMAGE_PER_TICK 每个游戏刻的虚空伤害
@@ -124,7 +130,7 @@ const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.45;
 /**
  * @brief TNT_EXPLOSION_POWER TNT爆炸强度
  */
-const double TNT_EXPLOSION_POWER = 7;
+const double TNT_EXPLOSION_POWER = 14;
 }
 
 #endif // CONSTS_H

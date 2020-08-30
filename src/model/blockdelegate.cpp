@@ -35,4 +35,7 @@ void BlockDelegate::setVelocity(const QVector2D&) {
     // 方块始终静止，不能设置速度
     return;
 }
+double BlockDelegate::getMass() const {
+	return 1e10;
+}
 }

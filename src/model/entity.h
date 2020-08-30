@@ -11,7 +11,9 @@
 namespace parkour {
 
 class Entity : public QObject, public ICollidable {
-    Q_OBJECT
+	Q_OBJECT
+
+	double ENTITY_MIN_VELOCITY = 0.1;
 
     QVector2D position;
     QVector2D velocity;
@@ -44,7 +46,6 @@ public:
 	 * @brief 是否受到重力
 	*/
 	virtual bool isAffectedByGravity() const;
-
 
     /**
      *  @brief 设置实体Bounding Box左下角

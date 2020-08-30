@@ -11,13 +11,14 @@ bool BoundingBoxWorld::in(const BoundingBoxWorld& other) const {
           xMax = qMin(getMaxX(), other.getMaxX()),
           yMax = qMin(getMaxY(), other.getMaxY());
     return geometry::compareDoubles(xMin, xMax) < 0
-        && geometry::compareDoubles(yMin, yMax) < 0;
+        && geometry::compareDoubles(yMin, yMax) < 0
+		&& qMax(xMax - xMin, yMax - yMin) > INTERSECT_DELTA;
 }
 
 bool BoundingBoxWorld::standUpon(const BoundingBoxWorld& other) const {
 	float xMin = qMax(getMinX(), other.getMinX()),
 		xMax = qMin(getMaxX(), other.getMaxX());
-    return qAbs(getMaxY() - other.getMinY()) <= STAND_UPON_DELTA && geometry::compareDoubles(xMax, xMin) > 0;
+    return qAbs(getMaxY() - other.getMinY()) <= INTERSECT_DELTA && geometry::compareDoubles(xMax, xMin) > 0;
 }
 
 float BoundingBoxWorld::getMinX() const {

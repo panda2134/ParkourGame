@@ -23,7 +23,8 @@ public:
     BoundingBox getBoundingBox() const override;
 
     void update() override;
-	virtual bool isAffectedByGravity() const override;
+	bool isAffectedByGravity() const override;
+	double getMass() const override;
 };
 }
 

@@ -27,6 +27,7 @@ public:
      * @param power 此位置的爆炸强度
      */
     virtual void onExplosion(QPoint blockPos, double power);
+	virtual void onStand(QPoint blockPos, Entity& entity);
     virtual void collide(QPoint, Entity&, Direction) {};
     virtual BoundingBox getBoundingBox() const;
 signals:

@@ -13,15 +13,15 @@ namespace parkour {
 }
 
 QString EntityMovingBrick::getResourceLocation() {
-    return ":/assets/entities/moving_brick.png";
+    return ":/assets/blocks/stone_brick.png";
 }
 
 QVector2D EntityMovingBrick::getTextureDimensions() {
-    return QVector2D(1.0, 2.0);
+    return QVector2D(1.0, 1.0);
 }
 
 BoundingBox EntityMovingBrick::getBoundingBox() const {
-    return BoundingBox { { 0.1, 1.15 }, { 0.8, 0.8 } };
+    return BoundingBox { { 0.1, 0.15 }, { 0.8, 0.8 } };
 }
 
 void EntityMovingBrick::update() {
@@ -34,5 +34,8 @@ void EntityMovingBrick::update() {
 }
 bool EntityMovingBrick::isAffectedByGravity() const {
 	return false;
+}
+double EntityMovingBrick::getMass() const {
+	return 1e10;
 }
 }

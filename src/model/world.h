@@ -9,11 +9,18 @@
 #include <QObject>
 #include <QPair>
 #include <QString>
+#include <QQueue>
 
 namespace parkour {
 class WorldController;
 class World : public QObject, public Singleton<World> {
     Q_OBJECT
+
+	struct ExplosionInfo {
+		QPoint center;
+		double power;
+		ExplosionInfo(QPoint center_, double power_): center(center_), power(power_) {}
+	};
 
     friend class WorldController;
 
@@ -22,15 +29,10 @@ public:
     void setReady(bool value);
     void setBlock(QPoint blockPos, QString blockName);
     QString getBlock(QPoint blockPos);
-
     void addEntity(QSharedPointer<Entity>);
-
     const QList<QSharedPointer<Entity>>& getEntities() const;
-
     size_t getTicksFromBirth() const;
-
     const QHash<QSharedPointer<Entity>, int>& getDyingEntities() const;
-
     QVector2D getSpawnPoint() const;
     void setSpawnPoint(const QVector2D& value);
 
@@ -41,6 +43,7 @@ private:
     QList<QSharedPointer<Entity>> entities;
     QHash<QSharedPointer<Entity>, int> dyingEntities;
     QHash<QPair<int, int>, QString> blocks;
+	QQueue<ExplosionInfo> explosionQueue;
 };
 }
 

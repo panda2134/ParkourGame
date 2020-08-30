@@ -10,13 +10,25 @@ GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
     QSurfaceFormat fmt(QSurfaceFormat::DebugContext);
     setFormat(fmt);
     currentScene = QSharedPointer<GameScene>::create(this);
-    timer.setInterval(TICK_LENGTH * 1000);
-    connect(&timer, SIGNAL(timeout()), this, SLOT(tick()));
-    timer.start();
+
+	auto *timer = new QTimer(this);
+    timer->setInterval(TICK_LENGTH * 1000);
+	timer->setTimerType(Qt::TimerType::PreciseTimer);
+	timer->moveToThread(&timerThread);
+
+	connect(&timerThread, SIGNAL(started()), timer, SLOT(start()));
+	connect(&timerThread, SIGNAL(finished()), timer, SLOT(deleteLater()));
+	connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
+
+	timerThread.start();
+}
+
+GameRenderGLWidget::~GameRenderGLWidget() {
+	timerThread.quit();
+	timerThread.wait();
 }
 
 void GameRenderGLWidget::tick() {
-    //    qDebug() << "ticking: start calculating";
     if (currentScene != nullptr) {
         currentScene->calculate();
     }

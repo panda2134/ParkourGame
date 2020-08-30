@@ -20,6 +20,7 @@ public:
 public:
     void onExplosion(QPoint blockPos, double power) override;
     void collide(QPoint, Entity&, Direction) override;
+	void onStand(QPoint, Entity&) override;
 };
 }
 

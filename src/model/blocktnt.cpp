@@ -41,3 +41,7 @@ void parkour::BlockTNT::collide(QPoint blockPos, Entity& entity, Direction dir) 
     entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
     world.addEntity(entityTnt);
 }
+
+void parkour::BlockTNT::onStand(QPoint blockPos, Entity &entity) {
+	this->collide(blockPos, entity, Direction::UP);
+}

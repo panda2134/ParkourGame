@@ -26,7 +26,7 @@ public:
     void collide(ICollidable&, Direction) override;
     QVector2D getVelocity() const override;
     void setVelocity(const QVector2D&) override;
-
+	double getMass() const override final;
     bool isAir() { return block == nullptr; }
 };
 

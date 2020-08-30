@@ -9,6 +9,7 @@ bool PlayerController::isAlive() const {
 
 QSharedPointer<EntityPlayer> PlayerController::getPlayer() {
     for (const auto& entity : World::instance().getEntities()) {
+
         auto casted = dynamic_cast<EntityPlayer*>(entity.data());
         if (casted != nullptr) {
             return entity.objectCast<EntityPlayer>();

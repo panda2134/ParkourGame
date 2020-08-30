@@ -4,6 +4,7 @@
 #include "blocktnt.h"
 #include "blocksaw.h"
 #include "blockbedrock.h"
+#include "blockstonebrick.h"
 
 namespace parkour {
 namespace registry {
@@ -26,6 +27,7 @@ namespace registry {
         registerBlock<parkour::BlockTNT>();
 		registerBlock<parkour::BlockSaw>();
 		registerBlock<parkour::BlockBedrock>();
+		registerBlock<parkour::BlockStoneBrick>();
         // * block mapping end   *
     }
 

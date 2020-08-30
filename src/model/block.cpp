@@ -9,6 +9,8 @@ int Block::getCurrentFrame() const {
 void Block::onExplosion(QPoint, double) {
 }
 
+void Block::onStand(QPoint blockPos, Entity & entity) {}
+
 BoundingBox Block::getBoundingBox() const {
     BoundingBox ret;
     ret.offset = QVector2D(.0, .0);

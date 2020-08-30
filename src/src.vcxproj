@@ -174,6 +174,7 @@
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <StackReserveSize>4194304</StackReserveSize>
+      <Profile>true</Profile>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -211,6 +212,7 @@
     <ClCompile Include="model\blockdirt.cpp" />
     <ClCompile Include="model\blockgrass.cpp" />
     <ClCompile Include="model\blocksaw.cpp" />
+    <ClCompile Include="model\blockstonebrick.cpp" />
     <ClCompile Include="model\blocktnt.cpp" />
     <ClCompile Include="model\boundingbox.cpp" />
     <ClCompile Include="utils\direction.cpp" />
@@ -235,6 +237,7 @@
   <ItemGroup>
     <QtMoc Include="model\blocksaw.h" />
     <QtMoc Include="model\blockbedrock.h" />
+    <ClInclude Include="model\blockstonebrick.h" />
     <ClInclude Include="utils\askeyvaluerange.h" />
     <QtMoc Include="model\block.h">
     </QtMoc>

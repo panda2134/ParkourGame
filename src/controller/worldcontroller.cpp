@@ -28,25 +28,22 @@ void WorldController::loadTestWorld() const {
         world.setBlock(QPoint(i, 15), "bedrock");
     }
 
+	for (int i = 33; i <= 106; i++) {
+		auto e = QSharedPointer<EntityMovingBrick>::create();
+		e->placeBoundingBoxAt({ static_cast<float>(i), 7 });
+		world.addEntity(e);
+	}
+
 	for (int j = 13; j >= 6; j--) {
 		world.setBlock(QPoint(30 - j, j), "bedrock");
 	}
-
-    for (int i = 25; i <= 25; i++) {
-		for (int j = 13; j <= 13; j++) {
-			world.setBlock(QPoint(i, j), "tnt");
-		}
-    }
-
-    qDebug() << "loading some entities";
-
-    auto e1 = QSharedPointer<EntityMovingBrick>::create();
-    e1->placeBoundingBoxAt(QVector2D(9, 14));
-    world.addEntity(e1);
+	for (int i = 25; i <= 30; i++) {
+		world.setBlock({ i, 6 }, "bedrock");
+	}
 
     qDebug() << "loading player";
 
-    world.setSpawnPoint({ 7, 13 });
+    world.setSpawnPoint({ 29, 13 });
 
     qDebug() << "test world loaded";
     world.setReady(true);
@@ -64,7 +61,12 @@ void WorldController::unloadWorld() const {
 }
 
 void WorldController::explode(QPoint center, double power) const {
-    if (power < 0) {
+	auto& world = World::instance();
+	world.explosionQueue.push_back(World::ExplosionInfo(center, power));
+}
+
+void WorldController::handleExplosion(QPoint center, double power) const {
+	if (NO_EXPLOSION || power < 0) {
         return;
     }
     auto& world = World::instance();
@@ -95,7 +97,6 @@ void WorldController::explode(QPoint center, double power) const {
 }
 
 void WorldController::tick() const {
-    //    qDebug() << "ticking LocalWorldController";
     auto& world = World::instance();
 
     if (!world.isReady()) {
@@ -104,10 +105,7 @@ void WorldController::tick() const {
 
     ++world.ticksFromBirth;
 
-    //    qDebug() << "ticksFromBirth = " << world.ticksFromBirth;
-
     // 0. 维护将死亡实体列表，并把entities中将死亡的实体加入列表
-    //    qDebug() << "0. calculating dying entities";
     QMutableHashIterator<QSharedPointer<Entity>, int> itDying(world.dyingEntities);
     while (itDying.hasNext()) {
         auto dyingEntity = itDying.next();
@@ -127,20 +125,24 @@ void WorldController::tick() const {
     }
 
     // 1. 针对每个存活实体，调用updatePosition，计算一个tick内的位移
-    //    qDebug() << "1. calculating displacement";
     for (auto entity : world.entities) {
         entity->updatePosition();
     }
 
-    // 2. 计算方块与实体、实体与实体之间的碰撞
-    //    qDebug() << "2. calculating collision";
+	// 2. 处理爆炸队列
+	for (int i = 0; i < EXPLOSIONS_PER_TICK && !world.explosionQueue.empty(); i++) {
+		auto info = world.explosionQueue.front();
+		world.explosionQueue.pop_front();
+		this->handleExplosion(info.center, info.power);
+	}
+
+    // 3. 计算方块与实体、实体与实体之间的碰撞
     for (int index = 0; index < world.entities.size(); index++) {
         // 方块与实体
         auto entity = world.entities[index];
         auto entityPosition = entity->getPosition();
         int centerBlockX = static_cast<int>(entityPosition.x()),
             centerBlockY = static_cast<int>(entityPosition.y());
-        //        qDebug() << "Check collide #1:" << entity->getName();
         for (int i = centerBlockX - ENTITY_COLLISION_RANGE; i <= centerBlockX + ENTITY_COLLISION_RANGE; i++) {
             for (int j = centerBlockY - ENTITY_COLLISION_RANGE; j <= centerBlockY + ENTITY_COLLISION_RANGE; j++) {
                 BlockDelegate blockDelegate(world.getBlock(QPoint(i, j)), QPoint(i, j));
@@ -165,12 +167,13 @@ void WorldController::tick() const {
                     entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
                     break;
                 case Direction::DOWN:
-                    entity->setVelocity(QVector2D(entity->getVelocity().x(), BOUNCE_BOTTOM_ATTENUATION * entity->getVelocity().y()));
+                    entity->setVelocity(QVector2D(entity->getVelocity().x(), -1.0f * BOUNCE_BOTTOM_ATTENUATION * entity->getVelocity().y()));
                     entity->setAcceleration(QVector2D(entity->getAcceleration().x(), 0));
                     break;
                 case Direction::LEFT:
-                    entity->setVelocity(QVector2D(0, entity->getVelocity().y()));
-                    entity->setAcceleration(QVector2D(0.3f * entity->getVelocity().x(), entity->getAcceleration().y()));
+				case Direction::RIGHT:
+                    entity->setVelocity(QVector2D(-1.0f * BOUNCE_SIDE_ATTENUATION * entity->getVelocity().x(), entity->getVelocity().y()));
+                    entity->setAcceleration(QVector2D(0, entity->getAcceleration().y()));
                     break;
                 }
                 // 处理碰撞后实体的位置，与方块碰撞盒脱离
@@ -211,19 +214,19 @@ void WorldController::tick() const {
             entity->collide(*anotherEntity, faceOfEntity);
             anotherEntity->collide(*entity, getOppositeFace(faceOfEntity));
 
-            //entity->setPosition(entity->getPosition() - entity->getVelocity() * parkour::TICK_LENGTH);
-            //anotherEntity->setPosition(anotherEntity->getPosition() - anotherEntity->getVelocity() * parkour::TICK_LENGTH);
+			auto m1 = entity->getMass(), m2 = anotherEntity->getMass();
 
-			auto newVelocity = (entity->getVelocity() + anotherEntity->getVelocity()) / 2;
+			auto v1 = (m1 - m2) / (m1 + m2) * entity->getVelocity(),
+				v2 = (2 * m1) / (m1 + m2) * anotherEntity->getVelocity();
 
 			switch (faceOfEntity) {
 			case Direction::UP: case Direction::DOWN:
-				entity->setVelocity({ entity->getVelocity().x(), newVelocity.y() });
-				anotherEntity->setVelocity({ anotherEntity->getVelocity().x(), newVelocity.y() });
+				entity->setVelocity({ entity->getVelocity().x(), v1.y() });
+				anotherEntity->setVelocity({ anotherEntity->getVelocity().x(), v2.y() });
 				break;
 			case Direction::LEFT: case Direction::RIGHT:
-				entity->setVelocity({ newVelocity.x(), entity->getVelocity().y() });
-				anotherEntity->setVelocity({ newVelocity.x(), anotherEntity->getVelocity().y() });
+				entity->setVelocity({ v1.x(), entity->getVelocity().y() });
+				anotherEntity->setVelocity({ v2.x(), anotherEntity->getVelocity().y() });
 				break;
 			}
 
@@ -250,14 +253,14 @@ void WorldController::tick() const {
         }
     }
 
-    // 3. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
-    //    qDebug() << "3. calling update() of entities";
+    // 4. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
+    //    qDebug() << "4. calling update() of entities";
     for (auto entity : world.entities) {
         entity->update();
     }
 
-    // 4. 检查悬空的实体，设置其重力加速度
-    //    qDebug() << "4. setting gravity";
+    // 5. 检查悬空的实体，设置其重力加速度
+    //    qDebug() << "5. setting gravity";
     for (auto entity : world.entities) {
         bool isFlying = true;
 
@@ -272,17 +275,19 @@ void WorldController::tick() const {
             centerBlockY = static_cast<int>(entity->getPosition().y());
         for (int i = centerBlockX - ENTITY_COLLISION_RANGE; i <= centerBlockX + ENTITY_COLLISION_RANGE; i++) {
             for (int j = centerBlockY - ENTITY_COLLISION_RANGE; j <= centerBlockY + ENTITY_COLLISION_RANGE; j++) {
-                BlockDelegate blockDelegate(world.getBlock(QPoint(i, j)), QPoint(i, j));
+				const auto &blockName = world.getBlock(QPoint(i, j));
+                BlockDelegate blockDelegate(blockName, QPoint(i, j));
                 if (blockDelegate.isAir()) {
                     continue; // 空气方块，跳过检查
                 }
                 if (entity->getBoundingBoxWorld().standUpon(blockDelegate.getBoundingBoxWorld())) {
                     isFlying = false;
-                    goto blockChecked; // 用于跳出多层循环
+					auto block = registry::BlockRegistry::instance().getBlockByName(blockName);
+					// block != null, since it is not air
+					block->onStand({ i, j }, *entity);
                 }
             }
         }
-    blockChecked:
 
         if (isFlying) {
             entity->setOnFloor(false);
@@ -292,17 +297,14 @@ void WorldController::tick() const {
         }
     }
 
-    // 5. 更新玩家控制器
-    //    qDebug() << "5. updating player controller";
+    // 6. 更新玩家控制器
     playerController->tick();
 
-    // 6. 虚空伤害
+    // 7. 虚空伤害
     for (const auto& entity : world.entities) {
         if (entity->getPosition().y() > WORLD_HEIGHT) {
             entity->setHp(entity->getHp() - VOID_DAMAGE_PER_TICK); // 直接采用setHp / getHp，是因为可能实体子类会覆写 damage() 实现无敌效果，而虚空伤害无视无敌效果
         }
     }
-
-    //    qDebug() << "World Controller ticking done";
 }
 }

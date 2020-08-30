@@ -78,6 +78,8 @@ QVector2D Entity::getVelocity() const { return velocity; }
 void Entity::setVelocity(const QVector2D& value) {
     velocity = QVector2D(geometry::compareDoubles(value[0], 0) * qMin(1.0 * qAbs(value[0]), MAX_VELOCITY),
         geometry::compareDoubles(value[1], 0) * qMin(1.0 * qAbs(value[1]), MAX_VELOCITY));
+	if (qAbs(velocity[0]) < ENTITY_MIN_VELOCITY) { velocity[0] = 0; }
+	if (qAbs(velocity[1]) < ENTITY_MIN_VELOCITY) { velocity[1] = 0; }
 }
 
 QVector2D Entity::getAcceleration() const {
