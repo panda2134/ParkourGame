@@ -11,7 +11,16 @@
         <file>assets/blocks/tnt.png</file>
         <file>assets/entities/tnt.png</file>
         <file>assets/entities/moving_brick.png</file>
-        <file>assets/entities/player.png</file>
-        <file>assets/entities/player-sneak.png</file>
+        <file>assets/entities/player/0.png</file>
+        <file>assets/entities/player/1.png</file>
+        <file>assets/blocks/spike.png</file>
+        <file>assets/blocks/spring.png</file>
+        <file>assets/entities/fireball.png</file>
+        <file>assets/entities/blaze/0.png</file>
+        <file>assets/entities/blaze/1.png</file>
+        <file>assets/entities/creeper.png</file>
+        <file>assets/entities/slime.png</file>
+        <file>assets/blocks/mushroom.png</file>
+        <file>assets/blocks/flower.png</file>
     </qresource>
 </RCC>

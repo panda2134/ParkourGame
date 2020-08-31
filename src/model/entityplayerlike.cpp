@@ -1,5 +1,6 @@
 #include "entityplayerlike.h"
 #include "../utils/consts.h"
+#include "../utils/geometryhelper.h"
 #include "blockdelegate.h"
 #include "registry.h"
 #include "world.h"
@@ -40,19 +41,27 @@ bool EntityPlayerLike::isSneak() const {
 }
 
 bool EntityPlayerLike::setSneak(bool value) {
+	if (value == sneak) {
+		return sneak;
+	}
     auto& world = World::instance();
     sneak = value;
-    if (world.isReady()) { // 检查：下一个状态的碰撞盒是否可能嵌入其他物体？
+    if (world.isReady()) { // 尝试站起来的时候检查：下一个状态的碰撞盒是否可能嵌入其他物体？
         const auto& newBoundingBoxWorld = getBoundingBoxWorld();
+
         bool fail = false;
 
         for (int i = getPosition().x() - ENTITY_COLLISION_RANGE; i <= getPosition().x() + ENTITY_COLLISION_RANGE; i++) {
             for (int j = getPosition().y() - ENTITY_COLLISION_RANGE; j <= getPosition().y() + ENTITY_COLLISION_RANGE; j++) {
                 const auto blockName = world.getBlock({ i, j });
+                BlockDelegate delegate(blockName, { i, j });
                 if (blockName == "air") {
                     continue;
                 }
-                if (newBoundingBoxWorld.in(BlockDelegate(blockName, { i, j }).getBoundingBoxWorld())) {
+                if (newBoundingBoxWorld.in(delegate.getBoundingBoxWorld())
+                    && geometry::compareDoubles(getBoundingBoxBottomLeft().y() - delegate.getBoundingBoxWorld().getMinY(),
+                           INTERSECT_DELTA)
+                        >= 0) {
                     fail = true;
                     goto fail;
                 }

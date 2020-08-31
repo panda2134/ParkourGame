@@ -8,7 +8,9 @@
 namespace parkour {
 class PlayerController : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
+
+	const double FIREBALL_VELOCITY = 18.0, FIREBALL_POWER = 10.0;
 
     /**
      * @brief alive 是否存活
@@ -35,6 +37,7 @@ public:
     explicit PlayerController();
 
     void tick();
+	void shootFireballAt(QVector2D target);
     bool isAlive() const;
     /**
      * @brief getPlayer

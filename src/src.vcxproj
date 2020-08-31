@@ -210,15 +210,23 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="model\blockflower.cpp" />
+    <ClCompile Include="model\blockmushroom.cpp" />
+    <ClCompile Include="model\entityslime.cpp" />
+    <ClCompile Include="model\entitycreeper.cpp" />
     <ClCompile Include="model\block.cpp" />
     <ClCompile Include="model\blockbedrock.cpp" />
     <ClCompile Include="model\blockdelegate.cpp" />
     <ClCompile Include="model\blockdirt.cpp" />
     <ClCompile Include="model\blockgrass.cpp" />
     <ClCompile Include="model\blocksaw.cpp" />
+    <ClCompile Include="model\blockspike.cpp" />
+    <ClCompile Include="model\blockspring.cpp" />
     <ClCompile Include="model\blockstonebrick.cpp" />
     <ClCompile Include="model\blocktnt.cpp" />
     <ClCompile Include="model\boundingbox.cpp" />
+    <ClCompile Include="model\entityblaze.cpp" />
+    <ClCompile Include="model\entityfireball.cpp" />
     <ClCompile Include="utils\direction.cpp" />
     <ClCompile Include="model\entity.cpp" />
     <ClCompile Include="model\entityplayer.cpp" />
@@ -240,6 +248,14 @@
     <ClCompile Include="controller\worldcontroller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="model\blockspike.h" />
+    <QtMoc Include="model\blockspring.h" />
+    <QtMoc Include="model\entityblaze.h" />
+    <QtMoc Include="model\entityfireball.h" />
+    <ClInclude Include="model\blockflower.h" />
+    <ClInclude Include="model\blockmushroom.h" />
+    <ClInclude Include="model\entityslime.h" />
+    <ClInclude Include="model\entitycreeper.h" />
     <ClInclude Include="vendor\aabbcc\AABB.h" />
     <QtMoc Include="model\blocksaw.h" />
     <QtMoc Include="model\blockbedrock.h" />
@@ -317,6 +333,7 @@
     <None Include="assets\blocks\grass.png" />
     <None Include="assets\blocks\no_texture.png" />
     <None Include="cpp.hint" />
+    <None Include="model\testentity.i" />
     <QtRcc Include="res.qrc">
     </QtRcc>
     <None Include="assets\blocks\tnt.png" />

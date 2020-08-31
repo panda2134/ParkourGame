@@ -25,8 +25,16 @@ void Entity::setHp(double value) {
     }
 }
 
+void Entity::regenerate() {
+	this->setHp(this->getMaxHp());
+}
+
 void Entity::damage(double value) {
     setHp(getHp() - value);
+}
+
+double Entity::getMaxHp() const {
+	return 20.0;
 }
 
 bool Entity::isDying() const {
@@ -59,13 +67,16 @@ bool Entity::showDeathAnimation() const {
 }
 
 bool Entity::isAffectedByGravity() const {
-	return true;
+    return true;
+}
+
+bool Entity::isAffectedByExplosionWave() const {
+    return true;
 }
 
 void Entity::placeBoundingBoxAt(const QVector2D& bottomLeft) {
     const auto& bboxWorld = this->getBoundingBoxWorld();
     this->setPosition(bottomLeft - QVector2D(0, bboxWorld.dimensions.y()) - bboxWorld.offset);
-    qDebug("MaxY=%.6f", this->getBoundingBoxWorld().getMaxY());
 }
 
 QVector2D Entity::getBoundingBoxBottomLeft() {

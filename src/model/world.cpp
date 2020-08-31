@@ -19,14 +19,13 @@ void World::setBlock(QPoint blockPos, QString blockName) {
 }
 
 QString World::getBlock(QPoint blockPos) {
-	if (blockPos.x() < 0 || blockPos.x() >= WORLD_WIDTH || 
-		blockPos.y() < 0 || blockPos.y() >= WORLD_HEIGHT) {
-		return "air";
-	} else {
-		auto& res = chunks.get(blockPos.x(), blockPos.y());
-		if (res.size() == 0) {
-			res = "air";
-		}
+    if (blockPos.x() < 0 || blockPos.x() >= WORLD_WIDTH || blockPos.y() < 0 || blockPos.y() >= WORLD_HEIGHT) {
+        return "air";
+    } else {
+        auto& res = chunks.get(blockPos.x(), blockPos.y());
+        if (res.size() == 0) {
+            res = "air";
+        }
         return res;
     }
 }

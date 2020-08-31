@@ -10,6 +10,9 @@ namespace parkour {
 class EntityPlayerLike : public Entity {
     Q_OBJECT
 
+    /**
+     * @brief sneak 关于下蹲状态，要求下蹲碰撞箱是平常碰撞箱的子集。
+     */
     bool sneak;
 
 	virtual double getWalkSpeed() const;

@@ -1,5 +1,6 @@
 #include "playercontroller.h"
 #include "../model/world.h"
+#include "../model/entityfireball.h"
 #include "../utils/askeyvaluerange.h"
 
 namespace parkour {
@@ -9,9 +10,7 @@ bool PlayerController::isAlive() const {
 
 QSharedPointer<EntityPlayer> PlayerController::getPlayer() {
     for (const auto& entity : World::instance().getEntities()) {
-
-        auto casted = dynamic_cast<EntityPlayer*>(entity.data());
-        if (casted != nullptr) {
+        if (entity->getName() == "player") {
             return entity.objectCast<EntityPlayer>();
         }
     }
@@ -60,9 +59,7 @@ void PlayerController::tick() {
 
     if (!alive) {
         for (const auto& dyingEntity : world.getDyingEntities().keys()) {
-            auto casted = dynamic_cast<EntityPlayer*>(dyingEntity.data());
-            if (casted != nullptr) {
-                //                qDebug() << "player is dying";
+            if (dyingEntity->getName() == "player") {
                 player = dyingEntity.objectCast<EntityPlayer>();
             }
         }
@@ -90,8 +87,19 @@ void PlayerController::tick() {
             } else {
                 player->goRight();
             }
-		}
+        }
     }
+}
+
+void PlayerController::shootFireballAt(QVector2D target) {
+	auto player = getPlayer();
+	if (player == nullptr || !player->isAbleToShootFireballs()) {
+		return;
+	}
+	auto bbox = player->getBoundingBoxWorld();
+	auto position = bbox.getCenter();
+	auto norm = QVector2D(target - position).normalized();
+	EntityFireball::placeFireball(position + 2 * norm, norm * FIREBALL_VELOCITY, FIREBALL_POWER);
 }
 
 }

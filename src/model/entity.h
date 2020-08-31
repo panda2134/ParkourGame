@@ -38,14 +38,18 @@ public:
      * @brief 由子类重写实现特定的每tick更新
      */
     virtual void update() {};
-	/**
-	 * @brief 是否显示死亡动画
-	*/
-	virtual bool showDeathAnimation() const;
-	/**
-	 * @brief 是否受到重力
-	*/
-	virtual bool isAffectedByGravity() const;
+    /**
+     * @brief 是否显示死亡动画
+    */
+    virtual bool showDeathAnimation() const;
+    /**
+     * @brief 是否受到重力
+    */
+    virtual bool isAffectedByGravity() const;
+    /**
+     * @brief 速度是否受到爆炸冲击波影响
+    */
+    virtual bool isAffectedByExplosionWave() const;
 
     /**
      *  @brief 设置实体Bounding Box左下角
@@ -69,9 +73,14 @@ public:
     QVector2D getAcceleration() const;
     void setAcceleration(const QVector2D& value);
 
-    virtual double getHp() const final;
-    virtual void setHp(double value) final;
+    double getHp() const;
+    void setHp(double value);
+	/**
+	 * @brief 血量回满
+	*/
+	void regenerate();
     virtual void damage(double value);
+	virtual double getMaxHp() const;
 
     virtual QString getResourceLocation() = 0;
     /**

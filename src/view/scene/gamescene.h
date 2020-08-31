@@ -34,6 +34,12 @@ class GameScene : public IScene {
         float getXMinOfViewport() const;
     };
 
+	enum SceneMode {
+		GAMING,
+		MAPEDIT
+	};
+
+	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
     CameraInfo cameraInfo;
     QOpenGLBuffer vertexBuf, blockTextureBuf;
     QOpenGLShaderProgram blockShader;
@@ -41,7 +47,7 @@ class GameScene : public IScene {
     QImage blockTextureImg;
 	QVector<int> blockTextureCount;
 	QHash<QString, QImage> entityTextureCache;
-	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
+	SceneMode mode = GAMING;
     double blockSizeOnScreen = 0.0;
     double deviceWidth = 854.0;
     void loadTexture();

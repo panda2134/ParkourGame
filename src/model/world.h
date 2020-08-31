@@ -36,13 +36,13 @@ class World : public QObject, public Singleton<World> {
 			}
 		}
 		T& get(int x, int y) {
-			Q_ASSERT(x >= 0 && x < WORLD_WIDTH && y >= 0 && y < WORLD_HEIGHT);
-			auto chunkNum = x / CHUNK_SIZE;
-			if (data[chunkNum] == nullptr) {
-				data[chunkNum] = new T[CHUNK_SIZE * WORLD_HEIGHT];
-			}
-			return data[chunkNum][y * CHUNK_SIZE + (x % CHUNK_SIZE)];
-		}
+                    Q_ASSERT(x >= 0 && x < WORLD_WIDTH && y >= 0 && y < WORLD_HEIGHT);
+                    auto chunkNum = x / CHUNK_SIZE;
+                    if (data[chunkNum] == nullptr) {
+                        data[chunkNum] = new T[CHUNK_SIZE * WORLD_HEIGHT];
+                    }
+                    return data[chunkNum][y * CHUNK_SIZE + (x % CHUNK_SIZE)];
+                }
 		void clear() {
 			for (int i = 0; i < CHUNK_COUNT; i++) {
 				delete[] data[i];
@@ -74,9 +74,9 @@ private:
     QVector2D spawnPoint;
     QList<QSharedPointer<Entity>> entities;
     QHash<QSharedPointer<Entity>, int> dyingEntities;
-	ChunkStorage<QString> chunks;
-	QQueue<ExplosionInfo> explosionQueue;
-	void clear();
+    ChunkStorage<QString> chunks;
+    QQueue<ExplosionInfo> explosionQueue;
+    void clear();
 };
 }
 

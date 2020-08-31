@@ -18,6 +18,7 @@ namespace parkour {
         virtual void setVelocity(const QVector2D&) = 0;
         virtual Direction checkCollideWith(const ICollidable&) final;
 		virtual double getMass() const;
+		virtual QString getName() const = 0;
     };
 }
 

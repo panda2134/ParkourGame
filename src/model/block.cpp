@@ -2,7 +2,7 @@
 
 namespace parkour {
 
-int Block::getCurrentFrame() const {
+int Block::getCurrentFrame(const QPoint& blockPos) {
     return -1;
 }
 
@@ -17,4 +17,5 @@ BoundingBox Block::getBoundingBox() const {
     ret.dimensions = QVector2D(1., 1.);
     return ret;
 }
+
 }

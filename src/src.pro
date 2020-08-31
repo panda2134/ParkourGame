@@ -24,14 +24,18 @@ SOURCES += \
     model/blockdelegate.cpp \
     model/blockdirt.cpp \
     model/blockgrass.cpp \
+    model/blockspike.cpp \
+    model/blockspring.cpp \
     model/blocktnt.cpp \
+    model/blocksaw.cpp \
     model/boundingbox.cpp \
     model/entity.cpp \
+    model/entityblaze.cpp \
+    model/entityfireball.cpp \
     model/entityplayer.cpp \
     model/entitytnt.cpp \
     model/icollidable.cpp \
     model/registry.cpp \
-    model/testentity.cpp \
     model/world.cpp \
     model/entityplayerlike.cpp \
     utils/direction.cpp \
@@ -41,17 +45,29 @@ SOURCES += \
     view/mainwindow.cpp \
     view/scene/gamescene.cpp \
     view/scene/iscene.cpp \
-	vendor/aabbcc/AABB.cpp
+    vendor/aabbcc/AABB.cpp \
+    model/blockspike.cpp \
+    model/blockbedrock.cpp \
+    model/blockstonebrick.cpp \
+    model/entitymovingbrick.cpp
 
 
 HEADERS += \
     controller/playercontroller.h \
     controller/worldcontroller.h \
+    model/blockspike.h \
+    model/blockbedrock.h \
+    model/blockspring.h \
+    model/blockstonebrick.h\
+    model/entityblaze.h \
+    model/entityfireball.h \
+    model/entitymovingbrick.h\
     model/block.h \
     model/blockdelegate.h \
     model/blockdirt.h \
     model/blockgrass.h \
     model/blocktnt.h \
+    model/blocksaw.h \
     model/boundingbox.h \
     model/entity.h \
     model/entityplayer.h \
@@ -59,7 +75,6 @@ HEADERS += \
     model/entitytnt.h \
     model/icollidable.h \
     model/registry.h \
-    model/testentity.h \
     model/world.h \
     utils/askeyvaluerange.h \
     utils/consts.h \

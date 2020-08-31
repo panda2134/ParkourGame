@@ -28,6 +28,7 @@ public:
     void setVelocity(const QVector2D&) override;
 	double getMass() const override final;
     bool isAir() { return block == nullptr; }
+	virtual QString getName() const override;
 };
 
 }

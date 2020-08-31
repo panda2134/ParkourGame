@@ -1,11 +1,15 @@
 #include "registry.h"
 #include "block.h"
+#include "blockbedrock.h"
 #include "blockdirt.h"
 #include "blockgrass.h"
-#include "blocktnt.h"
 #include "blocksaw.h"
-#include "blockbedrock.h"
+#include "blockspike.h"
+#include "blockspring.h"
 #include "blockstonebrick.h"
+#include "blocktnt.h"
+#include "blockmushroom.h"
+#include "blockflower.h"
 
 namespace parkour {
 namespace registry {
@@ -26,9 +30,13 @@ namespace registry {
         registerBlock<parkour::BlockGrass>();
         registerBlock<parkour::BlockDirt>();
         registerBlock<parkour::BlockTNT>();
-		registerBlock<parkour::BlockSaw>();
-		registerBlock<parkour::BlockBedrock>();
-		registerBlock<parkour::BlockStoneBrick>();
+        registerBlock<parkour::BlockSaw>();
+        registerBlock<parkour::BlockSpike>();
+        registerBlock<parkour::BlockBedrock>();
+        registerBlock<parkour::BlockStoneBrick>();
+		registerBlock<parkour::BlockSpring>();
+		registerBlock<parkour::BlockMushroom>();
+		registerBlock<parkour::BlockFlower>();
         // * block mapping end   *
     }
 

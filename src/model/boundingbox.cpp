@@ -37,6 +37,10 @@ float BoundingBoxWorld::getMaxY() const {
     return (position + offset + dimensions).y();
 }
 
+QVector2D BoundingBoxWorld::getCenter() const {
+	return position + offset + 0.5 * dimensions;
+}
+
 bool BoundingBoxWorld::intersect(const BoundingBoxWorld& b1, const BoundingBoxWorld& b2) {
     return b1.in(b2) || b2.in(b1);
 }

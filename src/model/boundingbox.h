@@ -37,6 +37,7 @@ namespace parkour {
         float getMaxX() const;
         float getMinY() const;
         float getMaxY() const;
+		QVector2D getCenter() const;
         static bool intersect(const BoundingBoxWorld& b1, const BoundingBoxWorld& b2);
     };
 }

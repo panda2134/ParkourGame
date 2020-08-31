@@ -11,16 +11,16 @@ GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
     setFormat(fmt);
     currentScene = QSharedPointer<GameScene>::create(this);
 
-	auto *timer = new QTimer(this);
+    auto* timer = new QTimer();
     timer->setInterval(TICK_LENGTH * 1000);
-	timer->setTimerType(Qt::TimerType::PreciseTimer);
-	timer->moveToThread(&timerThread);
+    timer->setTimerType(Qt::TimerType::PreciseTimer);
+    timer->moveToThread(&timerThread);
 
-	connect(&timerThread, SIGNAL(started()), timer, SLOT(start()));
-	connect(&timerThread, SIGNAL(finished()), timer, SLOT(deleteLater()));
-	connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
+    connect(&timerThread, SIGNAL(started()), timer, SLOT(start()));
+    connect(&timerThread, SIGNAL(finished()), timer, SLOT(deleteLater()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
 
-	timerThread.start();
+    timerThread.start();
 }
 
 GameRenderGLWidget::~GameRenderGLWidget() {

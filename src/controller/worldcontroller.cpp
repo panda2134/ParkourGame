@@ -1,11 +1,13 @@
 #include "worldcontroller.h"
-#include "../vendor/aabbcc/AABB.h"
 #include "../model/blockdelegate.h"
+#include "../model/entitycreeper.h"
 #include "../model/entityplayer.h"
+#include "../model/entityslime.h"
 #include "../model/registry.h"
 #include "../model/world.h"
 #include "../utils/consts.h"
 #include "../utils/geometryhelper.h"
+#include "../vendor/aabbcc/AABB.h"
 #include <algorithm>
 
 namespace parkour {
@@ -25,26 +27,40 @@ void WorldController::loadTestWorld() const {
         throw std::exception("test world loading failed: world is already ready");
     }
     qDebug() << "setting block";
-    for (int i = 0; i <= 100; i++) {
+    for (int i = 0; i <= 2048; i++) {
         world.setBlock(QPoint(i, 15), "bedrock");
     }
 
-	for (int i = 33; i <= 56; i++) {
-		for (int j = 6; j <= 11; j++) {
-			world.setBlock(QPoint(i, j), "tnt");
+    for (int i = 33; i <= 36; i++) {
+        world.setBlock(QPoint(i, 14), "spring");
+    }
+
+    for (int j = 13; j >= 6; j--) {
+        world.setBlock(QPoint(30 - j, j), "bedrock");
+    }
+    for (int i = 35; i <= 40; i++) {
+        world.setBlock({ i, 14 }, "flower");
+    }
+
+	for (int i = 46; i <= 50; i++) {
+
+		for (int j = 0; j <= 14; j++) {
+			world.setBlock({ i, j }, "dirt");
+		}
+
+		for (int j = 14; j >= 10; j--) {
+			world.setBlock({ i, j }, "tnt");
 		}
 	}
 
-	for (int j = 13; j >= 6; j--) {
-		world.setBlock(QPoint(30 - j, j), "bedrock");
-	}
-	for (int i = 25; i <= 30; i++) {
-		world.setBlock({ i, 6 }, "bedrock");
-	}
 
     qDebug() << "loading player";
 
-    world.setSpawnPoint({ 29, 13 });
+    world.setSpawnPoint({ 29, 10 });
+
+    auto e = QSharedPointer<EntitySlime>::create();
+    e->placeBoundingBoxAt({ 12.0f, 14.0f });
+    world.addEntity(e);
 
     qDebug() << "test world loaded";
     world.setReady(true);
@@ -65,7 +81,7 @@ void WorldController::explode(QPoint center, double power) const {
 }
 
 void WorldController::handleExplosion(QPoint center, double power) const {
-	if (NO_EXPLOSION || power < 0) {
+    if (NO_EXPLOSION || power < 0) {
         return;
     }
     auto& world = World::instance();
@@ -79,9 +95,9 @@ void WorldController::handleExplosion(QPoint center, double power) const {
             auto distance = QVector2D(center - QPoint(i, j)).length();
             auto block = registry::BlockRegistry::instance().getBlockByName(world.getBlock({ i, j }));
             if (block != nullptr && geometry::compareDoubles(radius - distance, block->getExplosionResistance()) >= 0) {
-				if (QPoint(i, j) != center) {
-					block->onExplosion({ i, j }, radius - distance);
-				}
+                if (QPoint(i, j) != center) {
+                    block->onExplosion({ i, j }, radius - distance);
+                }
                 world.setBlock({ i, j }, "air");
             }
         }
@@ -93,7 +109,9 @@ void WorldController::handleExplosion(QPoint center, double power) const {
             auto damage = (power * EXPLOSION_DAMAGE_MULTIPLIER / (radius * radius)) * (distance - radius) * (distance - radius);
 			auto velocity = (power * EXPLOSION_VELOCITY_MULTIPLIER) * QVector2D(entityPointF - center).normalized() * (radius - distance);
             entity->damage(damage);
-			entity->setVelocity(entity->getVelocity() + velocity);
+            if (entity->isAffectedByExplosionWave()) {
+                entity->setVelocity(entity->getVelocity() + velocity);
+            }
         }
     }
 }
@@ -131,12 +149,12 @@ void WorldController::tick() const {
         entity->updatePosition();
     }
 
-	// 2. 处理爆炸队列
-	for (int i = 0; i < EXPLOSIONS_PER_TICK && !world.explosionQueue.empty(); i++) {
-		auto info = world.explosionQueue.front();
-		world.explosionQueue.pop_front();
-		this->handleExplosion(info.center, info.power);
-	}
+    // 2. 处理爆炸队列
+    for (int i = 0; i < EXPLOSIONS_PER_TICK && !world.explosionQueue.empty(); i++) {
+        auto info = world.explosionQueue.front();
+        world.explosionQueue.pop_front();
+        this->handleExplosion(info.center, info.power);
+    }
 
     // 3. 计算方块与实体、实体与实体之间的碰撞
 	if (world.entities.size() > 0) {
@@ -268,73 +286,73 @@ void WorldController::tick() const {
 					entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
 					break;
 				case Direction::RIGHT:
-					delta = entity->getBoundingBoxWorld().getMaxX() - anotherEntity->getBoundingBoxWorld().getMinX();
-					entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
-					break;
-				}
+                                    delta = entity->getBoundingBoxWorld().getMaxX() - anotherEntity->getBoundingBoxWorld().getMinX();
+                                    entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
+                                    break;
+                                }
+                        }
+                        //q += t32.nsecsElapsed();
+                }
+                //qDebug() << "step3: " << p / 1e6 << q / 1e6;
+        }
 
-			}
-			//q += t32.nsecsElapsed();
-		}
-		//qDebug() << "step3: " << p / 1e6 << q / 1e6;
-	}
+        // 4. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
+        //    qDebug() << "4. calling update() of entities";
+        //        auto entities2 = world.entities;
+        for (const auto& entity : world.entities) {
+            entity->update();
+        }
 
-    // 4. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
-    //    qDebug() << "4. calling update() of entities";
-    for (auto entity : world.entities) {
-        entity->update();
-    }
+        // 5. 检查悬空的实体，设置其重力加速度
+        //    qDebug() << "5. setting gravity";
+        {
+            aabb::Tree aabbTree(2);
+            for (int i = 0; i < world.entities.size(); i++) {
+                auto& entity = world.entities[i];
+                const auto& bbox = entity->getBoundingBoxWorld();
 
-    // 5. 检查悬空的实体，设置其重力加速度
-    //    qDebug() << "5. setting gravity";
-	{
-		aabb::Tree aabbTree(2);
-		for (int i = 0; i < world.entities.size(); i++) {
-			auto& entity = world.entities[i];
-			const auto& bbox = entity->getBoundingBoxWorld();
+                aabbTree.insertParticle(i, { bbox.getMinX(), bbox.getMinY() }, { bbox.getMaxX(), bbox.getMaxY() });
 
-			aabbTree.insertParticle(i, { bbox.getMinX(), bbox.getMinY() }, { bbox.getMaxX(), bbox.getMaxY() });
+                bool isFlying = true;
 
-			bool isFlying = true;
+                for (auto j : aabbTree.query(i)) {
+                    if (i == j) {
+                        continue;
+                    }
+                    auto& other = world.entities[j];
+                    if (entity->getBoundingBoxWorld().standUpon(other->getBoundingBoxWorld())) {
+                        isFlying = false;
+                        break;
+                    }
+                }
 
-			for (auto j : aabbTree.query(i)) {
-				if (i == j) {
-					continue;
-				}
-				auto& other = world.entities[j];
-				if (entity->getBoundingBoxWorld().standUpon(other->getBoundingBoxWorld())) {
-					isFlying = false;
-					break;
-				}
-			}
+                int centerBlockX = static_cast<int>(entity->getPosition().x()),
+                    centerBlockY = static_cast<int>(entity->getPosition().y());
+                int range = std::max({ static_cast<float>(ENTITY_COLLISION_RANGE), bbox.getMaxY() - bbox.getMinY() + 1.0f, bbox.getMaxX() - bbox.getMinX() + 1.0f });
+                for (int i = centerBlockX - range; i <= centerBlockX + range; i++) {
+                    for (int j = centerBlockY - range; j <= centerBlockY + range; j++) {
+                        const auto& blockName = world.getBlock(QPoint(i, j));
+                        BlockDelegate blockDelegate(blockName, QPoint(i, j));
+                        if (blockDelegate.isAir()) {
+                            continue; // 空气方块，跳过检查
+                        }
+                        if (entity->getBoundingBoxWorld().standUpon(blockDelegate.getBoundingBoxWorld())) {
+                            isFlying = false;
+                            auto block = registry::BlockRegistry::instance().getBlockByName(blockName);
+                            // block != null, since it is not air
+                            block->onStand({ i, j }, *entity);
+                        }
+                    }
+                }
 
-			int centerBlockX = static_cast<int>(entity->getPosition().x()),
-				centerBlockY = static_cast<int>(entity->getPosition().y());
-			int range = std::max({ static_cast<float>(ENTITY_COLLISION_RANGE), bbox.getMaxY() - bbox.getMinY() + 1.0f, bbox.getMaxX() - bbox.getMinX() + 1.0f });
-			for (int i = centerBlockX - range; i <= centerBlockX + range; i++) {
-				for (int j = centerBlockY - range; j <= centerBlockY + range; j++) {
-					const auto &blockName = world.getBlock(QPoint(i, j));
-					BlockDelegate blockDelegate(blockName, QPoint(i, j));
-					if (blockDelegate.isAir()) {
-						continue; // 空气方块，跳过检查
-					}
-					if (entity->getBoundingBoxWorld().standUpon(blockDelegate.getBoundingBoxWorld())) {
-						isFlying = false;
-						auto block = registry::BlockRegistry::instance().getBlockByName(blockName);
-						// block != null, since it is not air
-						block->onStand({ i, j }, *entity);
-					}
-				}
-			}
-
-			if (isFlying) {
-				entity->setOnFloor(false);
-				if (entity->isAffectedByGravity()) {
-					entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
-				}
-			}
-		}
-	}
+                if (isFlying) {
+                    entity->setOnFloor(false);
+                    if (entity->isAffectedByGravity()) {
+                        entity->setAcceleration(QVector2D(0, static_cast<float>(GRAVITY)));
+                    }
+                }
+            }
+        }
 
     // 6. 更新玩家控制器
     playerController->tick();

@@ -131,6 +131,30 @@
     <ClCompile Include="vendor\aabbcc\AABB.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\blockspike.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockspring.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityblaze.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityfireball.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entitycreeper.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityslime.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockmushroom.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockflower.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -214,6 +238,18 @@
     <ClInclude Include="vendor\aabbcc\AABB.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="model\entitycreeper.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\entityslime.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\blockmushroom.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\blockflower.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\bin\debug\.moc\moc_predefs.h.cbt">
@@ -254,6 +290,7 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp.hint" />
+    <None Include="model\testentity.i" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\entities\player.png">
@@ -269,6 +306,18 @@
     </QtMoc>
     <QtMoc Include="model\entitymovingbrick.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockspike.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockspring.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityblaze.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityfireball.h">
+      <Filter>Generated Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

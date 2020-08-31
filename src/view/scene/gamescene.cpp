@@ -111,10 +111,10 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
 
             auto blockId = static_cast<int>(blockRegistry.getBlockIdByName(block->getName()));
             int currentBlockTextureCount = this->blockTextureCount.at(blockId);
-			int currentFrame = block->getCurrentFrame();
-			if (currentFrame < 0 || currentFrame >= currentBlockTextureCount) {
-				currentFrame = world.getTicksFromBirth() / TICKS_PER_FRAME % currentBlockTextureCount;
-			}
+            int currentFrame = block->getCurrentFrame({ i, j });
+            if (currentFrame < 0 || currentFrame >= currentBlockTextureCount) {
+                currentFrame = world.getTicksFromBirth() / TICKS_PER_FRAME % currentBlockTextureCount;
+            }
             Q_ASSERT(currentBlockTextureCount > 0);
 
             QPointF targetTopLeft(i * blockSizeOnScreen, j * blockSizeOnScreen);
@@ -166,7 +166,8 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
         p.setPen(Qt::red);
         QFont font("Consolas");
         QString info;
-        info = QString("%1 %2 %3 %4").arg(QString::number(entity->getHp()), QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(velocity.x()), QString::number(velocity.y()));
+        info = QString("HP:%0/%1 %2 a = %3 %4").arg(QString::number(entity->getHp()), QString::number(entity->getMaxHp()),
+			QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(entity->getAcceleration().x()), QString::number(entity->getAcceleration().y()));
         font.setPixelSize(10);
         p.setFont(font);
         p.drawText(QPoint(texRect.left(), texRect.top()), info);
@@ -197,18 +198,19 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
     Q_UNUSED(ctx)
 
     auto playerController = WorldController::instance().getPlayerController();
+    QFont font("Consolas");
+    font.setPixelSize(16);
+    p.setFont(font);
     // 渲染玩家信息
     if (playerController->isAlive()) {
         float xMax = p.device()->width();
         auto player = playerController->getPlayer();
         auto position = player->getPosition(), velocity = player->getVelocity(), acceleration = player->getAcceleration();
-        QFont font("Consolas");
-        font.setPixelSize(16);
-        p.setFont(font);
         p.drawText(xMax - 300, 0, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(position[0], 'g', 4), QString::number(position[1], 'g', 4)));
         p.drawText(xMax - 300, 20, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
         p.drawText(xMax - 300, 40, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
     }
+    p.drawText(0, p.device()->height() - 100, 200, 100, Qt::AlignBottom, QString("entity count = %1").arg(QString::number(World::instance().getEntities().size())));
 }
 
 const QImage & GameScene::getEntityTextureForPath(const QString & path) {
@@ -280,40 +282,52 @@ void GameScene::repaint(QPainter& p, QOpenGLContext& ctx) {
 }
 
 bool GameScene::event(QEvent* event) {
-    auto playerController = WorldController::instance().getPlayerController();
-    if (event->type() == QEvent::KeyPress) {
-        const auto key = dynamic_cast<QKeyEvent*>(event)->key();
-        switch (key) {
-        case Qt::Key_A:
-            playerController->setGoingLeft(true);
-            break;
-        case Qt::Key_S:
-            playerController->setSneakingExpected(true);
-            break;
-        case Qt::Key_D:
-            playerController->setGoingRight(true);
-            break;
-        case Qt::Key_W:
-            playerController->setReadyJump(true);
-            break;
-        }
-    } else if (event->type() == QEvent::KeyRelease) {
-        const auto key = dynamic_cast<QKeyEvent*>(event)->key();
-        switch (key) {
-        case Qt::Key_A:
-            playerController->setGoingLeft(false);
-            break;
-        case Qt::Key_S:
-            playerController->setSneakingExpected(false);
-            break;
-        case Qt::Key_D:
-            playerController->setGoingRight(false);
-            break;
-        case Qt::Key_W:
-            playerController->setReadyJump(false);
-            break;
-        }
-    }
+	if (mode == GAMING) {
+		auto playerController = WorldController::instance().getPlayerController();
+		if (event->type() == QEvent::KeyPress) {
+			const auto key = dynamic_cast<QKeyEvent*>(event)->key();
+			switch (key) {
+			case Qt::Key_A:
+				playerController->setGoingLeft(true);
+				break;
+			case Qt::Key_S:
+				playerController->setSneakingExpected(true);
+				break;
+			case Qt::Key_D:
+				playerController->setGoingRight(true);
+				break;
+			case Qt::Key_W:
+				playerController->setReadyJump(true);
+				break;
+			}
+		} else if (event->type() == QEvent::KeyRelease) {
+			const auto key = static_cast<QKeyEvent*>(event)->key();
+			switch (key) {
+			case Qt::Key_A:
+				playerController->setGoingLeft(false);
+				break;
+			case Qt::Key_S:
+				playerController->setSneakingExpected(false);
+				break;
+			case Qt::Key_D:
+				playerController->setGoingRight(false);
+				break;
+			case Qt::Key_W:
+				playerController->setReadyJump(false);
+				break;
+			}
+		} else if (event->type() == QEvent::MouseButtonPress) {
+			const auto mouseEvent = static_cast<QMouseEvent*>(event);
+			if (mouseEvent->button() == Qt::MouseButton::LeftButton) {
+				// 计算点击位置的游戏坐标
+				int x = mouseEvent->x(), y = mouseEvent->y();
+				const auto gameCoords = QVector2D(x + cameraInfo.getXMinOfViewport(), y) / blockSizeOnScreen;
+				playerController->shootFireballAt(gameCoords);
+			}
+		}
+	} else {
+		// 地图编辑模式
+	}
     return IScene::event(event);
 }
 

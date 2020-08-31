@@ -25,7 +25,7 @@ const double EPSILON = 1e-8;
 /**
  * @brief GRAVITY 重力加速度
  */
-const double GRAVITY = 30;
+const double GRAVITY = 20;
 
 /**
  * @brief INTERSECT_DELTA 计算实体站立的阈值
@@ -35,12 +35,12 @@ const double INTERSECT_DELTA = 0.05;
 /**
  * @brief MAX_VELOCITY 速度分量的最大值
  */
-const double MAX_VELOCITY = 25;
+const double MAX_VELOCITY = 100;
 
 /**
  * @brief MAX_VELOCITY 加速度分量的最大值
  */
-const double MAX_ACCELERATION = 20;
+const double MAX_ACCELERATION = 50;
 
 /**
  * @brief ENTITY_COLLISION_RANGE 实体碰撞计算更新范围
@@ -115,7 +115,7 @@ const double EXPLOSION_RADIUS_MULTIPLIER = 1.0;
 /**
  * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的速度补偿因子
  */
-const double BOUNCE_BOTTOM_ATTENUATION = 5e-3;
+const double BOUNCE_BOTTOM_ATTENUATION = 0.3;
 
 /**
  * @brief BOUNCE_SIDE_ATTENUATION 防止嵌入方块，撞到方块两侧时的速度补偿因子
@@ -142,10 +142,16 @@ const double SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER = 0.2;
  * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，摄像机移动的终点内边距
  */
 const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.45;
+
 /**
  * @brief TNT_EXPLOSION_POWER TNT爆炸强度
  */
 const double TNT_EXPLOSION_POWER = 14;
+
+/**
+ * @brief AI_SEARCH_RANGE 实体AI搜索范围
+ */
+const double AI_SEARCH_RANGE = 32;
 }
 
 #endif // CONSTS_H
