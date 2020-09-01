@@ -210,6 +210,7 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="model\blockoakplank.cpp" />
     <ClCompile Include="model\blockflower.cpp" />
     <ClCompile Include="model\blockmushroom.cpp" />
     <ClCompile Include="model\entityslime.cpp" />
@@ -252,10 +253,11 @@
     <QtMoc Include="model\blockspring.h" />
     <QtMoc Include="model\entityblaze.h" />
     <QtMoc Include="model\entityfireball.h" />
+    <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />
-    <ClInclude Include="model\entityslime.h" />
-    <ClInclude Include="model\entitycreeper.h" />
+    <QtMoc Include="model\entityslime.h" />
+    <QtMoc Include="model\entitycreeper.h" />
     <ClInclude Include="vendor\aabbcc\AABB.h" />
     <QtMoc Include="model\blocksaw.h" />
     <QtMoc Include="model\blockbedrock.h" />
@@ -280,7 +282,7 @@
     </QtMoc>
     <QtMoc Include="model\entityplayerlike.h">
     </QtMoc>
-    <ClInclude Include="model\entitytnt.h" />
+    <QtMoc Include="model\entitytnt.h" />
     <QtMoc Include="view\gamerenderglwidget.h">
     </QtMoc>
     <QtMoc Include="view\scene\gamescene.h">

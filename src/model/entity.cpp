@@ -56,6 +56,18 @@ BoundingBoxWorld Entity::getBoundingBoxWorld() const {
     return ret;
 }
 
+QString Entity::getType() const {
+	return "entity";
+}
+
+void Entity::serializeEntityBasics(QDataStream & out) const {
+	out << position << velocity << acceleration << hp << dying << onFloor;
+}
+
+void Entity::deserializeEntityBasics(QDataStream & in) {
+	in >> position >> velocity >> acceleration >> hp >> dying >> onFloor;
+}
+
 void Entity::updatePosition() {
     // 计算一个tick内的运动学变化
     this->setVelocity(this->getVelocity() + TICK_LENGTH * this->getAcceleration());
@@ -100,6 +112,26 @@ QVector2D Entity::getAcceleration() const {
 void Entity::setAcceleration(const QVector2D& value) {
     acceleration = QVector2D(geometry::compareDoubles(value[0], 0) * qMin(1.0 * qAbs(value[0]), MAX_ACCELERATION),
         geometry::compareDoubles(value[1], 0) * qMin(1.0 * qAbs(value[1]), MAX_ACCELERATION));
+}
+
+QDataStream & operator<<(QDataStream & out, const Entity & e) {
+	out << e.getSerializationVersion();
+	e.serializeEntityBasics(out);
+	e.serializeCustomProps(out);
+	return out;
+}
+
+QDataStream & operator>>(QDataStream & in, Entity & e) {
+	in.startTransaction();
+	int version; in >> version;
+	if (version != e.getSerializationVersion()) {
+		in.abortTransaction();
+	} else {
+		e.deserializeEntityBasics(in);
+		e.deserializeCustomProps(in);
+		in.commitTransaction();
+	}
+	return in;
 }
 
 }

@@ -12,11 +12,15 @@
 #include <QPair>
 #include <QString>
 #include <QQueue>
+#include <QDataStream>
 
 namespace parkour {
 class WorldController;
+const QString WORLD_SERIALIZATION_VERSION = "WORLD1";
 class World : public QObject, public Singleton<World> {
     Q_OBJECT
+
+	static const size_t CHUNK_COUNT = static_cast<size_t>((1.0 * WORLD_WIDTH) / CHUNK_SIZE + 0.5);
 
 	struct ExplosionInfo {
 		QPoint center;
@@ -25,8 +29,7 @@ class World : public QObject, public Singleton<World> {
 	};
 
 	template<typename T>
-	class ChunkStorage {
-		static const size_t CHUNK_COUNT = static_cast<size_t>((1.0 * WORLD_WIDTH) / CHUNK_SIZE + 0.5);
+	struct ChunkStorage {
 		T *data[CHUNK_COUNT];
 
 	public:
@@ -36,13 +39,16 @@ class World : public QObject, public Singleton<World> {
 			}
 		}
 		T& get(int x, int y) {
-                    Q_ASSERT(x >= 0 && x < WORLD_WIDTH && y >= 0 && y < WORLD_HEIGHT);
-                    auto chunkNum = x / CHUNK_SIZE;
-                    if (data[chunkNum] == nullptr) {
-                        data[chunkNum] = new T[CHUNK_SIZE * WORLD_HEIGHT];
-                    }
-                    return data[chunkNum][y * CHUNK_SIZE + (x % CHUNK_SIZE)];
-                }
+            Q_ASSERT(x >= 0 && x < WORLD_WIDTH && y >= 0 && y < WORLD_HEIGHT);
+            auto chunkNum = x / CHUNK_SIZE;
+            if (data[chunkNum] == nullptr) {
+                data[chunkNum] = new T[CHUNK_SIZE * WORLD_HEIGHT];
+            }
+            return data[chunkNum][y * CHUNK_SIZE + (x % CHUNK_SIZE)];
+        }
+		bool isChunkCreated(int chunkNum) const {
+			return data[chunkNum] != nullptr;
+		}
 		void clear() {
 			for (int i = 0; i < CHUNK_COUNT; i++) {
 				delete[] data[i];
@@ -53,6 +59,14 @@ class World : public QObject, public Singleton<World> {
 			clear();
 		}
 	};
+	bool ready = false;
+	size_t ticksFromBirth = 0;
+	QVector2D spawnPoint;
+	QList<QSharedPointer<Entity>> entities;
+	QHash<QSharedPointer<Entity>, int> dyingEntities;
+	ChunkStorage<QString> chunks;
+	QQueue<ExplosionInfo> explosionQueue;
+	void clear();
 
     friend class WorldController;
 
@@ -68,15 +82,9 @@ public:
     QVector2D getSpawnPoint() const;
     void setSpawnPoint(const QVector2D& value);
 
-private:
-    bool ready = false;
-    size_t ticksFromBirth = 0;
-    QVector2D spawnPoint;
-    QList<QSharedPointer<Entity>> entities;
-    QHash<QSharedPointer<Entity>, int> dyingEntities;
-    ChunkStorage<QString> chunks;
-    QQueue<ExplosionInfo> explosionQueue;
-    void clear();
+	friend QDataStream& operator<<(QDataStream& out, const World &world);
+	friend QDataStream& operator>>(QDataStream& in, World &world);
+
 };
 }
 

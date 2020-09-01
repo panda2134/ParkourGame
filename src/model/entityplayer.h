@@ -8,12 +8,16 @@ namespace parkour {
 class EntityPlayer : public EntityPlayerLike {
 	Q_OBJECT
 
-	const double DRAG_FACTOR = 5;
+	const double DRAG_FACTOR = 1.5;
 	const double GROUND_STOP_THRESHOLD = 3;
 	double maxHp;
 	bool shootFireballs;
+
+	void serializeCustomProps(QDataStream & out) const override;
+	void deserializeCustomProps(QDataStream & in) override;
+	int getSerializationVersion() const override;
 public:
-    EntityPlayer();
+	Q_INVOKABLE EntityPlayer();
     BoundingBox getBoundingBox() const override;
     QString getName() const override;
     QString getResourceLocation() override;
@@ -24,6 +28,7 @@ public:
 	bool isAbleToShootFireballs();
 	void setShootFireballs(bool value);
 };
+Q_DECLARE_METATYPE(EntityPlayer*)
 }
 
 #endif // ENTITY_PLAYER_H

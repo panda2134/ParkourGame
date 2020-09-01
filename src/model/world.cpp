@@ -1,4 +1,5 @@
 #include "world.h"
+#include "registry.h"
 
 namespace parkour {
 
@@ -20,7 +21,11 @@ void World::setBlock(QPoint blockPos, QString blockName) {
 
 QString World::getBlock(QPoint blockPos) {
     if (blockPos.x() < 0 || blockPos.x() >= WORLD_WIDTH || blockPos.y() < 0 || blockPos.y() >= WORLD_HEIGHT) {
-        return "air";
+		if (blockPos.y() < 0) {
+			return "bedrock";
+		} else {
+			return "air";
+		}
     } else {
         auto& res = chunks.get(blockPos.x(), blockPos.y());
         if (res.size() == 0) {
@@ -64,6 +69,57 @@ void World::clear() {
 	for (int j = 0; j < WORLD_HEIGHT; j++) {
 		chunks.clear();
 	}
+}
+
+QDataStream & operator<<(QDataStream & out, const World & world) {
+	out << WORLD_SERIALIZATION_VERSION
+		<< world.ticksFromBirth << world.spawnPoint; // world metadata
+
+	// blocks
+	for (int chunkNum = 0; chunkNum < World::CHUNK_COUNT; chunkNum++) {
+		bool created = world.chunks.isChunkCreated(chunkNum);
+		out << created;
+		if (created) {
+			for (int y = 0; y < WORLD_HEIGHT; y++) {
+				for (int x = 0; x < CHUNK_SIZE; x++) {
+					out << world.chunks.data[chunkNum][y * CHUNK_SIZE + x];
+				}
+			}
+		}
+	}
+
+	// entities
+	registry::EntityRegistry::instance().writeEntitiesToStream(out, world.entities);
+
+	return out;
+}
+
+QDataStream & operator>>(QDataStream & in, World & world) {
+	QString version;
+	in >> version;
+	if (version != WORLD_SERIALIZATION_VERSION) {
+		in.setStatus(QDataStream::ReadCorruptData);
+		return in;
+	}
+	in >> world.ticksFromBirth >> world.spawnPoint; // world metadata
+
+	// blocks
+	for (int chunkNum = 0; chunkNum < World::CHUNK_COUNT; chunkNum++) {
+		bool created;
+		in >> created;
+		if (created) {
+			for (int y = 0; y < WORLD_HEIGHT; y++) {
+				for (int x = 0; x < CHUNK_SIZE; x++) {
+					in >> world.chunks.get(x + chunkNum * CHUNK_SIZE, y);
+				}
+			}
+		}
+	}
+
+	// entities
+	world.entities = registry::EntityRegistry::instance().readEntitiesFromStream(in);
+
+	return in;
 }
 
 }

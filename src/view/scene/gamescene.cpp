@@ -5,10 +5,12 @@
 #include "../../utils/askeyvaluerange.h"
 #include "../../utils/consts.h"
 #include "../../utils/glhelper.h"
+#include <QEasingCurve>
 
 namespace parkour {
 
 void GameScene::loadTexture() {
+	// load block texture
     auto& blockRegistry = registry::BlockRegistry::instance();
     auto& blockIds = blockRegistry.getBlockIds();
     qDebug() << "initializing texture: " << BLOCK_TEXTURE_SIZE * blockIds.size() << BLOCK_TEXTURE_SIZE;
@@ -31,6 +33,26 @@ void GameScene::loadTexture() {
         texturePainter.drawImage(QPoint(BLOCK_TEXTURE_SIZE * i, 0), textureBlock);
         blockTextureCount.push_back(textureBlock.height() / textureBlock.width());
     }
+	// load background image
+	backgroundImg.load(":/assets/gui/bg.png");
+}
+
+void GameScene::drawBackground(QPainter &p) {
+	if (backgroundImg.isNull()) {
+		return;
+	}
+	const float SPEED_FACTOR = 1.5f;
+	auto viewportXMinTimesFactor = cameraInfo.getXMinOfViewport() * SPEED_FACTOR;
+	float scaleRatio = p.device()->height() * 1.0f / backgroundImg.height();
+	auto imageSizeOnScreen = QSize( backgroundImg.width(), backgroundImg.height() ) * scaleRatio;
+	if (viewportXMinTimesFactor < 0) {
+		int k = static_cast<int>(-viewportXMinTimesFactor) / imageSizeOnScreen.width();
+		viewportXMinTimesFactor += (k + 2) * imageSizeOnScreen.width();
+	}
+	int start = -viewportXMinTimesFactor + static_cast<int>(viewportXMinTimesFactor) / backgroundImg.width();
+	for (; start <= p.device()->width(); start += imageSizeOnScreen.width()) {
+		p.drawImage(QRect(QPoint{ start, 0 }, imageSizeOnScreen), backgroundImg);
+	}
 }
 
 void GameScene::writeQRectToOpenGLBuffer(QOpenGLBuffer& buf, const QRectF& rect) {
@@ -56,7 +78,7 @@ bool GameScene::shouldRenderObject(float xMin, float xMax) {
 }
 
 void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
-    Q_UNUSED(ctx)
+	Q_UNUSED(ctx)
 
     const int PRELOAD_BLOCK_COUNT = 5;
 
@@ -166,8 +188,8 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
         p.setPen(Qt::red);
         QFont font("Consolas");
         QString info;
-        info = QString("HP:%0/%1 %2 a = %3 %4").arg(QString::number(entity->getHp()), QString::number(entity->getMaxHp()),
-			QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(entity->getAcceleration().x()), QString::number(entity->getAcceleration().y()));
+        info = QString("HP:%0/%1 %2 v = %3 %4").arg(QString::number(entity->getHp()), QString::number(entity->getMaxHp()),
+			QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(entity->getVelocity().x()), QString::number(entity->getVelocity().y()));
         font.setPixelSize(10);
         p.setFont(font);
         p.drawText(QPoint(texRect.left(), texRect.top()), info);
@@ -208,7 +230,8 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
         auto position = player->getPosition(), velocity = player->getVelocity(), acceleration = player->getAcceleration();
         p.drawText(xMax - 300, 0, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(position[0], 'g', 4), QString::number(position[1], 'g', 4)));
         p.drawText(xMax - 300, 20, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
-        p.drawText(xMax - 300, 40, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
+		p.drawText(xMax - 300, 40, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
+		p.drawText(xMax - 300, 60, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("tick = %1").arg(QString::number(World::instance().getTicksFromBirth())));
     }
     p.drawText(0, p.device()->height() - 100, 200, 100, Qt::AlignBottom, QString("entity count = %1").arg(QString::number(World::instance().getEntities().size())));
 }
@@ -240,9 +263,12 @@ void GameScene::calculate() {
 }
 
 void GameScene::repaint(QPainter& p, QOpenGLContext& ctx) {
+
+	drawBackground(p);
+
     auto playerController = WorldController::instance().getPlayerController();
 
-    blockSizeOnScreen = 30.0; // 屏幕坐标 / 游戏坐标
+    blockSizeOnScreen = p.device()->height() / BLOCK_TEXTURE_SIZE; // 屏幕坐标 / 游戏坐标
     deviceWidth = p.device()->width();
 
     if (playerController->isAlive() && !cameraInfo.isMoving()) {
@@ -255,9 +281,9 @@ void GameScene::repaint(QPainter& p, QOpenGLContext& ctx) {
         const float screenEdgeInner = SCREEN_EDGE_INNER_WIDTH_MULTIPLIER * deviceWidth;
 
         if (playerXMax < xMinOfViewport + screenEdgeOuter) { // 玩家在屏幕规定范围左方
-            cameraInfo.moveCameraTo(playerXMin - screenEdgeInner);
+            cameraInfo.moveCameraTo(playerXMin - screenEdgeInner, xMinOfViewport - playerXMax > deviceWidth / 2);
         } else if (playerXMin > xMaxOfViewport - screenEdgeOuter) { // 玩家在屏幕规定范围右方
-            cameraInfo.moveCameraTo(playerXMax - deviceWidth + screenEdgeInner);
+            cameraInfo.moveCameraTo(playerXMax - deviceWidth + screenEdgeInner, playerXMin - xMaxOfViewport > deviceWidth / 2);
         }
     }
 
@@ -298,6 +324,12 @@ bool GameScene::event(QEvent* event) {
 				break;
 			case Qt::Key_W:
 				playerController->setReadyJump(true);
+				break;
+			case Qt::Key_O:
+				WorldController::instance().saveWorld();
+				break;
+			case Qt::Key_P:
+				WorldController::instance().loadWorld();
 				break;
 			}
 		} else if (event->type() == QEvent::KeyRelease) {
@@ -378,20 +410,29 @@ GameScene::CameraInfo::CameraInfo()
 }
 
 void GameScene::CameraInfo::updateViewport() {
+	static QEasingCurve ease(QEasingCurve::InOutCubic);
     if (movingTicksLeft <= 0) {
         return;
     } else {
-        // 按照二次函数移动相机, a为二次项系数
-        auto a = (cameraStart - cameraEnd) / (CAMERA_MOVE_TICKS * CAMERA_MOVE_TICKS);
-        xMinOfViewport = a * movingTicksLeft * movingTicksLeft + cameraEnd;
+		if (! farMove) {
+			xMinOfViewport = cameraStart + (cameraEnd - cameraStart)
+				* ease.valueForProgress((CAMERA_MOVE_TICKS - movingTicksLeft) * 1.0 / CAMERA_MOVE_TICKS);
+		} else {
+			//按照二次函数移动相机, a为二次项系数
+			auto a = (cameraStart - cameraEnd) / (CAMERA_MOVE_TICKS * CAMERA_MOVE_TICKS);
+			xMinOfViewport = a * movingTicksLeft * movingTicksLeft + cameraEnd;
+		}
         movingTicksLeft--;
     }
 }
 
-void GameScene::CameraInfo::moveCameraTo(float target) {
-    movingTicksLeft = CAMERA_MOVE_TICKS;
-    cameraStart = xMinOfViewport;
-    cameraEnd = target;
+void GameScene::CameraInfo::moveCameraTo(float target, bool farMove) {
+	if (movingTicksLeft <= 0) {
+		cameraStart = xMinOfViewport;
+		cameraEnd = target;
+		movingTicksLeft = CAMERA_MOVE_TICKS;
+		this->farMove = farMove;
+	}
 }
 
 bool GameScene::CameraInfo::isMoving() {

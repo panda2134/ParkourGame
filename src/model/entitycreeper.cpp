@@ -71,4 +71,13 @@ namespace parkour {
 	bool EntityCreeper::showDeathAnimation() const {
 		return false;
 	}
+	void EntityCreeper::serializeCustomProps(QDataStream & out) const {
+		out << randomTicksLeft;
+	}
+	void EntityCreeper::deserializeCustomProps(QDataStream & in) {
+		in >> randomTicksLeft;
+	}
+	int EntityCreeper::getSerializationVersion() const {
+		return 1;
+	}
 }

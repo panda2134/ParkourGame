@@ -29,6 +29,7 @@ public:
 	double getMass() const override final;
     bool isAir() { return block == nullptr; }
 	virtual QString getName() const override;
+	virtual QString getType() const override;
 };
 
 }

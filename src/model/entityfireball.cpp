@@ -44,6 +44,18 @@ void EntityFireball::placeFireball(QVector2D position, QVector2D velocity, doubl
 	World::instance().addEntity(fireball);
 }
 
+void EntityFireball::serializeCustomProps(QDataStream & out) const {
+	out << explosionPower << livingTicks;
+}
+
+void EntityFireball::deserializeCustomProps(QDataStream & in) {
+	in >> explosionPower >> livingTicks;
+}
+
+int EntityFireball::getSerializationVersion() const {
+	return 1;
+}
+
 void EntityFireball::damage(double value) {
     const double TURN_AROUND_THRESHOLD = 20;
     this->setVelocity((1 - value / TURN_AROUND_THRESHOLD) * this->getVelocity());
@@ -59,5 +71,6 @@ void EntityFireball::update() {
         this->setHp(-1);
     }
 }
+
 
 }

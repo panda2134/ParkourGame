@@ -1,5 +1,4 @@
 #include "entitymovingbrick.h"
-#include "../controller/worldcontroller.h"
 #include "../utils/consts.h"
 #include "./boundingbox.h"
 #include "world.h"
@@ -25,7 +24,7 @@ BoundingBox EntityMovingBrick::getBoundingBox() const {
 }
 
 void EntityMovingBrick::update() {
-    if (World::instance().getTicksFromBirth() % 120 < 60) {
+    if (++ticks % 120 < 60) {
 		goLeft();
 	} else {
 		goRight();
@@ -37,5 +36,14 @@ bool EntityMovingBrick::isAffectedByGravity() const {
 }
 double EntityMovingBrick::getMass() const {
 	return 1e10;
+}
+void EntityMovingBrick::serializeCustomProps(QDataStream & out) const {
+	out << ticks;
+}
+void EntityMovingBrick::deserializeCustomProps(QDataStream & in) {
+	in >> ticks;
+}
+int EntityMovingBrick::getSerializationVersion() const {
+	return 1;
 }
 }

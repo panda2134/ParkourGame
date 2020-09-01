@@ -5,6 +5,7 @@
 #include "entity.h"
 #include <QPair>
 #include <QQueue>
+#include <QDataStream>
 
 namespace parkour {
 
@@ -29,8 +30,13 @@ class EntityBlaze : public Entity
     QQueue<QPair<int, QVector2D>> attackQueue;
     void pushAttackQueue(QSharedPointer<Entity> entity);
 
+	void serializeCustomProps(QDataStream& out) const override;
+	void deserializeCustomProps(QDataStream& in) override;
+
+	virtual int getSerializationVersion() const override;
+
 public:
-    EntityBlaze();
+	Q_INVOKABLE EntityBlaze();
 
     // ICollidable interface
 public:
@@ -46,6 +52,7 @@ public:
     BoundingBox getBoundingBox() const override;
 	double getMass() const override;
 };
+Q_DECLARE_METATYPE(EntityBlaze*)
 
 }
 

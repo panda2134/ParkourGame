@@ -28,7 +28,10 @@ namespace parkour {
 		if (dir == Direction::DOWN) {
 			this->waitTicksLeft = WAIT_TIMEOUT_MIN + (WAIT_TIMEOUT_MAX - WAIT_TIMEOUT_MIN) * QRandomGenerator::global()->generateDouble();
 			qDebug() << this->getVelocity().y();
-			this->setVelocity({ .0f, -0.8f * this->getVelocity().y() });
+			this->setVelocity({ .0f, -0.1f * getVelocity().y() });
+			if (other.getType() == "entity") {
+				this->setVelocity({ .0f, -JUMP_SPEED });
+			}
 		}
 		if (other.getName() == "player") {
 			auto &player = static_cast<EntityPlayer&>(other);
@@ -54,5 +57,14 @@ namespace parkour {
 				}
 			}
 		}
+	}
+	void EntitySlime::serializeCustomProps(QDataStream & out) const {
+		out << waitTicksLeft;
+	}
+	void EntitySlime::deserializeCustomProps(QDataStream & in) {
+		in >> waitTicksLeft;
+	}
+	int EntitySlime::getSerializationVersion() const {
+		return 1;
 	}
 }

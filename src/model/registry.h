@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <QSharedDataPointer>
+#include <QMetaObject>
 #include <QString>
 
 namespace parkour {
@@ -23,12 +24,19 @@ namespace registry {
         void registerBlock();
 
     public:
-        BlockRegistry();
+		BlockRegistry();
         QSharedPointer<Block> getBlockByName(QString blockName);
         const QVector<QString>& getBlockIds();
         size_t getBlockIdByName(QString);
     };
 
+	class EntityRegistry : public QObject, public Singleton<EntityRegistry> {
+		Q_OBJECT
+	public:
+		EntityRegistry();
+		QList<QSharedPointer<Entity>> readEntitiesFromStream(QDataStream& in);
+		bool writeEntitiesToStream(QDataStream& out, const QList<QSharedPointer<Entity>>& entities);
+	};
 }
 }
 

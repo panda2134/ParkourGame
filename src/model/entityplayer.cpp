@@ -61,4 +61,16 @@ void EntityPlayer::setShootFireballs(bool value) {
 	this->shootFireballs = value; 
 }
 
+void EntityPlayer::serializeCustomProps(QDataStream & out) const {
+	out << maxHp << shootFireballs;
+}
+
+void EntityPlayer::deserializeCustomProps(QDataStream & in) {
+	in >> maxHp >> shootFireballs;
+}
+
+int EntityPlayer::getSerializationVersion() const {
+	return 1;
+}
+
 }

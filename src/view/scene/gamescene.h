@@ -20,16 +20,16 @@ namespace parkour {
 class GameScene : public IScene {
     Q_OBJECT
 
-    class CameraInfo {
+    struct CameraInfo {
         float xMinOfViewport;
         float cameraStart;
         float cameraEnd;
         int movingTicksLeft;
+		bool farMove;
 
-    public:
         CameraInfo();
         void updateViewport();
-        void moveCameraTo(float target);
+        void moveCameraTo(float target, bool farMove = false);
         bool isMoving();
         float getXMinOfViewport() const;
     };
@@ -44,13 +44,14 @@ class GameScene : public IScene {
     QOpenGLBuffer vertexBuf, blockTextureBuf;
     QOpenGLShaderProgram blockShader;
     QOpenGLTexture glBlockTexture;
-    QImage blockTextureImg;
+    QImage blockTextureImg, backgroundImg;
 	QVector<int> blockTextureCount;
 	QHash<QString, QImage> entityTextureCache;
 	SceneMode mode = GAMING;
     double blockSizeOnScreen = 0.0;
     double deviceWidth = 854.0;
     void loadTexture();
+	void drawBackground(QPainter &p);
     void writeQRectToOpenGLBuffer(QOpenGLBuffer& buf, const QRectF& rect);
     /**
      * @brief shouldRenderObject 判断是否应该渲染某个对象

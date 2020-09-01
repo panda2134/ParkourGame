@@ -13,7 +13,7 @@ class BlockSpring : public Block
 
     const int FRAME_COUNT = 4;
     const int currentFrame = 0;
-    const double BOUNCE_VELOCITY = -35.0;
+    const double BOUNCE_VELOCITY = -30.0;
 
     QHash<QPair<int, int>, int> frameCount;
 

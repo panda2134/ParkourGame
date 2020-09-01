@@ -123,4 +123,13 @@ BoundingBox EntityBlaze::getBoundingBox() const {
 double EntityBlaze::getMass() const {
 	return 1e10;
 }
+void EntityBlaze::serializeCustomProps(QDataStream & out) const {
+	out << livingTicks << cooldown << state << attackQueue;
+}
+void EntityBlaze::deserializeCustomProps(QDataStream & in) {
+	in >> livingTicks >> cooldown >> state >> attackQueue;
+}
+int EntityBlaze::getSerializationVersion() const {
+	return 1;
+}
 }

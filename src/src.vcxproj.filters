@@ -155,6 +155,9 @@
     <ClCompile Include="model\blockflower.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\blockoakplank.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -193,9 +196,6 @@
     <QtMoc Include="model\entityplayerlike.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClInclude Include="model\entitytnt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <QtMoc Include="view\gamerenderglwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -238,16 +238,13 @@
     <ClInclude Include="vendor\aabbcc\AABB.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="model\entitycreeper.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="model\entityslime.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="model\blockmushroom.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="model\blockflower.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\blockoakplank.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -318,6 +315,15 @@
     </QtMoc>
     <QtMoc Include="model\entityfireball.h">
       <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityslime.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entitycreeper.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entitytnt.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

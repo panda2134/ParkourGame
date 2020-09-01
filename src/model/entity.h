@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QString>
 #include <QVector2D>
+#include <QDataStream>
 
 namespace parkour {
 
@@ -23,7 +24,16 @@ class Entity : public QObject, public ICollidable {
     bool dying = false;
     bool onFloor = true;
 
+	void serializeEntityBasics(QDataStream& out) const;
+	void deserializeEntityBasics(QDataStream& in);
+
+	virtual void serializeCustomProps(QDataStream& out) const = 0; 
+	virtual void deserializeCustomProps(QDataStream& in) = 0;
+
+	virtual int getSerializationVersion() const = 0;
+
 public:
+
     virtual QString getName() const = 0;
     /**
      * @brief 每个tick调用一次，用于更新位置；此后需要在collide中设置状态
@@ -96,7 +106,15 @@ public:
 
     BoundingBoxWorld getBoundingBoxWorld() const override final;
     virtual BoundingBox getBoundingBox() const = 0;
-};
+
+	QString getType() const override;
+
+	// QDataStream operators
+public:
+	friend QDataStream & operator<<(QDataStream &out, const Entity &e);
+	friend QDataStream & operator>>(QDataStream &in, Entity &e);
+}; 
+
 }
 
 #endif // ENTITY_H

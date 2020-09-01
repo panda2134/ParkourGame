@@ -65,7 +65,7 @@ const int WORLD_WIDTH = 4096;
 /**
  * @brief CHUNK_SIZE 区块（横向划分）大小
  */
-const int CHUNK_SIZE = 256;
+const int CHUNK_SIZE = 32;
 
 /**
  * @brief BLOCK_TEXTURE_SIZE 方块像素数目
@@ -115,7 +115,7 @@ const double EXPLOSION_RADIUS_MULTIPLIER = 1.0;
 /**
  * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的速度补偿因子
  */
-const double BOUNCE_BOTTOM_ATTENUATION = 0.3;
+const double BOUNCE_BOTTOM_ATTENUATION = 0.01;
 
 /**
  * @brief BOUNCE_SIDE_ATTENUATION 防止嵌入方块，撞到方块两侧时的速度补偿因子
@@ -131,12 +131,12 @@ const double VOID_DAMAGE_PER_TICK = 0.2;
 /**
  * @brief CAMERA_MOVE_TICKS 玩家在画面外时，运镜的总渲染刻数
  */
-const double CAMERA_MOVE_TICKS = 1 * (TICKS_PER_SEC / TICKS_PER_FRAME);
+const double CAMERA_MOVE_TICKS = 1.0 * (TICKS_PER_SEC / TICKS_PER_FRAME);
 
 /**
  * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，开始摄像机移动的内边距
  */
-const double SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER = 0.2;
+const double SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER = 0.20;
 
 /**
  * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，摄像机移动的终点内边距

@@ -44,4 +44,8 @@ QString BlockDelegate::getName() const {
 	return block == nullptr ? "air" : block->getName();
 }
 
+QString BlockDelegate::getType() const {
+	return "block";
+}
+
 }

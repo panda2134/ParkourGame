@@ -19,6 +19,7 @@ namespace parkour {
         virtual Direction checkCollideWith(const ICollidable&) final;
 		virtual double getMass() const;
 		virtual QString getName() const = 0;
+		virtual QString getType() const = 0;
     };
 }
 

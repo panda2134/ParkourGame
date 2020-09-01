@@ -22,5 +22,7 @@
         <file>assets/entities/slime.png</file>
         <file>assets/blocks/mushroom.png</file>
         <file>assets/blocks/flower.png</file>
+        <file>assets/gui/bg.png</file>
+        <file>assets/blocks/oak_plank.png</file>
     </qresource>
 </RCC>

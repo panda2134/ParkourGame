@@ -1,4 +1,5 @@
 #include "registry.h"
+
 #include "block.h"
 #include "blockbedrock.h"
 #include "blockdirt.h"
@@ -10,6 +11,20 @@
 #include "blocktnt.h"
 #include "blockmushroom.h"
 #include "blockflower.h"
+#include "blockoakplank.h"
+
+#include "entity.h"
+#include "entityblaze.h"
+#include "entitycreeper.h"
+#include "entityfireball.h"
+#include "entitymovingbrick.h"
+#include "entityplayer.h"
+#include "entityplayerlike.h"
+#include "entityslime.h"
+#include "entitytnt.h"
+
+#include <QDebug>
+
 
 namespace parkour {
 namespace registry {
@@ -37,6 +52,7 @@ namespace registry {
 		registerBlock<parkour::BlockSpring>();
 		registerBlock<parkour::BlockMushroom>();
 		registerBlock<parkour::BlockFlower>();
+		registerBlock<parkour::BlockOakPlank>();
         // * block mapping end   *
     }
 
@@ -60,6 +76,67 @@ namespace registry {
     const QVector<QString>& BlockRegistry::getBlockIds() {
         return blockIds;
     }
+
+	EntityRegistry::EntityRegistry() {
+#define REGISTER_ENTITY(T) qRegisterMetaType<T*>("parkour::" #T "*")
+
+		// * entity registry start *
+		REGISTER_ENTITY(EntityBlaze);
+		REGISTER_ENTITY(EntityCreeper);
+		REGISTER_ENTITY(EntityFireball);
+		REGISTER_ENTITY(EntityMovingBrick);
+		REGISTER_ENTITY(EntityPlayer);
+		REGISTER_ENTITY(EntitySlime);
+		REGISTER_ENTITY(EntityTNT);
+		// * entity registry end   *
+
+#undef REGISTER_ENTITY
+	}
+
+	QList<QSharedPointer<Entity>> EntityRegistry::readEntitiesFromStream(QDataStream & in) {
+		QList<QSharedPointer<Entity>> ret;
+		int count;
+		if ((in >> count).status() != QDataStream::Ok) {
+			qDebug() << "read: count corrupted, cannot read";
+			return ret;
+		}
+		for (int i = 0; i < count; i++) {
+			QString className;
+			in >> className;
+			className += "*";
+			qDebug() << "got class" << className;
+			int type = QMetaType::type(className.toLocal8Bit().constData());
+			if (type == QMetaType::UnknownType) {
+				qDebug() << "unknown class" << className;
+				continue;
+			}
+			qDebug() << "got type" << className;
+			const QMetaObject *mo = QMetaType::metaObjectForType(type);
+			auto entity = QSharedPointer<Entity>(static_cast<Entity*>(mo->newInstance()));
+			in >> *entity;
+			if (in.status() != QDataStream::Ok) {
+				continue;
+			}
+			ret.push_back(entity);
+		}
+		return ret;
+	}
+
+	bool EntityRegistry::writeEntitiesToStream(QDataStream & out, 
+		const QList<QSharedPointer<Entity>>& entities) {
+
+		int count = entities.size();
+		out << count;
+		qDebug() << "write count = " << count;
+		for (const auto &entity : entities) {
+			QString className = entity->metaObject()->className();
+			qDebug() << "write entity of class " << className;
+			out << className;
+			out << *entity;
+		}
+
+		return true;
+	}
 
 }
 }

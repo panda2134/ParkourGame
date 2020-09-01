@@ -2,15 +2,19 @@
 #define ENTITISLIME_H
 #include "entityplayerlike.h"
 #include "../utils/consts.h"
+#include <QDataStream>
 
 namespace parkour {
 	class EntitySlime: public EntityPlayerLike {
+		Q_OBJECT
 		const int WAIT_TIMEOUT_MAX = TICKS_PER_SEC * 5, WAIT_TIMEOUT_MIN = TICKS_PER_SEC * 3;
 		const double DAMAGE_PER_HIT = 0.1, COLLISION_MULTIPLIER = 0.1;
 		int waitTicksLeft;
-
+		void serializeCustomProps(QDataStream & out) const override;
+		void deserializeCustomProps(QDataStream & in) override;
+		int getSerializationVersion() const override;
 	public:
-		EntitySlime();
+		Q_INVOKABLE EntitySlime();
 
 		QString getName() const override;
 		QString getResourceLocation() override;
@@ -21,5 +25,6 @@ namespace parkour {
 		void collide(ICollidable &other, Direction dir) override;
 		void update() override;
 	};
+	Q_DECLARE_METATYPE(EntitySlime*)
 }
 #endif

@@ -9,6 +9,8 @@
 #include "../utils/geometryhelper.h"
 #include "../vendor/aabbcc/AABB.h"
 #include <algorithm>
+#include <QByteArray>
+#include <QDataStream>
 
 namespace parkour {
 
@@ -36,7 +38,7 @@ void WorldController::loadTestWorld() const {
     }
 
     for (int j = 13; j >= 6; j--) {
-        world.setBlock(QPoint(30 - j, j), "bedrock");
+        world.setBlock(QPoint(30 - j, j), "oak_plank");
     }
     for (int i = 35; i <= 40; i++) {
         world.setBlock({ i, 14 }, "flower");
@@ -62,6 +64,18 @@ void WorldController::loadTestWorld() const {
     e->placeBoundingBoxAt({ 12.0f, 14.0f });
     world.addEntity(e);
 
+	e = QSharedPointer<EntitySlime>::create();
+	e->placeBoundingBoxAt({ 10.0f, 14.0f });
+	world.addEntity(e);
+
+	e = QSharedPointer<EntitySlime>::create();
+	e->placeBoundingBoxAt({ 8.0f, 14.0f });
+	world.addEntity(e);
+
+	e = QSharedPointer<EntitySlime>::create();
+	e->placeBoundingBoxAt({ 6.0f, 14.0f });
+	world.addEntity(e);
+
     qDebug() << "test world loaded";
     world.setReady(true);
 }
@@ -73,6 +87,54 @@ void WorldController::unloadWorld() const {
     }
 	world.clear();
     world.setReady(false);
+}
+
+void WorldController::executeSerializationTests() {
+	auto &entityRegistry = registry::EntityRegistry::instance();
+	QByteArray arr;
+	QDataStream out(&arr, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_5_14);
+	qDebug() << "try writing...";
+	entityRegistry.writeEntitiesToStream(out, World::instance().getEntities());
+
+	qDebug() << "try reading...";
+	QDataStream in(&arr, QIODevice::ReadOnly);
+	in.setVersion(QDataStream::Qt_5_14);
+	auto entities2 = entityRegistry.readEntitiesFromStream(in);
+	qDebug() << "got length" << entities2.size();
+
+	for (auto x : entities2) {
+		qDebug() << x->getName() << "pos:" << x->getPosition() << "v" << x->getVelocity();
+		qDebug() << "maxhp" << x->getMaxHp();
+	}
+}
+
+void WorldController::saveWorld() {
+	QDataStream out(&save, QIODevice::WriteOnly);
+	serializeWorld(out);
+}
+
+void WorldController::loadWorld() {
+	QDataStream in(&save, QIODevice::ReadOnly);
+	deserializeWorld(in);
+}
+
+void WorldController::serializeWorld(QDataStream & out) {
+	out.setVersion(QDATASTREAM_VERSION);
+	out << MAP_SERIALIZATION_VERSION;
+	out << World::instance();
+}
+
+void WorldController::deserializeWorld(QDataStream & in) {
+	in.setVersion(QDATASTREAM_VERSION);
+	QString version; in >> version;
+
+	if (version != MAP_SERIALIZATION_VERSION) {
+		in.setStatus(QDataStream::ReadCorruptData); 
+		return;
+	}
+
+	in >> World::instance();
 }
 
 void WorldController::explode(QPoint center, double power) const {
