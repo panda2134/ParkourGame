@@ -23,6 +23,7 @@ public:
     QString getResourceLocation() override;
     QVector2D getTextureDimensions() override;
     BoundingBox getBoundingBox() const override;
+	QString getDisplayName() const override;
 	bool showDeathAnimation() const override;
 };
 Q_DECLARE_METATYPE(EntityTNT*)

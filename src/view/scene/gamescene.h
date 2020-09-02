@@ -40,16 +40,19 @@ class GameScene : public IScene {
 	};
 
 	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
+
+	int hotbarIndex = 0;
     CameraInfo cameraInfo;
     QOpenGLBuffer vertexBuf, blockTextureBuf;
     QOpenGLShaderProgram blockShader;
     QOpenGLTexture glBlockTexture;
-    QImage blockTextureImg, backgroundImg;
+    QImage blockTextureImg, backgroundImg, widgetImg;
+	QRect hotbarTargetRect;
 	QVector<int> blockTextureCount;
 	QHash<QString, QImage> entityTextureCache;
 	SceneMode mode = GAMING;
     double blockSizeOnScreen = 0.0;
-    double deviceWidth = 854.0;
+    double deviceWidth = 854.0, deviceHeight = 480.0;
     void loadTexture();
 	void drawBackground(QPainter &p);
     void writeQRectToOpenGLBuffer(QOpenGLBuffer& buf, const QRectF& rect);

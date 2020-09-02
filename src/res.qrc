@@ -25,5 +25,6 @@
         <file>assets/gui/bg.png</file>
         <file>assets/blocks/oak_plank.png</file>
         <file>assets/entities/xp_orb.png</file>
+        <file>assets/gui/widgets.png</file>
     </qresource>
 </RCC>

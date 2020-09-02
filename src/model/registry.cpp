@@ -24,6 +24,9 @@
 #include "entitytnt.h"
 #include "entityxporb.h"
 
+#include "itemblock.h"
+#include "itemspawnegg.h"
+
 #include <QDebug>
 
 
@@ -95,6 +98,16 @@ namespace registry {
 #undef REGISTER_ENTITY
 	}
 
+	QSharedPointer<Entity> EntityRegistry::generateEntity(QString fullyQualifiedClassName) {
+		fullyQualifiedClassName += "*"; // 转为指针类型
+		int type = QMetaType::type(fullyQualifiedClassName.toLocal8Bit().constData());
+		if (type == QMetaType::UnknownType) {
+			return nullptr;
+		}
+		const QMetaObject *mo = QMetaType::metaObjectForType(type);
+		return QSharedPointer<Entity>(static_cast<Entity*>(mo->newInstance()));
+	}
+
 	QList<QSharedPointer<Entity>> EntityRegistry::readEntitiesFromStream(QDataStream & in) {
 		QList<QSharedPointer<Entity>> ret;
 		int count;
@@ -105,16 +118,11 @@ namespace registry {
 		for (int i = 0; i < count; i++) {
 			QString className;
 			in >> className;
-			className += "*";
-			qDebug() << "got class" << className;
-			int type = QMetaType::type(className.toLocal8Bit().constData());
-			if (type == QMetaType::UnknownType) {
-				qDebug() << "unknown class" << className;
+			auto entity = generateEntity(className);
+			if (entity == nullptr) {
+				qDebug() << "skipped unknown entity class" << className;
 				continue;
 			}
-			qDebug() << "got type" << className;
-			const QMetaObject *mo = QMetaType::metaObjectForType(type);
-			auto entity = QSharedPointer<Entity>(static_cast<Entity*>(mo->newInstance()));
 			in >> *entity;
 			if (in.status() != QDataStream::Ok) {
 				continue;
@@ -138,6 +146,40 @@ namespace registry {
 		}
 
 		return true;
+	}
+
+	ItemRegistry::ItemRegistry() {
+		// 为每个方块注册对应的物品
+		const auto &blockMap = BlockRegistry::instance().blockMap;
+		for (const auto &[_, block] : blockMap) {
+			items.push_back(QSharedPointer<ItemBlock>::create(block));
+		}
+		// 注册刷怪蛋和移动方块生成器
+		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
+			"parkour::EntityCreeper",
+			":/assets/items/spawn_egg_creeper.png"
+		));
+		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
+			"parkour::EntityBlaze",
+			":/assets/items/spawn_egg_blaze.png"
+		));
+		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
+			"parkour::EntitySlime",
+			":/assets/items/spawn_egg_slime.png"
+		));
+		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
+			"parkour::EntityMovingBrick",
+			":/assets/entities/moving_brick.png"
+		));
+
+		// debug
+		for (const auto &item : items) {
+			qDebug() << item->getDisplayName();
+		}
+	}
+
+	const QList<QSharedPointer<Item>>& ItemRegistry::getItems() {
+		return items;
 	}
 
 }

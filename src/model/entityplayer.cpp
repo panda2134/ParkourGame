@@ -1,4 +1,4 @@
-#include "entityplayer.h"
+﻿#include "entityplayer.h"
 
 namespace parkour {
 
@@ -66,8 +66,16 @@ bool EntityPlayer::isAbleToShootFireballs() {
 	return shootFireballs;
 }
 
+QString EntityPlayer::getDisplayName() const {
+	return "玩家";
+}
+
 void EntityPlayer::setShootFireballs(bool value) {
 	this->shootFireballs = value; 
+}
+
+QSharedPointer<Item>* EntityPlayer::getInventory() {
+	return inventory;
 }
 
 void EntityPlayer::serializeCustomProps(QDataStream & out) const {

@@ -1,5 +1,6 @@
 #include "playercontroller.h"
 #include "../model/world.h"
+#include "../model/registry.h"
 #include "../model/entityfireball.h"
 #include "../utils/askeyvaluerange.h"
 
@@ -31,6 +32,20 @@ void PlayerController::setGoingRight(bool value) {
 
 void PlayerController::setSneakingExpected(bool value) {
     sneakingExpected = value;
+}
+
+void PlayerController::loadMapEditInventory() {
+	const auto &items = registry::ItemRegistry::instance().getItems();
+	auto player = getPlayer();
+	QSharedPointer<Item> *inventory = player->getInventory();
+	Q_ASSERT(items.length() <= PLAYER_INVENTORY_SLOT_COUNT);
+	for (int i = 0; i < items.length(); i++) {
+		if (i < 9) {
+			inventory[3 * 9 + i] = items[i];
+		} else {
+			inventory[i - 9] = items[i];
+		}
+	}
 }
 
 PlayerController::PlayerController()

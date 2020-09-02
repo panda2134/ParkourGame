@@ -1,4 +1,4 @@
-#include "blockflower.h"
+﻿#include "blockflower.h"
 #include "entityplayer.h"
 #include "world.h"
 
@@ -23,5 +23,8 @@ namespace parkour {
 			player.setShootFireballs(true);
 			World::instance().setBlock(blockPos, "air");
 		}
+	}
+	QString BlockFlower::getDisplayName() const {
+		return "花";
 	}
 }

@@ -26,6 +26,7 @@ namespace parkour {
 		void collide(ICollidable& other, Direction dir) override;
 		double getWalkSpeed() const override;
 		bool showDeathAnimation() const override;
+		virtual QString getDisplayName() const override;
 		void damage(double val) override;
 	};
 	Q_DECLARE_METATYPE(EntityCreeper*)

@@ -21,6 +21,7 @@ public:
      * @param blockPos_ 方块位置
      */
     BlockDelegate(QString blockName_, QPoint blockPos_);
+	BlockDelegate(QPoint blockPos_);
 
     BoundingBoxWorld getBoundingBoxWorld() const override;
     void collide(ICollidable&, Direction) override;

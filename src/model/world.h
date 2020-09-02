@@ -1,4 +1,4 @@
-#ifndef WORLD_H
+﻿#ifndef WORLD_H
 #define WORLD_H
 
 #include "../utils/singleton.h"
@@ -77,6 +77,11 @@ public:
     QString getBlock(QPoint blockPos);
     void addEntity(QSharedPointer<Entity>);
     const QList<QSharedPointer<Entity>>& getEntities() const;
+	/**
+	 * @brief removeEntity 从实体列表移除entity实体
+	 * @note 调用后，所有的实体列表迭代器立刻失效！必须立刻结束迭代或退出range-based for loop
+	 */
+	void removeEntity(QSharedPointer<Entity> entity);
     size_t getTicksFromBirth() const;
     const QHash<QSharedPointer<Entity>, int>& getDyingEntities() const;
     QVector2D getSpawnPoint() const;

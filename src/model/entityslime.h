@@ -3,6 +3,7 @@
 #include "entityplayerlike.h"
 #include "../utils/consts.h"
 #include <QDataStream>
+#include <QString>
 
 namespace parkour {
 	class EntitySlime: public EntityPlayerLike {
@@ -24,6 +25,7 @@ namespace parkour {
 		double getMass() const override;
 		void collide(ICollidable &other, Direction dir) override;
 		void update() override;
+		QString getDisplayName() const override;
 		void damage(double value) override;
 	};
 	Q_DECLARE_METATYPE(EntitySlime*)

@@ -1,4 +1,4 @@
-#include "blocksaw.h"
+﻿#include "blocksaw.h"
 #include "entityplayerlike.h"
 
 namespace parkour {
@@ -31,5 +31,8 @@ namespace parkour {
 		} catch (std::bad_cast) {
 			/* not player-like, do nothing */
 		}
+	}
+	QString BlockSaw::getDisplayName() const {
+		return "锯片";
 	}
 }

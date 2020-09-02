@@ -135,6 +135,9 @@ void EntityBlaze::damage(double val) {
 		}
 	}
 }
+QString EntityBlaze::getDisplayName() const {
+	return "烈焰人";
+}
 void EntityBlaze::serializeCustomProps(QDataStream & out) const {
 	out << livingTicks << cooldown << state << attackQueue;
 }

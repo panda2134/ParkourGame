@@ -48,6 +48,15 @@ const QList<QSharedPointer<Entity>>& World::getEntities() const {
     return entities;
 }
 
+void World::removeEntity(QSharedPointer<Entity> entity) {
+	for (auto it = entities.begin(); it != entities.end(); ++it) {
+		if (*it == entity) {
+			entities.erase(it);
+			break;
+		}
+	}
+}
+
 size_t World::getTicksFromBirth() const {
     return ticksFromBirth;
 }

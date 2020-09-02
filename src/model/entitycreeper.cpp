@@ -1,4 +1,4 @@
-#include "entitycreeper.h"
+﻿#include "entitycreeper.h"
 #include "world.h"
 #include "../controller/worldcontroller.h"
 #include "entityplayer.h"
@@ -42,6 +42,7 @@ namespace parkour {
 			return;
 		}
 		if (delta.lengthSquared() < EXPLOSION_THRESHOLD) {
+			this->setHp(-1);
 			WorldController::instance().explode(getPosition().toPoint(), TNT_EXPLOSION_POWER);
 		} else if (randomTicksLeft > 0) {
 			randomTicksLeft--;
@@ -71,6 +72,9 @@ namespace parkour {
 	}
 	bool EntityCreeper::showDeathAnimation() const {
 		return false;
+	}
+	QString EntityCreeper::getDisplayName() const {
+		return "爬行者";
 	}
 	void EntityCreeper::damage(double val) {
 		EntityPlayerLike::damage(val);

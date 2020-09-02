@@ -72,5 +72,9 @@ void EntityFireball::update() {
     }
 }
 
+QString EntityFireball::getDisplayName() const {
+	return "火球";
+}
+
 
 }

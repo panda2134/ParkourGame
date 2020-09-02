@@ -1,10 +1,17 @@
-#ifndef ENTITY_PLAYER_H
+﻿#ifndef ENTITY_PLAYER_H
 #define ENTITY_PLAYER_H
 
-#include "./entityplayerlike.h"
+#include "entityplayerlike.h"
+#include "../utils/consts.h"
+#include "item.h"
+#include <QList>
 #include <QVector2D>
+#include <QSharedPointer>
 
 namespace parkour {
+
+	class PlayerController;
+
 class EntityPlayer : public EntityPlayerLike {
 	Q_OBJECT
 
@@ -13,6 +20,7 @@ class EntityPlayer : public EntityPlayerLike {
 	double maxHp;
 	bool shootFireballs;
 	int exp;
+	QSharedPointer<Item> inventory[PLAYER_INVENTORY_SLOT_COUNT]; // 无需序列化
 
 	void serializeCustomProps(QDataStream & out) const override;
 	void deserializeCustomProps(QDataStream & in) override;
@@ -29,7 +37,10 @@ public:
 	int getExp() const;
 	void increaseExp(int delta);
 	bool isAbleToShootFireballs();
+	QString getDisplayName() const override;
 	void setShootFireballs(bool value);
+
+	QSharedPointer<Item>* getInventory();
 };
 Q_DECLARE_METATYPE(EntityPlayer*)
 }

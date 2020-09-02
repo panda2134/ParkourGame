@@ -1,12 +1,18 @@
 #include "blockdelegate.h"
 #include "entity.h"
 #include "registry.h"
+#include "world.h"
 
 namespace parkour {
 
 BlockDelegate::BlockDelegate(QString blockName, QPoint blockPos_)
     : blockPos(blockPos_) {
     this->block = registry::BlockRegistry::instance().getBlockByName(blockName);
+}
+
+BlockDelegate::BlockDelegate(QPoint blockPos_): blockPos(blockPos_) {
+	auto blockName = World::instance().getBlock(blockPos);
+	this->block = registry::BlockRegistry::instance().getBlockByName(blockName);
 }
 
 BoundingBoxWorld BlockDelegate::getBoundingBoxWorld() const {

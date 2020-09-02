@@ -8,6 +8,7 @@ namespace parkour {
 	public:
 		virtual QString getName() const override;
 		virtual QString getResourceLocation() const override;
+		virtual QString getDisplayName() const override;
 		virtual double getExplosionResistance() const override;
 	};
 }

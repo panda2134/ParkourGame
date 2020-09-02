@@ -46,6 +46,10 @@ bool GameRenderGLWidget::event(QEvent* e) {
         case QEvent::MouseButtonDblClick:
         case QEvent::KeyPress:
         case QEvent::KeyRelease:
+		case QEvent::Wheel:
+		case QEvent::DragMove:
+		case QEvent::DragEnter:
+		case QEvent::DragLeave:
             return currentScene->event(e);
         default:
             break;

@@ -1,4 +1,4 @@
-#include "blockspring.h"
+﻿#include "blockspring.h"
 
 namespace parkour {
 BlockSpring::BlockSpring() {
@@ -33,6 +33,10 @@ void BlockSpring::onStand(QPoint blockPos, Entity& entity) {
 
 BoundingBox BlockSpring::getBoundingBox() const {
     return BoundingBox { { 0.1875f, 0.375f }, { 0.625f, 0.625f } };
+}
+
+QString BlockSpring::getDisplayName() const {
+	return "弹簧";
 }
 
 void BlockSpring::collide(QPoint blockPos, Entity& entity, Direction dir) {

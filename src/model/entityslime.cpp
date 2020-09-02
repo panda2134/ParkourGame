@@ -1,4 +1,4 @@
-#include "entityslime.h"
+﻿#include "entityslime.h"
 #include "entityplayer.h"
 #include "entityxporb.h"
 #include "world.h"
@@ -58,6 +58,9 @@ namespace parkour {
 				}
 			}
 		}
+	}
+	QString EntitySlime::getDisplayName() const {
+		return "史莱姆";
 	}
 	void EntitySlime::damage(double value) {
 		EntityPlayerLike::damage(value);

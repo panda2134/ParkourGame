@@ -161,6 +161,15 @@
     <ClCompile Include="model\entityxporb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\item.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemblock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemspawnegg.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -290,7 +299,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp.hint" />
-    <None Include="model\testentity.i" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\entities\player.png">
@@ -330,6 +338,15 @@
     </QtMoc>
     <QtMoc Include="model\entityxporb.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\item.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemblock.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemspawnegg.h">
+      <Filter>Generated Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

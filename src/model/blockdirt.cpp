@@ -1,4 +1,4 @@
-#include "blockdirt.h"
+﻿#include "blockdirt.h"
 #include "world.h"
 
 QString parkour::BlockDirt::getResourceLocation() const {
@@ -11,4 +11,8 @@ QString parkour::BlockDirt::getName() const {
 
 double parkour::BlockDirt::getExplosionResistance() const {
     return 1.0;
+}
+
+QString parkour::BlockDirt::getDisplayName() const {
+	return "土块";
 }

@@ -1,4 +1,4 @@
-#include "blockgrass.h"
+﻿#include "blockgrass.h"
 
 namespace parkour {
 
@@ -8,6 +8,10 @@ QString BlockGrass::getName() const {
 
 QString BlockGrass::getResourceLocation() const {
     return ":/assets/blocks/grass.png";
+}
+
+QString BlockGrass::getDisplayName() const {
+	return "草方块";
 }
 
 double BlockGrass::getExplosionResistance() const {

@@ -1,4 +1,4 @@
-#include "blocktnt.h"
+﻿#include "blocktnt.h"
 #include "../controller/worldcontroller.h"
 #include "entitytnt.h"
 #include "world.h"
@@ -13,6 +13,10 @@ QString BlockTNT::getName() const {
 
 QString BlockTNT::getResourceLocation() const {
     return ":/assets/blocks/tnt.png";
+}
+
+QString BlockTNT::getDisplayName() const {
+	return "TNT";
 }
 
 double BlockTNT::getExplosionResistance() const {

@@ -1,4 +1,4 @@
-#include "blockmushroom.h"
+﻿#include "blockmushroom.h"
 #include "entityplayer.h"
 #include "world.h"
 
@@ -22,5 +22,8 @@ namespace parkour {
 	}
 	BoundingBox BlockMushroom::getBoundingBox() const {
 		return BoundingBox{ {0.25f, 0.5625f}, {0.5f, 0.4375f} };
+	}
+	QString BlockMushroom::getDisplayName() const {
+		return "蘑菇";
 	}
 }

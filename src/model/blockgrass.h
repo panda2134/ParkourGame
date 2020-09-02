@@ -15,7 +15,8 @@ public:
     QString getName() const override;
     QString getResourceLocation() const override;
 
-    double getExplosionResistance() const override;
+	virtual QString getDisplayName() const override;
+	double getExplosionResistance() const override;
 };
 }
 

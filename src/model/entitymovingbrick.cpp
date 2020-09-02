@@ -1,4 +1,4 @@
-#include "entitymovingbrick.h"
+﻿#include "entitymovingbrick.h"
 #include "../utils/consts.h"
 #include "./boundingbox.h"
 #include "world.h"
@@ -24,24 +24,51 @@ BoundingBox EntityMovingBrick::getBoundingBox() const {
 }
 
 void EntityMovingBrick::update() {
-    if (++ticks % 120 < 60) {
-		goLeft();
+	if (ticksLeft >= 0) {
+		ticksLeft--;
 	} else {
+		switch (state) {
+		case MovingState::STOP:
+		case MovingState::LEFT:
+			state = MovingState::RIGHT;
+			break;
+		case MovingState::RIGHT:
+			state = MovingState::LEFT;
+			break;
+		}
+		ticksLeft = TICKS_PER_SEC * 1.2;
+	}
+	if (state == MovingState::LEFT) {
+		goLeft();
+	} else if (state == MovingState::RIGHT) {
 		goRight();
 	}
 	this->setVelocity({ this->getVelocity().x(), 0 });
 }
+
+
+
 bool EntityMovingBrick::isAffectedByGravity() const {
 	return false;
+}
+QString EntityMovingBrick::getDisplayName() const {
+	return "可移动砖块";
 }
 double EntityMovingBrick::getMass() const {
 	return 1e10;
 }
+void EntityMovingBrick::collide(ICollidable & other, Direction dir) {
+	if (dir == Direction::LEFT && state != MovingState::RIGHT) {
+		state = MovingState::RIGHT;
+	} else if (dir == Direction::RIGHT && state != MovingState::LEFT) {
+		state = MovingState::LEFT;
+	}
+}
 void EntityMovingBrick::serializeCustomProps(QDataStream & out) const {
-	out << ticks;
+	out << ticksLeft << state;
 }
 void EntityMovingBrick::deserializeCustomProps(QDataStream & in) {
-	in >> ticks;
+	in >> ticksLeft >> state;
 }
 int EntityMovingBrick::getSerializationVersion() const {
 	return 1;

@@ -29,7 +29,7 @@ namespace parkour {
 		virtual void damage(double val) override;
 		virtual double getMass() const override;
 		void setXp(int val);
-
+		QString getDisplayName() const override;
 		static void dropXpOrbs(QVector2D position, int xp);
 	};
 }

@@ -1,4 +1,4 @@
-#ifndef BLOCKMUSHROOM_H
+﻿#ifndef BLOCKMUSHROOM_H
 #define BLOCKMUSHROOM_H
 
 #include "block.h"
@@ -12,6 +12,7 @@ namespace parkour {
 		double getExplosionResistance() const override;
 		void collide(QPoint blockPos, Entity& entity, Direction dir) override;
 		BoundingBox getBoundingBox() const override;
+		virtual QString getDisplayName() const override;
 	};
 }
 

@@ -1,4 +1,4 @@
-#include "blockoakplank.h"
+﻿#include "blockoakplank.h"
 
 namespace parkour {
 	QString BlockOakPlank::getName() const {
@@ -9,5 +9,8 @@ namespace parkour {
 	}
 	double BlockOakPlank::getExplosionResistance() const {
 		return 5.0;
+	}
+	QString BlockOakPlank::getDisplayName() const {
+		return "橡木木板";
 	}
 }

@@ -15,6 +15,7 @@ public:
     virtual QString getName() const = 0;
     virtual QString getResourceLocation() const = 0;
     virtual double getExplosionResistance() const = 0;
+	virtual QString getDisplayName() const = 0;
     /**
      * @brief getCurrentFrame 取得当前方块显示哪一帧
      * @param blockPos 方块位置

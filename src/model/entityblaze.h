@@ -54,6 +54,7 @@ public:
     BoundingBox getBoundingBox() const override;
 	double getMass() const override;
 	void damage(double val) override;
+	virtual QString getDisplayName() const override;
 };
 Q_DECLARE_METATYPE(EntityBlaze*)
 

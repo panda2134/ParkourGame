@@ -13,6 +13,8 @@ namespace parkour {
 
 		BoundingBox getBoundingBox() const override;
 		void collide(QPoint blockPos, Entity &entity, Direction dir);
+
+		virtual QString getDisplayName() const override;
 	};
 }
 #endif

@@ -11,7 +11,12 @@ namespace parkour {
 class EntityMovingBrick : public EntityPlayerLike {
 	Q_OBJECT
 
-	int ticks = 0;
+	enum MovingState {
+		LEFT, RIGHT, STOP
+	};
+
+	MovingState state = MovingState::STOP;
+	int ticksLeft = -1;
 	double getWalkSpeed() const override;
 	void serializeCustomProps(QDataStream & out) const override;
 	void deserializeCustomProps(QDataStream & in) override;
@@ -29,7 +34,9 @@ public:
 
     void update() override;
 	bool isAffectedByGravity() const override;
+	QString getDisplayName() const override;
 	double getMass() const override;
+	void collide(ICollidable &other, Direction dir) override;
 
 };
 Q_DECLARE_METATYPE(EntityMovingBrick*)

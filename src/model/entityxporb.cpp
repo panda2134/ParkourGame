@@ -1,4 +1,4 @@
-#include "entityxporb.h"
+﻿#include "entityxporb.h"
 #include "entityplayer.h"
 #include "world.h"
 #include <QSharedPointer>
@@ -56,6 +56,9 @@ namespace parkour {
 	}
 	void EntityXpOrb::setXp(int val) {
 		xp = val;
+	}
+	QString EntityXpOrb::getDisplayName() const {
+		return "经验球";
 	}
 	void EntityXpOrb::damage(double val) {
 		// do not damage

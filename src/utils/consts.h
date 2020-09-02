@@ -152,6 +152,11 @@ const double TNT_EXPLOSION_POWER = 14;
  * @brief AI_SEARCH_RANGE 实体AI搜索范围
  */
 const double AI_SEARCH_RANGE = 32;
+
+/**
+ * @brief PLAYER_INVENTORY_SLOT_COUNT 玩家背包槽位数目
+ */
+const size_t PLAYER_INVENTORY_SLOT_COUNT = 36;
 }
 
 #endif // CONSTS_H

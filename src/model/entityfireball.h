@@ -27,7 +27,8 @@ public:
     void damage(double value) override;
     bool showDeathAnimation() const override;
     void update() override;
-    void collide(ICollidable&, Direction) override;
+	virtual QString getDisplayName() const override;
+	void collide(ICollidable&, Direction) override;
 	static void placeFireball(QVector2D position, QVector2D velocity, double power = 7.0);
 };
 Q_DECLARE_METATYPE(EntityFireball*) 

@@ -28,7 +28,8 @@ public:
     int getCurrentFrame(const QPoint& blockPos) override;
     void onStand(QPoint blockPos, Entity& entity) override;
     BoundingBox getBoundingBox() const override;
-    void collide(QPoint, Entity&, Direction) override;
+	virtual QString getDisplayName() const override;
+	void collide(QPoint, Entity&, Direction) override;
 };
 }
 

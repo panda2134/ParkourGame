@@ -1,4 +1,4 @@
-#include "blockbedrock.h"
+﻿#include "blockbedrock.h"
 
 namespace parkour {
 QString BlockBedrock::getName() const {
@@ -11,5 +11,8 @@ QString BlockBedrock::getResourceLocation() const {
 
 double BlockBedrock::getExplosionResistance() const {
     return 16000000.0;
+}
+QString BlockBedrock::getDisplayName() const {
+	return "基岩";
 }
 }

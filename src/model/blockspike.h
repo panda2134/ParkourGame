@@ -22,7 +22,8 @@ public:
     QString getResourceLocation() const override;
     double getExplosionResistance() const override;
     void onStand(QPoint blockPos, Entity& entity) override;
-    void collide(QPoint, Entity&, Direction) override;
+	virtual QString getDisplayName() const override;
+	void collide(QPoint, Entity&, Direction) override;
 };
 }
 

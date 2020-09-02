@@ -115,6 +115,8 @@ public:
 
 	QString getType() const override;
 
+	virtual QString getDisplayName() const = 0;
+
 	// QDataStream operators
 public:
 	friend QDataStream & operator<<(QDataStream &out, const Entity &e);

@@ -38,6 +38,9 @@ namespace parkour {
 	BoundingBox EntityTNT::getBoundingBox() const {
 		return BoundingBox{ QVector2D(0.1, 0.9), QVector2D(0.8, 0.1) };
 	}
+	QString EntityTNT::getDisplayName() const {
+		return "TNT";
+	}
 	bool EntityTNT::showDeathAnimation() const {
 		return false;
 	}

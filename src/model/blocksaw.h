@@ -18,6 +18,7 @@ namespace parkour {
 		virtual double getExplosionResistance() const override;
 		
 		virtual void collide(QPoint, Entity&, Direction) override;
+		virtual QString getDisplayName() const override;
 	};
 
 }
