@@ -176,9 +176,15 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
               x2 = bbox.getMaxX(),
               y1 = bbox.getMinY(),
               y2 = bbox.getMaxY();
+		const auto &uvRect = entity->getTextureRenderRect(); 
 		// texture box
-		auto texRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
-		p.drawImage(texRect, getEntityTextureForPath(entity->getResourceLocation()));
+		auto targetTextureRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
+		const auto &entityTexture = getEntityTextureForPath(entity->getResourceLocation());
+		if (uvRect.isNull()) {
+			p.drawImage(targetTextureRect, entityTexture);
+		} else {
+			p.drawImage(targetTextureRect, entityTexture, uvRect);
+		}
         // hit box
         QRect hitboxRect(QPoint(x1 * blockSizeOnScreen, y1 * blockSizeOnScreen),
             QPoint(x2 * blockSizeOnScreen, y2 * blockSizeOnScreen));
@@ -192,7 +198,7 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
 			QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(entity->getVelocity().x()), QString::number(entity->getVelocity().y()));
         font.setPixelSize(10);
         p.setFont(font);
-        p.drawText(QPoint(texRect.left(), texRect.top()), info);
+        p.drawText(QPoint(targetTextureRect.left(), targetTextureRect.top()), info);
     }
 
     // 渲染濒临死亡的实体
@@ -204,14 +210,21 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
             continue;
         }
         // texture box
-        auto texRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
-
+        auto targetTextureRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
+		const auto &entityTexture = getEntityTextureForPath(entity->getResourceLocation());
+		const auto &uvRect = entity->getTextureRenderRect();
         QTransform transform;
-        transform.translate(texRect.right(), texRect.bottom());
+        transform.translate(targetTextureRect.right(), targetTextureRect.bottom());
         transform.rotate(90 * (DYING_ANIMATION_TICKS - ticksLeft) / DYING_ANIMATION_TICKS);
 
         p.setTransform(transform, true);
-		p.drawImage(QRectF(QPointF(-texRect.width(), -texRect.height()), texRect.size()), getEntityTextureForPath(entity->getResourceLocation()));
+		auto transformedRect = QRectF(QPointF(-targetTextureRect.width(), -targetTextureRect.height()), \
+			targetTextureRect.size());
+		if (uvRect.isNull()) {
+			p.drawImage(transformedRect, entityTexture);
+		} else {
+			p.drawImage(transformedRect, entityTexture, uvRect);
+		}
         p.setTransform(transform.inverted(), true);
     }
 }
@@ -231,7 +244,8 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
         p.drawText(xMax - 300, 0, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(position[0], 'g', 4), QString::number(position[1], 'g', 4)));
         p.drawText(xMax - 300, 20, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
 		p.drawText(xMax - 300, 40, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
-		p.drawText(xMax - 300, 60, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("tick = %1").arg(QString::number(World::instance().getTicksFromBirth())));
+		p.drawText(xMax - 300, 60, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("xp = %1").arg(QString::number(player->getExp(), 'g', 4)));
+		p.drawText(xMax - 300, 80, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("tick = %1").arg(QString::number(World::instance().getTicksFromBirth())));
     }
     p.drawText(0, p.device()->height() - 100, 200, 100, Qt::AlignBottom, QString("entity count = %1").arg(QString::number(World::instance().getEntities().size())));
 }

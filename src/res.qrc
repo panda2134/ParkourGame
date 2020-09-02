@@ -24,5 +24,6 @@
         <file>assets/blocks/flower.png</file>
         <file>assets/gui/bg.png</file>
         <file>assets/blocks/oak_plank.png</file>
+        <file>assets/entities/xp_orb.png</file>
     </qresource>
 </RCC>

@@ -37,6 +37,10 @@ double Entity::getMaxHp() const {
 	return 20.0;
 }
 
+QRect Entity::getTextureRenderRect() const {
+	return QRect();
+}
+
 bool Entity::isDying() const {
     return dying;
 }

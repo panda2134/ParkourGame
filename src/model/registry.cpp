@@ -22,6 +22,7 @@
 #include "entityplayerlike.h"
 #include "entityslime.h"
 #include "entitytnt.h"
+#include "entityxporb.h"
 
 #include <QDebug>
 
@@ -88,6 +89,7 @@ namespace registry {
 		REGISTER_ENTITY(EntityPlayer);
 		REGISTER_ENTITY(EntitySlime);
 		REGISTER_ENTITY(EntityTNT);
+		REGISTER_ENTITY(EntityXpOrb);
 		// * entity registry end   *
 
 #undef REGISTER_ENTITY

@@ -210,6 +210,7 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="model\entityxporb.cpp" />
     <ClCompile Include="model\blockoakplank.cpp" />
     <ClCompile Include="model\blockflower.cpp" />
     <ClCompile Include="model\blockmushroom.cpp" />
@@ -253,6 +254,7 @@
     <QtMoc Include="model\blockspring.h" />
     <QtMoc Include="model\entityblaze.h" />
     <QtMoc Include="model\entityfireball.h" />
+    <QtMoc Include="model\entityxporb.h" />
     <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />

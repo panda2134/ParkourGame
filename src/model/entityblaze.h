@@ -35,6 +35,8 @@ class EntityBlaze : public Entity
 
 	virtual int getSerializationVersion() const override;
 
+	bool blocked(float offsetY);
+
 public:
 	Q_INVOKABLE EntityBlaze();
 
@@ -51,6 +53,7 @@ public:
     QVector2D getTextureDimensions() override;
     BoundingBox getBoundingBox() const override;
 	double getMass() const override;
+	void damage(double val) override;
 };
 Q_DECLARE_METATYPE(EntityBlaze*)
 

@@ -24,6 +24,7 @@ namespace parkour {
 		double getMass() const override;
 		void collide(ICollidable &other, Direction dir) override;
 		void update() override;
+		void damage(double value) override;
 	};
 	Q_DECLARE_METATYPE(EntitySlime*)
 }

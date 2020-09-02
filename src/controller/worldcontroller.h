@@ -30,8 +30,6 @@ public:
     void loadTestWorld() const;
     void unloadWorld() const;
 
-	void executeSerializationTests();
-
 	void saveWorld();
 	void loadWorld();
 

@@ -158,6 +158,9 @@
     <ClCompile Include="model\blockoakplank.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\entityxporb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -323,6 +326,9 @@
       <Filter>Generated Files</Filter>
     </QtMoc>
     <QtMoc Include="model\entitytnt.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityxporb.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

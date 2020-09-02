@@ -1,6 +1,7 @@
 #include "entityblaze.h"
 #include "../utils/consts.h"
 #include "entityfireball.h"
+#include "entityxporb.h"
 #include "world.h"
 #include <QRandomGenerator>
 #include <QSharedPointer>
@@ -57,9 +58,10 @@ void EntityBlaze::update() {
     auto& world = World::instance();
     livingTicks++;
 
-    if (state == BlazeState::UP && (getPosition().y() < 1 || world.getBlock(QPoint(getPosition().x(), getPosition().y() - 1.0f)) != "air" || world.getBlock(QPoint(getPosition().x() - 1.0f, getPosition().y() - 1.0f)) != "air" || world.getBlock(QPoint(getPosition().x() + 1.0f, getPosition().y() - 1.0f)) != "air")) {
+    if (state == BlazeState::UP && (getPosition().y() < 1 || blocked(-1.0f))) {
         state = BlazeState::HIGHEST;
-    } else if (state == BlazeState::DOWN && (getPosition().y() >= WORLD_HEIGHT || world.getBlock(QPoint(getPosition().x(), getPosition().y() + 1.0f)) != "air" || world.getBlock(QPoint(getPosition().x() - 1.0f, getPosition().y() + 1.0f)) != "air" || world.getBlock(QPoint(getPosition().x() + 1.0f, getPosition().y() + 1.0f)) != "air")) {
+    } else if (state == BlazeState::DOWN && (getPosition().y() >= WORLD_HEIGHT 
+		|| blocked(1.0f) || blocked(2.0f) || blocked(3.0f))) {
         state = BlazeState::LOWEST;
     } else {
         // 在停住时，随机决定是否改变状态
@@ -123,6 +125,16 @@ BoundingBox EntityBlaze::getBoundingBox() const {
 double EntityBlaze::getMass() const {
 	return 1e10;
 }
+void EntityBlaze::damage(double val) {
+	Entity::damage(val);
+	if (this->getHp() < 0) {
+		auto gen = QRandomGenerator::global();
+		int count = gen->generate() % 3 + 10;
+		for (int i = 0; i < count; i++) {
+			EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 30);
+		}
+	}
+}
 void EntityBlaze::serializeCustomProps(QDataStream & out) const {
 	out << livingTicks << cooldown << state << attackQueue;
 }
@@ -131,5 +143,11 @@ void EntityBlaze::deserializeCustomProps(QDataStream & in) {
 }
 int EntityBlaze::getSerializationVersion() const {
 	return 1;
+}
+bool EntityBlaze::blocked(float offsetY) {
+	auto &world = World::instance();
+	return world.getBlock(QPoint(getPosition().x(), getPosition().y() + offsetY)) != "air"
+		|| world.getBlock(QPoint(getPosition().x() - 1.0f, getPosition().y() + offsetY)) != "air"
+		|| world.getBlock(QPoint(getPosition().x() + 1.0f, getPosition().y() + offsetY)) != "air";
 }
 }

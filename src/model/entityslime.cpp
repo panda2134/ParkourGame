@@ -1,5 +1,6 @@
 #include "entityslime.h"
 #include "entityplayer.h"
+#include "entityxporb.h"
 #include "world.h"
 #include <QRandomGenerator>
 
@@ -55,6 +56,16 @@ namespace parkour {
 					}
 					break;
 				}
+			}
+		}
+	}
+	void EntitySlime::damage(double value) {
+		EntityPlayerLike::damage(value);
+		if (this->getHp() < 0) {
+			auto gen = QRandomGenerator::global();
+			int count = gen->generate() % 3 + 1;
+			for (int i = 0; i < count; i++) {
+				EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 24);
 			}
 		}
 	}

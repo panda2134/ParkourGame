@@ -5,6 +5,7 @@
 #include "boundingbox.h"
 #include "icollidable.h"
 #include <QObject>
+#include <QRect>
 #include <QString>
 #include <QVector2D>
 #include <QDataStream>
@@ -98,6 +99,11 @@ public:
      * @return 游戏坐标下，材质渲染的大小
      */
     virtual QVector2D getTextureDimensions() = 0;
+	/**
+	 * @brief getTextureRenderRect 取得材质渲染的矩形（uv坐标下）
+	 * 若返回null矩形（默认值）则渲染整个材质
+	 */
+	virtual QRect getTextureRenderRect() const;
 
     bool isDying() const;
 

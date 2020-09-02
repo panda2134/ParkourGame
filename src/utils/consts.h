@@ -141,7 +141,7 @@ const double SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER = 0.20;
 /**
  * @brief SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER 用于摄像机移动，玩家仍然在屏幕内时，摄像机移动的终点内边距
  */
-const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.45;
+const double SCREEN_EDGE_INNER_WIDTH_MULTIPLIER = 0.6;
 
 /**
  * @brief TNT_EXPLOSION_POWER TNT爆炸强度

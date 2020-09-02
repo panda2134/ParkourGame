@@ -12,6 +12,7 @@ class EntityPlayer : public EntityPlayerLike {
 	const double GROUND_STOP_THRESHOLD = 3;
 	double maxHp;
 	bool shootFireballs;
+	int exp;
 
 	void serializeCustomProps(QDataStream & out) const override;
 	void deserializeCustomProps(QDataStream & in) override;
@@ -25,6 +26,8 @@ public:
 	void update() override;
 	void setMaxHp(double value);
 	double getMaxHp() const override;
+	int getExp() const;
+	void increaseExp(int delta);
 	bool isAbleToShootFireballs();
 	void setShootFireballs(bool value);
 };

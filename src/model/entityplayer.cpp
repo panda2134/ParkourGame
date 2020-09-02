@@ -6,6 +6,7 @@ EntityPlayer::EntityPlayer()
     : EntityPlayerLike() {
     this->setHp(20.0);
 	this->maxHp = 20.0;
+	this->exp = 0;
 	this->shootFireballs = false;
 }
 
@@ -51,6 +52,14 @@ void EntityPlayer::setMaxHp(double value) {
 
 double EntityPlayer::getMaxHp() const {
 	return maxHp;
+}
+
+int EntityPlayer::getExp() const {
+	return exp;
+}
+
+void EntityPlayer::increaseExp(int delta) {
+	exp += delta;
 }
 
 bool EntityPlayer::isAbleToShootFireballs() {

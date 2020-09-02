@@ -2,6 +2,7 @@
 #include "../model/blockdelegate.h"
 #include "../model/entitycreeper.h"
 #include "../model/entityplayer.h"
+#include "../model/entityblaze.h"
 #include "../model/entityslime.h"
 #include "../model/registry.h"
 #include "../model/world.h"
@@ -60,7 +61,7 @@ void WorldController::loadTestWorld() const {
 
     world.setSpawnPoint({ 29, 10 });
 
-    auto e = QSharedPointer<EntitySlime>::create();
+    QSharedPointer<Entity> e = QSharedPointer<EntitySlime>::create();
     e->placeBoundingBoxAt({ 12.0f, 14.0f });
     world.addEntity(e);
 
@@ -76,6 +77,14 @@ void WorldController::loadTestWorld() const {
 	e->placeBoundingBoxAt({ 6.0f, 14.0f });
 	world.addEntity(e);
 
+	e = QSharedPointer<EntityCreeper>::create();
+	e->placeBoundingBoxAt({ 2.0f, 14.0f });
+	world.addEntity(e);
+
+	e = QSharedPointer<EntityBlaze>::create();
+	e->placeBoundingBoxAt({ 0.0f, 14.0f });
+	world.addEntity(e);
+
     qDebug() << "test world loaded";
     world.setReady(true);
 }
@@ -87,26 +96,6 @@ void WorldController::unloadWorld() const {
     }
 	world.clear();
     world.setReady(false);
-}
-
-void WorldController::executeSerializationTests() {
-	auto &entityRegistry = registry::EntityRegistry::instance();
-	QByteArray arr;
-	QDataStream out(&arr, QIODevice::WriteOnly);
-	out.setVersion(QDataStream::Qt_5_14);
-	qDebug() << "try writing...";
-	entityRegistry.writeEntitiesToStream(out, World::instance().getEntities());
-
-	qDebug() << "try reading...";
-	QDataStream in(&arr, QIODevice::ReadOnly);
-	in.setVersion(QDataStream::Qt_5_14);
-	auto entities2 = entityRegistry.readEntitiesFromStream(in);
-	qDebug() << "got length" << entities2.size();
-
-	for (auto x : entities2) {
-		qDebug() << x->getName() << "pos:" << x->getPosition() << "v" << x->getVelocity();
-		qDebug() << "maxhp" << x->getMaxHp();
-	}
 }
 
 void WorldController::saveWorld() {
