@@ -19,6 +19,10 @@ namespace parkour {
 		
 		virtual void collide(QPoint, Entity&, Direction) override;
 		virtual QString getDisplayName() const override;
+
+
+		bool canPlaceAt(QPoint blockPos) const;
+		bool isSolid() const;
 	};
 
 }

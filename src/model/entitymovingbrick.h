@@ -16,12 +16,12 @@ class EntityMovingBrick : public EntityPlayerLike {
 	};
 
 	MovingState state = MovingState::STOP;
+	double initialY = -1.0;
 	int ticksLeft = -1;
 	double getWalkSpeed() const override;
 	void serializeCustomProps(QDataStream & out) const override;
 	void deserializeCustomProps(QDataStream & in) override;
 	int getSerializationVersion() const override;
-
 public:
 	Q_INVOKABLE EntityMovingBrick() = default;
     QString getName() const override;

@@ -17,10 +17,9 @@ BlockDelegate::BlockDelegate(QPoint blockPos_): blockPos(blockPos_) {
 
 BoundingBoxWorld BlockDelegate::getBoundingBoxWorld() const {
     QVector2D blockPosVect(blockPos);
-	Q_ASSERT(block != nullptr);
-    BoundingBox bbox = block->getBoundingBox();
-    BoundingBoxWorld ret(blockPosVect, bbox);
-    return ret;
+	BoundingBox bbox = block->getBoundingBox();
+	BoundingBoxWorld ret(blockPosVect, bbox);
+	return ret;
 }
 
 void BlockDelegate::collide(ICollidable& other, Direction dir) {
@@ -52,6 +51,10 @@ QString BlockDelegate::getName() const {
 
 QString BlockDelegate::getType() const {
 	return "block";
+}
+
+bool BlockDelegate::isNull() const {
+	return block == nullptr;
 }
 
 }

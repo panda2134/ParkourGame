@@ -39,7 +39,6 @@ public:
     void tick();
 	void shootFireballAt(QVector2D target);
     bool isAlive() const;
-	void loadMapEditInventory();
     /**
      * @brief getPlayer
      * @return 在存活且非濒临死亡的实体中寻找玩家，若无则返回nullptr

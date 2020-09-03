@@ -2,12 +2,15 @@
 #define GAMESCENE_H
 
 #include "iscene.h"
+#include "../../utils/consts.h"
+#include "gui/guibase.h"
 #include <QHash>
 #include <QByteArray>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QMatrix4x4>
 #include <QMouseEvent>
+#include <QSharedPointer>
 #include <QObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLDebugLogger>
@@ -40,8 +43,10 @@ class GameScene : public IScene {
 	};
 
 	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
+	const int HOTBAR_TIMEOUT = 1 * TICKS_PER_SEC / TICKS_PER_FRAME;
 
-	int hotbarIndex = 0;
+	int hotbarIndex = 0, hotbarTicksLeft = -1;
+	QSharedPointer<GUIBase> ingameGUI;
     CameraInfo cameraInfo;
     QOpenGLBuffer vertexBuf, blockTextureBuf;
     QOpenGLShaderProgram blockShader;
@@ -69,12 +74,16 @@ class GameScene : public IScene {
 
 	const QImage& getEntityTextureForPath(const QString &path);
 
+	void switchHotbar(int target);
+
 public:
     explicit GameScene(QObject* parent = nullptr);
     void calculate() override;
     void repaint(QPainter&, QOpenGLContext&) override;
+	void moveViewportToPlayerPosition();
     bool event(QEvent* evt) override;
     void initializeGL() override;
+	void closeGUI();
 };
 }
 

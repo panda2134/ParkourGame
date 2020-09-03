@@ -25,6 +25,8 @@ class EntityPlayer : public EntityPlayerLike {
 	void serializeCustomProps(QDataStream & out) const override;
 	void deserializeCustomProps(QDataStream & in) override;
 	int getSerializationVersion() const override;
+	
+	void loadInventory();
 public:
 	Q_INVOKABLE EntityPlayer();
     BoundingBox getBoundingBox() const override;

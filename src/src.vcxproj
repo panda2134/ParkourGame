@@ -210,6 +210,8 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="view\scene\gui\inventorygui.cpp" />
+    <ClCompile Include="view\scene\gui\guieventfilter.cpp" />
     <ClCompile Include="model\item.cpp" />
     <ClCompile Include="model\entityxporb.cpp" />
     <ClCompile Include="model\blockoakplank.cpp" />
@@ -243,6 +245,7 @@
     <ClCompile Include="utils\geometryhelper.cpp" />
     <ClCompile Include="utils\glhelper.cpp" />
     <ClCompile Include="model\icollidable.cpp" />
+    <ClCompile Include="view\scene\gui\guibase.cpp" />
     <ClCompile Include="view\scene\iscene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="view\mainwindow.cpp" />
@@ -253,12 +256,15 @@
     <ClCompile Include="controller\worldcontroller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="view\scene\gui\guibase.h" />
     <QtMoc Include="model\blockspike.h" />
     <QtMoc Include="model\blockspring.h" />
     <QtMoc Include="model\entityblaze.h" />
     <QtMoc Include="model\entityfireball.h" />
     <QtMoc Include="model\entityxporb.h" />
     <QtMoc Include="model\item.h" />
+    <QtMoc Include="view\scene\gui\guieventfilter.h" />
+    <QtMoc Include="view\scene\gui\inventorygui.h" />
     <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />

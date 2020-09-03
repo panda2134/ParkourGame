@@ -1,4 +1,6 @@
 ﻿#include "blockspike.h"
+#include "registry.h"
+#include "world.h"
 
 namespace parkour {
 BlockSpike::BlockSpike() {
@@ -30,5 +32,14 @@ void BlockSpike::collide(QPoint blockPos, Entity& entity, Direction dir) {
     if (dir == Direction::UP) {
         onStand(blockPos, entity);
     }
+}
+
+bool BlockSpike::canPlaceAt(QPoint blockPos) const {
+	auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
+	return block != nullptr && block->isSolid();
+}
+
+bool BlockSpike::isSolid() const {
+	return false;
 }
 }

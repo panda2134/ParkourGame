@@ -9,6 +9,8 @@ namespace parkour {
 	class EntityXpOrb : public Entity {
 		Q_OBJECT
 
+		const double MAX_VELOCITY = 20.0, ATTRACT_DISTANCE = 2.0;
+
 		int xp, tick;
 
 	public:

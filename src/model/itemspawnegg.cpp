@@ -35,8 +35,7 @@ namespace parkour {
 		entity->placeBoundingBoxAt(clickPos);
 		// 检查是否和方块碰撞
 		for (const auto &anotherEntity : world.getEntities()) {
-			auto dir = anotherEntity->checkCollideWith(*entity);
-			if (dir != Direction::UNKNOWN) {
+			if (BoundingBoxWorld::intersect(entity->getBoundingBoxWorld(), anotherEntity->getBoundingBoxWorld())) {
 				qDebug() << "cannot spawn: collide with entity";
 				return;
 			}
@@ -45,7 +44,9 @@ namespace parkour {
 		int range = std::max({ ENTITY_COLLISION_RANGE, 1.0 * bbox.dimensions.x(), 1.0 * bbox.dimensions.y() }) + 1;
 		for (int i = clickPos[0] - range; i <= clickPos[0] + range; i++) {
 			for (int j = clickPos[1] - range; j <= clickPos[1] + range; j++) {
-				if (BlockDelegate({ i, j }).checkCollideWith(*entity) != Direction::UNKNOWN) {
+				auto blockDelegate = BlockDelegate({ i, j });
+
+				if (! blockDelegate.isNull() && BoundingBoxWorld::intersect(entity->getBoundingBoxWorld(), blockDelegate.getBoundingBoxWorld())) {
 					qDebug() << "cannot spawn: collide with block" << i << j;
 					return;
 				}

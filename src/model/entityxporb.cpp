@@ -1,6 +1,7 @@
 ﻿#include "entityxporb.h"
 #include "entityplayer.h"
 #include "world.h"
+#include <cmath>
 #include <QSharedPointer>
 #include <QRandomGenerator>
 
@@ -39,6 +40,17 @@ namespace parkour {
 		const float DRAG_FACTOR = 0.1;
 		if (isOnFloor() && tick > TICKS_PER_SEC / 4.0f) {
 			setVelocity(getVelocity() * DRAG_FACTOR);
+		}
+		auto &world = World::instance();
+		for (auto entity : world.getEntities()) {
+			if (entity->getName() == "player") {
+				auto playerPos = entity->getBoundingBoxWorld().getCenter();
+				auto positionVec = (playerPos - getPosition());
+				if (positionVec.lengthSquared() < ATTRACT_DISTANCE * ATTRACT_DISTANCE) {
+					setVelocity(positionVec.normalized() * MAX_VELOCITY / (exp(positionVec.length())));
+				}
+				break;
+			}
 		}
 	}
 	void EntityXpOrb::collide(ICollidable & other, Direction dir) {

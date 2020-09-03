@@ -308,8 +308,9 @@ void WorldController::tick() const {
 
 				auto m1 = entity->getMass(), m2 = anotherEntity->getMass();
 
-				auto v1 = (m1 - m2) / (m1 + m2) * entity->getVelocity(),
-					v2 = (2 * m1) / (m1 + m2) * anotherEntity->getVelocity();
+				auto p = m1 * entity->getVelocity() + m2 * anotherEntity->getVelocity();
+
+				auto v1 = p / m1, v2 = p / m2;
 
 				switch (faceOfEntity) {
 				case Direction::UP: case Direction::DOWN:

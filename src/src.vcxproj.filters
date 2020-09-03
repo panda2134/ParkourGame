@@ -170,6 +170,15 @@
     <ClCompile Include="model\itemspawnegg.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="view\scene\gui\guibase.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\guieventfilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\inventorygui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -347,6 +356,15 @@
     </QtMoc>
     <QtMoc Include="model\itemspawnegg.h">
       <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guibase.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guieventfilter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\inventorygui.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

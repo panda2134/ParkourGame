@@ -1,4 +1,6 @@
 ﻿#include "blocksaw.h"
+#include "registry.h"
+#include "world.h"
 #include "entityplayerlike.h"
 
 namespace parkour {
@@ -31,6 +33,13 @@ namespace parkour {
 		} catch (std::bad_cast) {
 			/* not player-like, do nothing */
 		}
+	}
+	bool BlockSaw::canPlaceAt(QPoint blockPos) const {
+		auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
+		return block != nullptr && block->isSolid();
+	}
+	bool BlockSaw::isSolid() const {
+		return false;
 	}
 	QString BlockSaw::getDisplayName() const {
 		return "锯片";

@@ -11,6 +11,14 @@ void Block::onExplosion(QPoint, double) {
 
 void Block::onStand(QPoint blockPos, Entity & entity) {}
 
+bool Block::canPlaceAt(QPoint) const {
+	return true;
+}
+
+bool Block::isSolid() const {
+	return true;
+}
+
 BoundingBox Block::getBoundingBox() const {
     BoundingBox ret;
     ret.offset = QVector2D(.0, .0);

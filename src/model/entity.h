@@ -76,13 +76,13 @@ public:
     virtual ~Entity() {};
 
     QVector2D getPosition() const;
-    void setPosition(const QVector2D& value);
+	void setPosition(const QVector2D& value);
 
-    QVector2D getVelocity() const override;
-    void setVelocity(const QVector2D& value) override;
+	QVector2D getVelocity() const override;
+	void setVelocity(const QVector2D& value) override;
 
-    QVector2D getAcceleration() const;
-    void setAcceleration(const QVector2D& value);
+	QVector2D getAcceleration() const;
+	void setAcceleration(const QVector2D& value);
 
     double getHp() const;
     void setHp(double value);

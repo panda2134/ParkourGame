@@ -31,6 +31,7 @@ public:
     bool isAir() { return block == nullptr; }
 	virtual QString getName() const override;
 	virtual QString getType() const override;
+	virtual bool isNull() const;
 };
 
 }

@@ -29,7 +29,9 @@ public:
     void onStand(QPoint blockPos, Entity& entity) override;
     BoundingBox getBoundingBox() const override;
 	virtual QString getDisplayName() const override;
-	void collide(QPoint, Entity&, Direction) override;
+	void collide(QPoint, Entity&, Direction) override; 
+	bool canPlaceAt(QPoint blockPos) const;
+	bool isSolid() const;
 };
 }
 

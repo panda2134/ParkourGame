@@ -1,10 +1,13 @@
 #include "gamescene.h"
+#include "gui/guieventfilter.h"
 #include "../../controller/worldcontroller.h"
 #include "../../model/registry.h"
 #include "../../model/world.h"
 #include "../../utils/askeyvaluerange.h"
 #include "../../utils/consts.h"
 #include "../../utils/glhelper.h"
+#include "gui/inventorygui.h"
+#include <QApplication>
 #include <QEasingCurve>
 #include <QtMath>
 
@@ -81,9 +84,11 @@ bool GameScene::shouldRenderObject(float xMin, float xMax) {
 }
 
 void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
-	Q_UNUSED(ctx)
 
-    const int PRELOAD_BLOCK_COUNT = 5;
+
+	const double marginTop = p.device()->height() - WORLD_HEIGHT * blockSizeOnScreen;
+	// 把留白放置于上方
+	p.translate(0, marginTop);
 
     auto& world = World::instance();
     auto& blockRegistry = registry::BlockRegistry::instance();
@@ -125,6 +130,8 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     glBlockTexture.setMinificationFilter(QOpenGLTexture::Nearest);
     glBlockTexture.setMagnificationFilter(QOpenGLTexture::Nearest);
     glBlockTexture.setWrapMode(QOpenGLTexture::ClampToEdge);
+
+	const int PRELOAD_BLOCK_COUNT = 5;
     for (int i = cameraInfo.getXMinOfViewport() / blockSizeOnScreen - PRELOAD_BLOCK_COUNT;
          i <= (cameraInfo.getXMinOfViewport() + deviceWidth) / blockSizeOnScreen + PRELOAD_BLOCK_COUNT;
          i++) {
@@ -168,17 +175,12 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     auto& dyingEntities = world.getDyingEntities();
 
     for (const auto& entity : entities) {
-        const auto& bbox = entity->getBoundingBoxWorld();
         const auto& position = entity->getPosition();
 		const auto& velocity = entity->getVelocity();
         const auto& texBox = entity->getTextureDimensions();
         if (!shouldRenderObject(position.x(), position.x() + texBox.x())) {
             continue;
         }
-        float x1 = bbox.getMinX(),
-              x2 = bbox.getMaxX(),
-              y1 = bbox.getMinY(),
-              y2 = bbox.getMaxY();
 		const auto &uvRect = entity->getTextureRenderRect(); 
 		// texture box
 		auto targetTextureRect = QRectF(QPointF(position.x(), position.y()) * blockSizeOnScreen, QSizeF(texBox.x(), texBox.y()) * blockSizeOnScreen);
@@ -188,11 +190,6 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
 		} else {
 			p.drawImage(targetTextureRect, entityTexture, uvRect);
 		}
-        // hit box
-        QRect hitboxRect(QPoint(x1 * blockSizeOnScreen, y1 * blockSizeOnScreen),
-            QPoint(x2 * blockSizeOnScreen, y2 * blockSizeOnScreen));
-        p.setPen(Qt::blue);
-        p.drawRect(hitboxRect);
         // hp? flying? pos? velocity?
         p.setPen(Qt::red);
         QFont font("Consolas");
@@ -230,6 +227,9 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
 		}
         p.setTransform(transform.inverted(), true);
     }
+
+	// 撤销留白
+	p.translate(0, -marginTop);
 }
 
 void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
@@ -259,23 +259,45 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
 			QRect hotbarSourceRect(QPoint(1, 11), QSize(180, 20));
 			const double ratio = 0.4 * deviceWidth / hotbarSourceRect.width();
 			QPoint hotbarTargetStart;
+
+			// draw hotbar texture
 			hotbarTargetStart.setX(deviceWidth / 2 - hotbarSourceRect.width() * ratio / 2);
 			hotbarTargetStart.setY(deviceHeight - hotbarSourceRect.height() * ratio);
 			hotbarTargetRect = QRect(hotbarTargetStart, hotbarSourceRect.size() * ratio);
 			p.drawImage(hotbarTargetRect, widgetImg, hotbarSourceRect);
 
+			// draw hotbar overlay
 			QRect hotbarOverlaySourceRect(QPoint(0, 33), QSize(24, 22));
 			QPoint hotbarOverlayTargetStart;
 			hotbarOverlayTargetStart.setX(hotbarTargetStart.x() - 2 * ratio + 20 * hotbarIndex * ratio);
 			hotbarOverlayTargetStart.setY(hotbarTargetStart.y());
 			p.drawImage(QRect(hotbarOverlayTargetStart, hotbarOverlaySourceRect.size() * ratio), widgetImg, hotbarOverlaySourceRect);
 
+			// draw hotbar items
 			QSharedPointer<Item> *inventory = player->getInventory();
 			for (int i = 0; i < 9; i++) {
+				if (inventory[3 * 9 + i] == nullptr) {
+					continue;
+				}
 				int delta = 20 * i * ratio;
 				QPoint itemTargetStart(hotbarTargetStart.x() + 3 * ratio + 20 * i * ratio, hotbarTargetStart.y() + 3 * ratio);
 				auto itemTargetSize = QSize(15, 15) * ratio;
 				p.drawImage(QRect(itemTargetStart, itemTargetSize), inventory[3 * 9 + i]->getIcon());
+			}
+
+			// draw item name
+			if ((--hotbarTicksLeft) >= 0) {
+				const int fontSize = 14.0 / 854.0 * deviceWidth, marginBottom = 5 / 854.0 * deviceWidth;
+				auto item = inventory[3 * 9 + hotbarIndex];
+				if (item != nullptr) {
+					QFont simsun("宋体");
+					simsun.setPixelSize(fontSize);
+					p.setFont(simsun);
+					const int alpha = 255 * (QEasingCurve(QEasingCurve::OutCubic).valueForProgress(hotbarTicksLeft * 1.0 / HOTBAR_TIMEOUT));
+					p.setPen(QColor(255, 255, 255, alpha));
+					p.drawText(QRect(hotbarTargetStart - QPoint(0, fontSize + marginBottom),
+						QSize(hotbarTargetRect.size().width(), fontSize)), item->getDisplayName(), Qt::AlignCenter | Qt::AlignHCenter);
+				}
 			}
 		}
 	}
@@ -293,12 +315,18 @@ const QImage & GameScene::getEntityTextureForPath(const QString & path) {
 	}
 }
 
+void GameScene::switchHotbar(int target) {
+	hotbarIndex = target;
+	hotbarTicksLeft = HOTBAR_TIMEOUT;
+}
+
 GameScene::GameScene(QObject* parent)
     : IScene(parent)
     , glBlockTexture(QOpenGLTexture::Target2D)
     , blockTextureImg(TEXTURE_MAP_SIZE, TEXTURE_MAP_SIZE, QImage::Format::Format_RGBA8888) {
     qDebug() << "loading test world...";
-    WorldController::instance().loadTestWorld();
+	auto &world = WorldController::instance();
+    world.loadTestWorld();
     qDebug() << "loading texture...";
     loadTexture();
 }
@@ -311,48 +339,53 @@ void GameScene::calculate() {
 
 void GameScene::repaint(QPainter& p, QOpenGLContext& ctx) {
 
-	drawBackground(p);
-
-    auto playerController = WorldController::instance().getPlayerController();
-
 	deviceWidth = p.device()->width();
 	deviceHeight = p.device()->height();
     blockSizeOnScreen = deviceHeight / BLOCK_TEXTURE_SIZE; // 屏幕坐标 / 游戏坐标
+	Q_UNUSED(ctx)
 
-    if (playerController->isAlive() && !cameraInfo.isMoving() && mode == SceneMode::GAMING) {
-        auto player = playerController->getPlayer();
-        const float playerXMin = player->getPosition().x() * blockSizeOnScreen;
-        const float playerXMax = playerXMin + player->getTextureDimensions().x() * blockSizeOnScreen;
-        const float xMinOfViewport = cameraInfo.getXMinOfViewport();
-        const float xMaxOfViewport = xMinOfViewport + deviceWidth;
-        const float screenEdgeOuter = SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER * deviceWidth;
-        const float screenEdgeInner = SCREEN_EDGE_INNER_WIDTH_MULTIPLIER * deviceWidth;
-
-        if (playerXMax < xMinOfViewport + screenEdgeOuter) { // 玩家在屏幕规定范围左方
-            cameraInfo.moveCameraTo(playerXMin - screenEdgeInner, xMinOfViewport - playerXMax > deviceWidth / 2);
-        } else if (playerXMin > xMaxOfViewport - screenEdgeOuter) { // 玩家在屏幕规定范围右方
-            cameraInfo.moveCameraTo(playerXMax - deviceWidth + screenEdgeInner, playerXMin - xMaxOfViewport > deviceWidth / 2);
-        }
-    }
+	drawBackground(p);
+	if (!cameraInfo.isMoving() && mode == SceneMode::GAMING) {
+		moveViewportToPlayerPosition();
+	}
 
     // 计算一帧的视口改变，并且渲染此视口改变
     cameraInfo.updateViewport();
-
     p.translate(-cameraInfo.getXMinOfViewport(), 0);
-    const double marginTop = p.device()->height() - WORLD_HEIGHT * blockSizeOnScreen;
-    // 把留白放置于上方
-    p.translate(0, marginTop);
 
     // 渲染世界
     repaintWorld(p, ctx);
 
-    // 撤销留白
-    p.translate(0, -marginTop);
     // 撤销视口改变
     p.translate(cameraInfo.getXMinOfViewport(), 0);
 
     // 渲染HUD
     repaintHud(p, ctx);
+
+	// 渲染GUI
+	if (ingameGUI != nullptr) {
+		p.fillRect(0, 0, deviceWidth, deviceHeight, QColor(0, 0, 0, 200));
+		ingameGUI->paintGUI(p);
+	}
+}
+
+void GameScene::moveViewportToPlayerPosition() {
+	auto playerController = WorldController::instance().getPlayerController();
+	if (playerController->isAlive()) {
+		auto player = playerController->getPlayer();
+		const float playerXMin = player->getPosition().x() * blockSizeOnScreen;
+		const float playerXMax = playerXMin + player->getTextureDimensions().x() * blockSizeOnScreen;
+		const float xMinOfViewport = cameraInfo.getXMinOfViewport();
+		const float xMaxOfViewport = xMinOfViewport + deviceWidth;
+		const float screenEdgeOuter = SCREEN_EDGE_OUTER_WIDTH_MULTIPLIER * deviceWidth;
+		const float screenEdgeInner = SCREEN_EDGE_INNER_WIDTH_MULTIPLIER * deviceWidth;
+
+		if (playerXMax < xMinOfViewport + screenEdgeOuter) { // 玩家在屏幕规定范围左方
+			cameraInfo.moveCameraTo(playerXMin - screenEdgeInner, xMinOfViewport - playerXMax > deviceWidth / 2);
+		} else if (playerXMin > xMaxOfViewport - screenEdgeOuter) { // 玩家在屏幕规定范围右方
+			cameraInfo.moveCameraTo(playerXMax - deviceWidth + screenEdgeInner, playerXMin - xMaxOfViewport > deviceWidth / 2);
+		}
+	}
 }
 
 bool GameScene::event(QEvent* event) {
@@ -365,6 +398,7 @@ bool GameScene::event(QEvent* event) {
 				playerController->setGoingLeft(true);
 				break;
 			case Qt::Key_S:
+			case Qt::Key_Shift:
 				playerController->setSneakingExpected(true);
 				break;
 			case Qt::Key_D:
@@ -379,6 +413,9 @@ bool GameScene::event(QEvent* event) {
 			case Qt::Key_P:
 				WorldController::instance().loadWorld();
 				break;
+			case Qt::Key_C:
+				mode = SceneMode::MAPEDIT;
+				break;
 			}
 		} else if (event->type() == QEvent::KeyRelease) {
 			const auto key = static_cast<QKeyEvent*>(event)->key();
@@ -387,6 +424,7 @@ bool GameScene::event(QEvent* event) {
 				playerController->setGoingLeft(false);
 				break;
 			case Qt::Key_S:
+			case Qt::Key_Shift:
 				playerController->setSneakingExpected(false);
 				break;
 			case Qt::Key_D:
@@ -394,10 +432,6 @@ bool GameScene::event(QEvent* event) {
 				break;
 			case Qt::Key_W:
 				playerController->setReadyJump(false);
-				break;
-			case Qt::Key_C:
-				mode = SceneMode::MAPEDIT;
-				playerController->loadMapEditInventory();
 				break;
 			}
 		} else if (event->type() == QEvent::MouseButtonPress) {
@@ -412,60 +446,99 @@ bool GameScene::event(QEvent* event) {
 		return true;
 	} else {
 		// 地图编辑模式
-		if (event->type() == QEvent::KeyRelease) {
-			const auto key = static_cast<QKeyEvent*>(event)->key();
-			switch (key) {
-			case Qt::Key_C:
-				mode = SceneMode::GAMING;
-				break;
-			case Qt::Key_A:
-				cameraInfo.moveCameraTo(cameraInfo.getXMinOfViewport() - 0.5 * deviceWidth);
-				break;
-			case Qt::Key_D:
-				cameraInfo.moveCameraTo(cameraInfo.getXMinOfViewport() + 0.5 * deviceWidth);
-				break;
-			}
-		} else if (event->type() == QEvent::Wheel) {
-			const int HOTBAR_SIZE = 9;
-			const auto deg = static_cast<QWheelEvent*>(event)->angleDelta() / 8;
-			const int movement = -deg.y() / 15;
-			hotbarIndex = (hotbarIndex + (movement % HOTBAR_SIZE) + HOTBAR_SIZE) % HOTBAR_SIZE;
-		} else if (event->type() == QEvent::MouseButtonPress) {
-			const auto mouseEvent = static_cast<QMouseEvent*>(event);
-			int screenX = mouseEvent->x(), screenY = mouseEvent->y();
-			// 计算点击位置的游戏坐标
-			const auto gameCoords = QVector2D(screenX + cameraInfo.getXMinOfViewport(), screenY) / blockSizeOnScreen;
-			qDebug() << "edit" << gameCoords;
-			auto &world = World::instance();
-			auto player = WorldController::instance().getPlayerController()->getPlayer();
-			if (!hotbarTargetRect.contains(screenX, screenY)) {
-				if (player != nullptr) {
-					if (mouseEvent->button() == Qt::MouseButton::LeftButton) {
-						bool found = false;
-						for (auto &entity : world.getEntities()) {
-							auto bbox = entity->getBoundingBoxWorld();
-							auto mouseBbox = BoundingBoxWorld(gameCoords, BoundingBox{ {.0f, .0f}, {1.0f, 1.0f} });
-							if (BoundingBoxWorld::intersect(bbox, mouseBbox)) {
-								found = true;
-								world.removeEntity(entity);
-								break;
+		if (ingameGUI == nullptr) {
+			static QSharedPointer<GUIEventFilter> guiEventFilter;
+			if (event->type() == QEvent::KeyRelease) {
+				const auto key = static_cast<QKeyEvent*>(event)->key();
+				switch (key) {
+				case Qt::Key_A:
+					cameraInfo.moveCameraTo(cameraInfo.getXMinOfViewport() - 0.5 * deviceWidth);
+					break;
+				case Qt::Key_D:
+					cameraInfo.moveCameraTo(cameraInfo.getXMinOfViewport() + 0.5 * deviceWidth);
+					break;
+				}
+			} else if (event->type() == QEvent::KeyPress) {
+				const auto key = static_cast<QKeyEvent*>(event)->key();
+				switch (key) {
+				case Qt::Key_E: // inventory
+					ingameGUI = QSharedPointer<InventoryGUI>::create();
+					guiEventFilter = QSharedPointer<GUIEventFilter>::create(*this, Qt::Key_E);
+					ingameGUI->installEventFilter(guiEventFilter.data());
+					break;
+				case Qt::Key_C:
+					mode = SceneMode::GAMING;
+					break;
+#define HANDLE_HOTBAR(x) case Qt::Key_##x: switchHotbar(x-1); break;
+				HANDLE_HOTBAR(1)
+				HANDLE_HOTBAR(2)
+				HANDLE_HOTBAR(3)
+				HANDLE_HOTBAR(4)
+				HANDLE_HOTBAR(5)
+				HANDLE_HOTBAR(6)
+				HANDLE_HOTBAR(7)
+				HANDLE_HOTBAR(8)
+				HANDLE_HOTBAR(9)
+#undef HANDLE_HOTBAR
+				}
+			} else if (event->type() == QEvent::Wheel) {
+				const int HOTBAR_SIZE = 9;
+				const auto deg = static_cast<QWheelEvent*>(event)->angleDelta() / 8;
+				const int movement = -deg.y() / 15;
+				switchHotbar((hotbarIndex + (movement % HOTBAR_SIZE) + HOTBAR_SIZE) % HOTBAR_SIZE);
+			} else if (event->type() == QEvent::MouseButtonPress) {
+				const auto mouseEvent = static_cast<QMouseEvent*>(event);
+				int screenX = mouseEvent->x(), screenY = mouseEvent->y();
+				// 计算点击位置的游戏坐标
+				const auto gameCoords = QVector2D(screenX + cameraInfo.getXMinOfViewport(), screenY) / blockSizeOnScreen;
+				QPoint blockPos{ qFloor(gameCoords.x()), qFloor(gameCoords.y()) };
+				auto &world = World::instance();
+				auto player = WorldController::instance().getPlayerController()->getPlayer();
+				if (!hotbarTargetRect.contains(screenX, screenY)) {
+					if (player != nullptr) {
+						if (mouseEvent->button() == Qt::MouseButton::LeftButton) {
+							bool found = false;
+							for (auto &entity : world.getEntities()) {
+								if (entity->getName() == "player") {
+									continue;
+								}
+								auto bbox = entity->getBoundingBoxWorld();
+								auto mouseBbox = BoundingBoxWorld(gameCoords, BoundingBox{ {.0f, .0f}, {1.0f, 1.0f} });
+								if (BoundingBoxWorld::intersect(bbox, mouseBbox)) {
+									found = true;
+									world.removeEntity(entity);
+									break;
+								}
+							}
+
+							if (!found) {
+								world.setBlock(blockPos, "air");
+							}
+
+						} else if (mouseEvent->button() == Qt::MouseButton::RightButton) {
+							auto item = player->getInventory()[3 * 9 + hotbarIndex];
+							if (item != nullptr) {
+								item->onUse(gameCoords);
 							}
 						}
-
-						if (!found) {
-							world.setBlock({ qFloor(gameCoords.x()), qFloor(gameCoords.y()) }, "air");
+					}
+					for (int i = blockPos.x() - 1; i <= blockPos.x() + 1; i++) {
+						for (int j = blockPos.y() - 1; j <= blockPos.y() + 1; j++) {
+							const auto &blockName = world.getBlock({ i, j });
+							if (blockName != "air" && !registry::BlockRegistry::instance().getBlockByName(blockName)->canPlaceAt({ i, j })) {
+								world.setBlock({ i, j }, "air");
+							}
 						}
-					} else if (mouseEvent->button() == Qt::MouseButton::RightButton) {
-						player->getInventory()[3 * 9 + hotbarIndex]->onUse(gameCoords);
+					}
+				} else {
+					if (mouseEvent->button() == Qt::MouseButton::LeftButton || mouseEvent->button() == Qt::MouseButton::RightButton) {
+						int widthPerSlot = hotbarTargetRect.width() / 9;
+						switchHotbar(std::clamp((screenX - hotbarTargetRect.left()) / widthPerSlot, 0, 8));
 					}
 				}
-			} else {
-				if (mouseEvent->button() == Qt::MouseButton::LeftButton || mouseEvent->button() == Qt::MouseButton::RightButton) {
-					Q_ASSERT(hotbarTargetRect.width() % 9 == 0);
-					int widthPerSlot = hotbarTargetRect.width() / 9;
-					hotbarIndex = (screenX - hotbarTargetRect.left()) / widthPerSlot;
-				}
 			}
+		} else {
+			QApplication::sendEvent(ingameGUI.data(), event);
 		}
 		return true;
 	}
@@ -505,6 +578,12 @@ void GameScene::initializeGL() {
     if (!blockShader.link()) {
         throw "failed to link shaders";
     }
+}
+
+void GameScene::closeGUI() {
+	qDebug("close gui");
+	ingameGUI = nullptr;
+	qDebug() << ingameGUI;
 }
 
 float GameScene::CameraInfo::getXMinOfViewport() const {

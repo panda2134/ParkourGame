@@ -1,6 +1,7 @@
 #include "gamerenderglwidget.h"
 #include "../utils/consts.h"
 #include "./scene/gamescene.h"
+#include <QApplication>
 using namespace parkour;
 
 GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
@@ -43,14 +44,13 @@ bool GameRenderGLWidget::event(QEvent* e) {
         case QEvent::MouseMove: // 只允许场景直接监听键盘鼠标相关事件
         case QEvent::MouseButtonPress:
         case QEvent::MouseButtonRelease:
-        case QEvent::MouseButtonDblClick:
         case QEvent::KeyPress:
         case QEvent::KeyRelease:
 		case QEvent::Wheel:
 		case QEvent::DragMove:
 		case QEvent::DragEnter:
 		case QEvent::DragLeave:
-            return currentScene->event(e);
+			return QApplication::sendEvent(currentScene.data(), e);
         default:
             break;
         }

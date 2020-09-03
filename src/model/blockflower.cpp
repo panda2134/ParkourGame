@@ -1,6 +1,7 @@
 ﻿#include "blockflower.h"
 #include "entityplayer.h"
 #include "world.h"
+#include "registry.h"
 
 namespace parkour {
 	QString BlockFlower::getName() const {
@@ -23,6 +24,13 @@ namespace parkour {
 			player.setShootFireballs(true);
 			World::instance().setBlock(blockPos, "air");
 		}
+	}
+	bool BlockFlower::canPlaceAt(QPoint blockPos) const {
+		auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
+		return block != nullptr && (block->getName() == "dirt" || block->getName() == "grass");
+	}
+	bool BlockFlower::isSolid() const {
+		return false;
 	}
 	QString BlockFlower::getDisplayName() const {
 		return "花";

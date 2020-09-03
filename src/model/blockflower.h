@@ -14,6 +14,9 @@ namespace parkour {
 		BoundingBox getBoundingBox() const override;
 		void collide(QPoint blockPos, Entity &entity, Direction dir);
 
+		virtual bool canPlaceAt(QPoint) const override;
+		virtual bool isSolid() const;
+
 		virtual QString getDisplayName() const override;
 	};
 }

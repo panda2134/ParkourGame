@@ -31,6 +31,8 @@ public:
     virtual void onExplosion(QPoint blockPos, double power);
 	virtual void onStand(QPoint blockPos, Entity& entity);
     virtual void collide(QPoint, Entity&, Direction) {};
+	virtual bool canPlaceAt(QPoint) const;
+	virtual bool isSolid() const;
     virtual BoundingBox getBoundingBox() const;
 signals:
 };

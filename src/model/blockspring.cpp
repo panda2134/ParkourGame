@@ -1,4 +1,6 @@
 ﻿#include "blockspring.h"
+#include "registry.h"
+#include "world.h"
 
 namespace parkour {
 BlockSpring::BlockSpring() {
@@ -44,6 +46,15 @@ void BlockSpring::collide(QPoint blockPos, Entity& entity, Direction dir) {
         qDebug() << "Collide up";
         onStand(blockPos, entity);
     }
+}
+
+bool BlockSpring::canPlaceAt(QPoint blockPos) const {
+	auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
+	return block != nullptr && block->isSolid();
+}
+
+bool BlockSpring::isSolid() const {
+	return false;
 }
 
 }

@@ -55,7 +55,7 @@ QString EntityMovingBrick::getDisplayName() const {
 	return "可移动砖块";
 }
 double EntityMovingBrick::getMass() const {
-	return 1e10;
+	return 1;
 }
 void EntityMovingBrick::collide(ICollidable & other, Direction dir) {
 	if (dir == Direction::LEFT && state != MovingState::RIGHT) {

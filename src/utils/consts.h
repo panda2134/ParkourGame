@@ -30,7 +30,7 @@ const double GRAVITY = 20;
 /**
  * @brief INTERSECT_DELTA 计算实体站立的阈值
  */
-const double INTERSECT_DELTA = 0.05;
+const double INTERSECT_DELTA = 0.08;
 
 /**
  * @brief MAX_VELOCITY 速度分量的最大值

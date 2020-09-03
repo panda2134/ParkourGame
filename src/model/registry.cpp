@@ -169,7 +169,7 @@ namespace registry {
 		));
 		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
 			"parkour::EntityMovingBrick",
-			":/assets/entities/moving_brick.png"
+			":/assets/blocks/stone_brick.png"
 		));
 
 		// debug
