@@ -9,7 +9,7 @@ namespace parkour {
 	class EntityXpOrb : public Entity {
 		Q_OBJECT
 
-		const double MAX_VELOCITY = 20.0, ATTRACT_DISTANCE = 2.0;
+		const double MAX_VELOCITY = 20.0, ATTRACT_DISTANCE = 4.0, MERGE_DISTANCE = 0.5;
 
 		int xp, tick;
 
@@ -26,7 +26,7 @@ namespace parkour {
 		virtual QRect getTextureRenderRect() const override;
 		virtual void update() override;
 		virtual void collide(ICollidable &other, Direction dir) override;
-		virtual bool showDeathAnimation() const override;
+		virtual bool showDeathAnimationAndInfo() const override;
 		virtual bool isAffectedByExplosionWave() const override;
 		virtual void damage(double val) override;
 		virtual double getMass() const override;

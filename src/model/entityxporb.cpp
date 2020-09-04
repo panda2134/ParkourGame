@@ -36,21 +36,33 @@ namespace parkour {
 		return QRect(QPoint(level * size, frame * size), QSize(size, size));
 	}
 	void EntityXpOrb::update() {
-		++tick;
-		const float DRAG_FACTOR = 0.1;
-		if (isOnFloor() && tick > TICKS_PER_SEC / 4.0f) {
-			setVelocity(getVelocity() * DRAG_FACTOR);
-		}
-		auto &world = World::instance();
-		for (auto entity : world.getEntities()) {
-			if (entity->getName() == "player") {
-				auto playerPos = entity->getBoundingBoxWorld().getCenter();
-				auto positionVec = (playerPos - getPosition());
-				if (positionVec.lengthSquared() < ATTRACT_DISTANCE * ATTRACT_DISTANCE) {
-					setVelocity(positionVec.normalized() * MAX_VELOCITY / (exp(positionVec.length())));
-				}
-				break;
+		if (xp > 0) {
+			++tick;
+			const float DRAG_FACTOR = 0.1;
+			if (isOnFloor() && tick > TICKS_PER_SEC / 4.0f) {
+				setVelocity(getVelocity() * DRAG_FACTOR);
 			}
+			auto &world = World::instance();
+			auto origXp = this->xp;
+			for (auto entity : world.getEntities()) {
+				if (entity->getName() == "player") {
+					auto playerPos = entity->getBoundingBoxWorld().getCenter();
+					auto positionVec = (playerPos - getPosition());
+					if (positionVec.lengthSquared() < ATTRACT_DISTANCE * ATTRACT_DISTANCE) {
+						setVelocity(getVelocity() + positionVec.normalized() * MAX_VELOCITY / (exp(positionVec.length())));
+					}
+				} else if (entity->getName() == "xp_orb") {
+					if ((getPosition() - entity->getPosition()).lengthSquared() < MERGE_DISTANCE * MERGE_DISTANCE) {
+						auto other = entity.staticCast<EntityXpOrb>();
+						if (other->xp < origXp) {
+							this->xp += other->xp;
+							other->xp = 0;
+						}
+					}
+				}
+			}
+		} else {
+			this->setHp(-1);
 		}
 	}
 	void EntityXpOrb::collide(ICollidable & other, Direction dir) {
@@ -60,7 +72,7 @@ namespace parkour {
 			this->setHp(-1);
 		}
 	}
-	bool EntityXpOrb::showDeathAnimation() const {
+	bool EntityXpOrb::showDeathAnimationAndInfo() const {
 		return false;
 	}
 	bool EntityXpOrb::isAffectedByExplosionWave() const {
@@ -76,7 +88,7 @@ namespace parkour {
 		// do not damage
 	}
 	double EntityXpOrb::getMass() const {
-		return 0.1;
+		return 0.001;
 	}
 	void EntityXpOrb::dropXpOrbs(QVector2D position, int xp) {
 		auto orb = QSharedPointer<EntityXpOrb>::create();

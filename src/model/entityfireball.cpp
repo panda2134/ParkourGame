@@ -25,11 +25,11 @@ QString parkour::EntityFireball::getResourceLocation() {
 }
 
 QVector2D parkour::EntityFireball::getTextureDimensions() {
-    return { 1, 1 };
+    return { 0.5, 0.5 };
 }
 
 BoundingBox parkour::EntityFireball::getBoundingBox() const {
-    return BoundingBox { { 0.125f, 0.125f }, { 0.75f, 0.75f } };
+    return BoundingBox { { 0.125f, 0.125f }, { 0.25f, 0.25f } };
 }
 
 void EntityFireball::collide(ICollidable&, Direction) {
@@ -62,7 +62,7 @@ void EntityFireball::damage(double value) {
     Entity::damage(value); // 调用父类处理
 }
 
-bool EntityFireball::showDeathAnimation() const {
+bool EntityFireball::showDeathAnimationAndInfo() const {
     return false;
 }
 

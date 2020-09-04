@@ -25,6 +25,8 @@ class EntityPlayer : public EntityPlayerLike {
 	void serializeCustomProps(QDataStream & out) const override;
 	void deserializeCustomProps(QDataStream & in) override;
 	int getSerializationVersion() const override;
+
+	double getWalkSpeed() const override;
 	
 	void loadInventory();
 public:
@@ -41,7 +43,7 @@ public:
 	bool isAbleToShootFireballs();
 	QString getDisplayName() const override;
 	void setShootFireballs(bool value);
-
+	void damage(double value) override;
 	QSharedPointer<Item>* getInventory();
 };
 Q_DECLARE_METATYPE(EntityPlayer*)

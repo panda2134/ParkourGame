@@ -210,6 +210,7 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utils\experiencehelper.cpp" />
     <ClCompile Include="view\scene\gui\inventorygui.cpp" />
     <ClCompile Include="view\scene\gui\guieventfilter.cpp" />
     <ClCompile Include="model\item.cpp" />
@@ -265,6 +266,7 @@
     <QtMoc Include="model\item.h" />
     <QtMoc Include="view\scene\gui\guieventfilter.h" />
     <QtMoc Include="view\scene\gui\inventorygui.h" />
+    <QtMoc Include="utils\experiencehelper.h" />
     <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />

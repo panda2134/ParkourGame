@@ -34,56 +34,10 @@ void WorldController::loadTestWorld() const {
         world.setBlock(QPoint(i, 15), "bedrock");
     }
 
-    for (int i = 33; i <= 36; i++) {
-        world.setBlock(QPoint(i, 14), "spring");
-    }
-
-    for (int j = 13; j >= 6; j--) {
-        world.setBlock(QPoint(30 - j, j), "oak_plank");
-    }
-    for (int i = 35; i <= 40; i++) {
-        world.setBlock({ i, 14 }, "flower");
-    }
-
-	for (int i = 46; i <= 50; i++) {
-
-		for (int j = 0; j <= 14; j++) {
-			world.setBlock({ i, j }, "dirt");
-		}
-
-		for (int j = 14; j >= 10; j--) {
-			world.setBlock({ i, j }, "tnt");
-		}
-	}
-
 
     qDebug() << "loading player";
 
     world.setSpawnPoint({ 29, 10 });
-
-    QSharedPointer<Entity> e = QSharedPointer<EntitySlime>::create();
-    e->placeBoundingBoxAt({ 12.0f, 14.0f });
-    world.addEntity(e);
-
-	e = QSharedPointer<EntitySlime>::create();
-	e->placeBoundingBoxAt({ 10.0f, 14.0f });
-	world.addEntity(e);
-
-	e = QSharedPointer<EntitySlime>::create();
-	e->placeBoundingBoxAt({ 8.0f, 14.0f });
-	world.addEntity(e);
-
-	e = QSharedPointer<EntitySlime>::create();
-	e->placeBoundingBoxAt({ 6.0f, 14.0f });
-	world.addEntity(e);
-
-	e = QSharedPointer<EntityCreeper>::create();
-	e->placeBoundingBoxAt({ 2.0f, 14.0f });
-	world.addEntity(e);
-
-	e = QSharedPointer<EntityBlaze>::create();
-	e->placeBoundingBoxAt({ 0.0f, 14.0f });
-	world.addEntity(e);
 
     qDebug() << "test world loaded";
     world.setReady(true);
@@ -307,46 +261,52 @@ void WorldController::tick() const {
 				anotherEntity->collide(*entity, getOppositeFace(faceOfEntity));
 
 				auto m1 = entity->getMass(), m2 = anotherEntity->getMass();
+				auto v1 = entity->getVelocity(), v2 = anotherEntity->getVelocity();
 
 				auto p = m1 * entity->getVelocity() + m2 * anotherEntity->getVelocity();
 
-				auto v1 = p / m1, v2 = p / m2;
+				auto v1n = (m1 - m2) / (m1 + m2) * (v1 - v2) + v2,
+					v2n = (2 * m1) / (m1 + m2) * (v1 - v2) + v2;
+				auto vn = p / (m1 + m2);
 
 				switch (faceOfEntity) {
 				case Direction::UP: case Direction::DOWN:
-					entity->setVelocity({ entity->getVelocity().x(), v1.y() });
-					anotherEntity->setVelocity({ anotherEntity->getVelocity().x(), v2.y() });
+					entity->setVelocity({ vn.x(), v1n.y() });
+					anotherEntity->setVelocity({ vn.x(), v2n.y() });
 					break;
 				case Direction::LEFT: case Direction::RIGHT:
-					entity->setVelocity({ v1.x(), entity->getVelocity().y() });
-					anotherEntity->setVelocity({ v2.x(), anotherEntity->getVelocity().y() });
+					entity->setVelocity({ v1n.x(), vn.y() });
+					anotherEntity->setVelocity({ v2n.x(), vn.y() });
 					break;
 				}
 
+				auto lighter = entity, heavier = anotherEntity;
+				if (lighter->getMass() > heavier->getMass()) {
+					qSwap(lighter, heavier);
+				}
+
 				float delta = 0.0f;
-				switch (faceOfEntity) {
+				switch (lighter->checkCollideWith(*heavier)) {
 				case Direction::UP:
-					delta = anotherEntity->getBoundingBoxWorld().getMaxY() - entity->getBoundingBoxWorld().getMinY();
-					entity->setPosition(entity->getPosition() + QVector2D(0, delta));
+					delta = qMax(.0f, heavier->getBoundingBoxWorld().getMaxY() - lighter->getBoundingBoxWorld().getMinY());
+					lighter->setPosition(lighter->getPosition() + QVector2D(0, delta));
 					break;
 				case Direction::DOWN:
-					delta = entity->getBoundingBoxWorld().getMaxY() - anotherEntity->getBoundingBoxWorld().getMinY();
-					entity->setPosition(entity->getPosition() - QVector2D(0, delta));
+					delta = qMax(.0f, lighter->getBoundingBoxWorld().getMaxY() - heavier->getBoundingBoxWorld().getMinY());
+					lighter->setPosition(lighter->getPosition() - QVector2D(0, delta));
 					break;
 				case Direction::LEFT:
-					delta = anotherEntity->getBoundingBoxWorld().getMaxX() - entity->getBoundingBoxWorld().getMinX();
-					entity->setPosition(entity->getPosition() + QVector2D(delta, 0));
+					delta = qMax(.0f, heavier->getBoundingBoxWorld().getMaxX() - lighter->getBoundingBoxWorld().getMinX());
+					lighter->setPosition(lighter->getPosition() + QVector2D(delta, 0));
 					break;
 				case Direction::RIGHT:
-                                    delta = entity->getBoundingBoxWorld().getMaxX() - anotherEntity->getBoundingBoxWorld().getMinX();
-                                    entity->setPosition(entity->getPosition() - QVector2D(delta, 0));
-                                    break;
-                                }
-                        }
-                        //q += t32.nsecsElapsed();
+                    delta = qMax(.0f, lighter->getBoundingBoxWorld().getMaxX() - heavier->getBoundingBoxWorld().getMinX());
+					lighter->setPosition(lighter->getPosition() - QVector2D(delta, 0));
+                    break;
                 }
-                //qDebug() << "step3: " << p / 1e6 << q / 1e6;
+            }
         }
+    }
 
         // 4. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
         //    qDebug() << "4. calling update() of entities";

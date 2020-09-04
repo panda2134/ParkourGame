@@ -16,7 +16,6 @@ class EntityMovingBrick : public EntityPlayerLike {
 	};
 
 	MovingState state = MovingState::STOP;
-	double initialY = -1.0;
 	int ticksLeft = -1;
 	double getWalkSpeed() const override;
 	void serializeCustomProps(QDataStream & out) const override;
@@ -37,6 +36,9 @@ public:
 	QString getDisplayName() const override;
 	double getMass() const override;
 	void collide(ICollidable &other, Direction dir) override;
+
+	void damage(double val) override;
+	bool showDeathAnimationAndInfo() const override;
 
 };
 Q_DECLARE_METATYPE(EntityMovingBrick*)

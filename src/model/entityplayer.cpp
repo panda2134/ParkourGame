@@ -1,4 +1,5 @@
 ﻿#include "entityplayer.h"
+#include "entityxporb.h"
 #include "registry.h"
 
 namespace parkour {
@@ -76,6 +77,13 @@ namespace parkour {
 		this->shootFireballs = value;
 	}
 
+	void EntityPlayer::damage(double value) {
+		EntityPlayerLike::damage(value);
+		if (getHp() < 0) {
+			EntityXpOrb::dropXpOrbs(getPosition(), getExp() / 2);
+		}
+	}
+
 	QSharedPointer<Item>* EntityPlayer::getInventory() {
 		return inventory;
 	}
@@ -90,6 +98,10 @@ namespace parkour {
 
 	int EntityPlayer::getSerializationVersion() const {
 		return 1;
+	}
+
+	double EntityPlayer::getWalkSpeed() const {
+		return isSneak() ? WALK_SPEED * 0.3 : WALK_SPEED;
 	}
 
 	void EntityPlayer::loadInventory() {

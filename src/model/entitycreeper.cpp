@@ -70,7 +70,7 @@ namespace parkour {
 	double EntityCreeper::getWalkSpeed() const {
 		return 1.5;
 	}
-	bool EntityCreeper::showDeathAnimation() const {
+	bool EntityCreeper::showDeathAnimationAndInfo() const {
 		return false;
 	}
 	QString EntityCreeper::getDisplayName() const {
@@ -79,11 +79,7 @@ namespace parkour {
 	void EntityCreeper::damage(double val) {
 		EntityPlayerLike::damage(val);
 		if (this->getHp() < 0) {
-			auto gen = QRandomGenerator::global();
-			int count = gen->generate() % 3 + 5;
-			for (int i = 0; i < count; i++) {
-				EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 52);
-			}
+			EntityXpOrb::dropXpOrbs(getPosition(), 5);
 		}
 	}
 	void EntityCreeper::serializeCustomProps(QDataStream & out) const {

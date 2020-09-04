@@ -115,7 +115,7 @@ const double EXPLOSION_RADIUS_MULTIPLIER = 1.0;
 /**
  * @brief BOUNCE_BOTTOM_ATTENUATION 防止嵌入方块，撞到方块上方时的速度补偿因子
  */
-const double BOUNCE_BOTTOM_ATTENUATION = 0.01;
+const double BOUNCE_BOTTOM_ATTENUATION = 0.05;
 
 /**
  * @brief BOUNCE_SIDE_ATTENUATION 防止嵌入方块，撞到方块两侧时的速度补偿因子

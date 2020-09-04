@@ -50,9 +50,9 @@ public:
      */
     virtual void update() {};
     /**
-     * @brief 是否显示死亡动画
+     * @brief 是否显示死亡动画、血量等
     */
-    virtual bool showDeathAnimation() const;
+    virtual bool showDeathAnimationAndInfo() const;
     /**
      * @brief 是否受到重力
     */

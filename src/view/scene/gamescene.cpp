@@ -6,6 +6,7 @@
 #include "../../utils/askeyvaluerange.h"
 #include "../../utils/consts.h"
 #include "../../utils/glhelper.h"
+#include "../../utils/experiencehelper.h"
 #include "gui/inventorygui.h"
 #include <QApplication>
 #include <QEasingCurve>
@@ -81,6 +82,37 @@ void GameScene::writeQRectToOpenGLBuffer(QOpenGLBuffer& buf, const QRectF& rect)
 bool GameScene::shouldRenderObject(float xMin, float xMax) {
     auto xMinOfViewport = cameraInfo.getXMinOfViewport();
     return xMax > xMinOfViewport / blockSizeOnScreen || xMin < (xMinOfViewport + deviceWidth) / blockSizeOnScreen;
+}
+
+void GameScene::repaintEntityInfo(QPainter & p, const QPoint & bottomLeftOnScreen, QSharedPointer<Entity> entity) {
+	QRect heartBackgroundSourceRect(QPoint(1, 117), QSize(9, 9)),
+		  fullHeartSourceRect(QPoint(37, 117), QSize(9, 9)),
+		  halfHeartSourceRect(QPoint(46, 117), QSize(9, 9));
+	double ratio = (0.01 * deviceWidth) / heartBackgroundSourceRect.width();
+	int margin = 1 * ratio;
+	int totalHeartCount = qFloor(entity->getMaxHp()) / 2,
+		filledHeartCount = qFloor(entity->getHp()) / 2;
+	bool hasHalfHeart = qFloor(entity->getHp()) % 2 != 0;
+	int lines = totalHeartCount % 10;
+
+	int heartIndex = 0;
+	for (int j = bottomLeftOnScreen.y(); ; j -= (margin + heartBackgroundSourceRect.height() * ratio)) {
+		for (int k = 0; k < 10; k++) {
+			int i = bottomLeftOnScreen.x() + k * (margin + heartBackgroundSourceRect.width() * ratio);
+			if (heartIndex >= totalHeartCount) {
+				return;
+			}
+
+			p.drawImage(QRect(QPoint(i, j - heartBackgroundSourceRect.height() * ratio), heartBackgroundSourceRect.size() * ratio), widgetImg, heartBackgroundSourceRect);
+			if (heartIndex < filledHeartCount) {
+				p.drawImage(QRect(QPoint(i, j - fullHeartSourceRect.height() * ratio), fullHeartSourceRect.size() * ratio), widgetImg, fullHeartSourceRect);
+			} else if (heartIndex == filledHeartCount && hasHalfHeart) {
+				p.drawImage(QRect(QPoint(i, j - halfHeartSourceRect.height() * ratio), halfHeartSourceRect.size() * ratio), widgetImg, halfHeartSourceRect);
+			}
+
+			heartIndex++;
+		}
+	}
 }
 
 void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
@@ -190,15 +222,10 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
 		} else {
 			p.drawImage(targetTextureRect, entityTexture, uvRect);
 		}
-        // hp? flying? pos? velocity?
-        p.setPen(Qt::red);
-        QFont font("Consolas");
-        QString info;
-        info = QString("HP:%0/%1 %2 v = %3 %4").arg(QString::number(entity->getHp()), QString::number(entity->getMaxHp()),
-			QString(entity->isOnFloor() ? "floor" : "flying"), QString::number(entity->getVelocity().x()), QString::number(entity->getVelocity().y()));
-        font.setPixelSize(10);
-        p.setFont(font);
-        p.drawText(QPoint(targetTextureRect.left(), targetTextureRect.top()), info);
+        
+		if (entity->showDeathAnimationAndInfo()) {
+			repaintEntityInfo(p, targetTextureRect.topLeft().toPoint(), entity);
+		}
     }
 
     // 渲染濒临死亡的实体
@@ -206,7 +233,7 @@ void GameScene::repaintWorld(QPainter& p, QOpenGLContext& ctx) {
     for (const auto& [entity, ticksLeft] : asKeyValueRange(dyingEntities)) {
         const auto& position = entity->getPosition();
         const auto& texBox = entity->getTextureDimensions();
-        if (!shouldRenderObject(position.x(), position.x() + texBox.x()) || !entity->showDeathAnimation()) {
+        if (!shouldRenderObject(position.x(), position.x() + texBox.x()) || !entity->showDeathAnimationAndInfo()) {
             continue;
         }
         // texture box
@@ -236,23 +263,6 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
     Q_UNUSED(ctx)
 
     auto playerController = WorldController::instance().getPlayerController();
-    //QFont font("Consolas");
-    //font.setPixelSize(16);
-	//  p.setFont(font);
-	//  // debug info
-	//  if (playerController->isAlive()) {
-	//      float xMax = p.device()->width();
-	//      auto player = playerController->getPlayer();
-	//      auto position = player->getPosition(), velocity = player->getVelocity(), acceleration = player->getAcceleration();
-	//      p.drawText(xMax - 300, 0, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(position[0], 'g', 4), QString::number(position[1], 'g', 4)));
-	//      p.drawText(xMax - 300, 20, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(velocity[0], 'g', 4), QString::number(velocity[1], 'g', 4)));
-		//p.drawText(xMax - 300, 40, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("%1 %2").arg(QString::number(acceleration[0], 'g', 4), QString::number(acceleration[1], 'g', 4)));
-		//p.drawText(xMax - 300, 60, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("xp = %1").arg(QString::number(player->getExp(), 'g', 4)));
-		//p.drawText(xMax - 300, 80, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("tick = %1").arg(QString::number(World::instance().getTicksFromBirth())));
-		//p.drawText(xMax - 300, 100, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("MODE = %1").arg(QString::number(mode)));
-		//p.drawText(xMax - 300, 120, 300, 20, Qt::AlignRight | Qt::AlignTop, QString("hotbar = %1").arg(QString::number(hotbarIndex)));
-	//  }
-	//  p.drawText(0, p.device()->height() - 100, 200, 100, Qt::AlignBottom, QString("entity count = %1").arg(QString::number(World::instance().getEntities().size())));
 	if (mode == GameScene::MAPEDIT) {
 		auto player = playerController->getPlayer();
 		if (player != nullptr) {
@@ -299,6 +309,28 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
 						QSize(hotbarTargetRect.size().width(), fontSize)), item->getDisplayName(), Qt::AlignCenter | Qt::AlignHCenter);
 				}
 			}
+		}
+	} else {
+		// 游戏模式，渲染经验条和血量
+		auto player = playerController->getPlayer();
+		if (player != nullptr) {
+			auto [level, xpLeft, xpRequired] = ExperienceHelper(player->getExp()).toLevel();
+			QRect xpBackgroundSourceRect(QPoint(0, 0), QSize(182, 5));
+			QRect xpValueSourceRect(QPoint(0, 5), QSize(xpLeft * 1.0f / xpRequired * 182.0, 5));
+			const double ratio = 0.4 * deviceWidth / xpBackgroundSourceRect.width();
+			QPoint xpTargetTopLeft((deviceWidth - xpBackgroundSourceRect.width() * ratio) * 0.5, 5 * ratio);
+			p.drawImage(QRect(xpTargetTopLeft, xpBackgroundSourceRect.size() * ratio), widgetImg, xpBackgroundSourceRect);
+			p.drawImage(QRect(xpTargetTopLeft, xpValueSourceRect.size() * ratio), widgetImg, xpValueSourceRect);
+
+			QFont arial("Arial");
+			const int fontSize = 7 * ratio;
+			arial.setPixelSize(fontSize);
+			p.setFont(arial);
+			p.setPen(QColor(44, 196, 27)); 
+			p.drawText(QRect(xpTargetTopLeft + QPoint(0, (xpBackgroundSourceRect.height() + 1) * ratio), 
+							QSize(xpBackgroundSourceRect.width() * ratio, fontSize)),
+				Qt::AlignCenter | Qt::AlignHCenter,
+				QString::number(level));
 		}
 	}
 }

@@ -25,7 +25,7 @@ public:
     QVector2D getTextureDimensions() override;
     BoundingBox getBoundingBox() const override;
     void damage(double value) override;
-    bool showDeathAnimation() const override;
+    bool showDeathAnimationAndInfo() const override;
     void update() override;
 	virtual QString getDisplayName() const override;
 	void collide(ICollidable&, Direction) override;

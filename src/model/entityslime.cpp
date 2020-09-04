@@ -28,10 +28,9 @@ namespace parkour {
 	void EntitySlime::collide(ICollidable & other, Direction dir) {
 		if (dir == Direction::DOWN) {
 			this->waitTicksLeft = WAIT_TIMEOUT_MIN + (WAIT_TIMEOUT_MAX - WAIT_TIMEOUT_MIN) * QRandomGenerator::global()->generateDouble();
-			qDebug() << this->getVelocity().y();
 			this->setVelocity({ .0f, -0.1f * getVelocity().y() });
 			if (other.getType() == "entity") {
-				this->setVelocity({ .0f, -JUMP_SPEED });
+				this->setVelocity({ 5 * float(QRandomGenerator::global()->generateDouble() * 2 - 1),  float(-JUMP_SPEED * QRandomGenerator::global()->generateDouble()) });
 			}
 		}
 		if (other.getName() == "player") {
@@ -65,11 +64,7 @@ namespace parkour {
 	void EntitySlime::damage(double value) {
 		EntityPlayerLike::damage(value);
 		if (this->getHp() < 0) {
-			auto gen = QRandomGenerator::global();
-			int count = gen->generate() % 3 + 1;
-			for (int i = 0; i < count; i++) {
-				EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 24);
-			}
+			EntityXpOrb::dropXpOrbs(getPosition(), 2);
 		}
 	}
 	void EntitySlime::serializeCustomProps(QDataStream & out) const {

@@ -78,7 +78,7 @@ void Entity::updatePosition() {
     this->setPosition(this->getPosition() + TICK_LENGTH * this->getVelocity());
 }
 
-bool Entity::showDeathAnimation() const {
+bool Entity::showDeathAnimationAndInfo() const {
 	return true;
 }
 

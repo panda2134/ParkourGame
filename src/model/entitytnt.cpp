@@ -41,7 +41,7 @@ namespace parkour {
 	QString EntityTNT::getDisplayName() const {
 		return "TNT";
 	}
-	bool EntityTNT::showDeathAnimation() const {
+	bool EntityTNT::showDeathAnimationAndInfo() const {
 		return false;
 	}
 	void EntityTNT::serializeCustomProps(QDataStream & out) const {

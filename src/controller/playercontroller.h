@@ -10,7 +10,7 @@ class PlayerController : public QObject
 {
 	Q_OBJECT
 
-	const double FIREBALL_VELOCITY = 18.0, FIREBALL_POWER = 10.0;
+	const double FIREBALL_VELOCITY = 18.0, FIREBALL_POWER = 3.0;
 
     /**
      * @brief alive 是否存活

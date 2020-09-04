@@ -129,9 +129,9 @@ void EntityBlaze::damage(double val) {
 	Entity::damage(val);
 	if (this->getHp() < 0) {
 		auto gen = QRandomGenerator::global();
-		int count = gen->generate() % 3 + 10;
+		int count = gen->generate() % 3 + 1;
 		for (int i = 0; i < count; i++) {
-			EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 30);
+			EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 10);
 		}
 	}
 }

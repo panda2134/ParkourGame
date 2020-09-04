@@ -3,6 +3,7 @@
 
 #include "iscene.h"
 #include "../../utils/consts.h"
+#include "../../model/entity.h"
 #include "gui/guibase.h"
 #include <QHash>
 #include <QByteArray>
@@ -68,6 +69,7 @@ class GameScene : public IScene {
      * @return 是否渲染
      */
     bool shouldRenderObject(float xMin, float xMax);
+	void repaintEntityInfo(QPainter & p, const QPoint & bottomLeftOnScreen, QSharedPointer<Entity> entity);
 
     void repaintWorld(QPainter&, QOpenGLContext&);
     void repaintHud(QPainter&, QOpenGLContext&);

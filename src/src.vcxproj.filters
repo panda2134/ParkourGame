@@ -179,6 +179,9 @@
     <ClCompile Include="view\scene\gui\inventorygui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\experiencehelper.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -365,6 +368,9 @@
     </QtMoc>
     <QtMoc Include="view\scene\gui\inventorygui.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="utils\experiencehelper.h">
+      <Filter>Generated Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

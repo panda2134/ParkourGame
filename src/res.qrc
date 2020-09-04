@@ -29,5 +29,6 @@
         <file>assets/items/spawn_egg_blaze.png</file>
         <file>assets/items/spawn_egg_creeper.png</file>
         <file>assets/items/spawn_egg_slime.png</file>
+        <file>assets/entities/moving_brick.png</file>
     </qresource>
 </RCC>
