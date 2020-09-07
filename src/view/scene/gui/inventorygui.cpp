@@ -72,7 +72,6 @@ namespace parkour {
 		}
 	}
 	bool InventoryGUI::event(QEvent * evt) {
-
 		if (evt->type() == QEvent::MouseMove) {
 			QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(evt);
 			mouseX = mouseEvent->x(), mouseY = mouseEvent->y();

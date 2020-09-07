@@ -16,6 +16,9 @@ namespace parkour {
 		 * @brief paintGUI 画出GUI页面，使用参数给定的QPainter
 		 */
 		virtual void paintGUI(QPainter &) = 0;
+
+	signals:
+		void quitGUI();
 	};
 }
 

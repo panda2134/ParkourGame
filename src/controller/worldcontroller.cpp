@@ -1,4 +1,5 @@
 #include "worldcontroller.h"
+#include "worldioworker.h"
 #include "../model/blockdelegate.h"
 #include "../model/entitycreeper.h"
 #include "../model/entityplayer.h"
@@ -8,8 +9,8 @@
 #include "../model/world.h"
 #include "../utils/consts.h"
 #include "../utils/geometryhelper.h"
-#include "../vendor/aabbcc/AABB.h"
 #include <algorithm>
+#include <QDebug>
 #include <QByteArray>
 #include <QDataStream>
 
@@ -24,22 +25,21 @@ WorldController::WorldController()
     : playerController(QSharedPointer<PlayerController>::create()) {
 }
 
-void WorldController::loadTestWorld() const {
+void WorldController::loadInitialWorld() const {
+	WorldIOWorker::instance().setProgress(0);
     auto& world = World::instance();
     if (world.isReady()) {
         throw std::exception("test world loading failed: world is already ready");
     }
-    qDebug() << "setting block";
-    for (int i = 0; i <= 2048; i++) {
+    for (int i = 0; i < WORLD_WIDTH; i++) {
         world.setBlock(QPoint(i, 15), "bedrock");
+		int progress = 100.0 / WORLD_WIDTH * i;
+		if (progress != WorldIOWorker::instance().getProgress()) {
+			WorldIOWorker::instance().setProgress(progress);
+		}
     }
 
-
-    qDebug() << "loading player";
-
-    world.setSpawnPoint({ 29, 10 });
-
-    qDebug() << "test world loaded";
+    world.setSpawnPoint({ 1, 12 });
     world.setReady(true);
 }
 
@@ -50,16 +50,6 @@ void WorldController::unloadWorld() const {
     }
 	world.clear();
     world.setReady(false);
-}
-
-void WorldController::saveWorld() {
-	QDataStream out(&save, QIODevice::WriteOnly);
-	serializeWorld(out);
-}
-
-void WorldController::loadWorld() {
-	QDataStream in(&save, QIODevice::ReadOnly);
-	deserializeWorld(in);
 }
 
 void WorldController::serializeWorld(QDataStream & out) {
@@ -163,14 +153,11 @@ void WorldController::tick() const {
 
     // 3. 计算方块与实体、实体与实体之间的碰撞
 	if (world.entities.size() > 0) {
-		//long long p = 0, q = 0;
-		aabb::Tree aabbTree(2, 0.05, world.entities.size());
 		for (int index = 0; index < world.entities.size(); index++) {
 			// 方块与实体
 			auto entity = world.entities[index];
 			auto entityPosition = entity->getPosition();
 			auto bbox = entity->getBoundingBoxWorld();
-			aabbTree.insertParticle(index, { bbox.getMinX(), bbox.getMinY() }, { bbox.getMaxX(), bbox.getMaxY() });
 			int centerBlockX = static_cast<int>(entityPosition.x()),
 				centerBlockY = static_cast<int>(entityPosition.y());
 			int range = std::max({ static_cast<float>(ENTITY_COLLISION_RANGE), bbox.getMaxY() - bbox.getMinY() + 1.0f, bbox.getMaxX() - bbox.getMinX() + 1.0f });
@@ -178,10 +165,7 @@ void WorldController::tick() const {
 			for (int i = centerBlockX - range; i <= centerBlockX + range; i++) {
 				for (int j = centerBlockY - range; j <= centerBlockY + range; j++) {
 					const auto& blockName = world.getBlock(QPoint(i, j));
-					/*QElapsedTimer t31;
-					t31.start();*/
 					BlockDelegate blockDelegate(blockName, QPoint(i, j));
-					/*p += t31.nsecsElapsed();*/
 
 					if (blockDelegate.isAir()) {
 						continue; // 空气方块，跳过检查
@@ -237,15 +221,9 @@ void WorldController::tick() const {
 				}
 			}
 
-			//QElapsedTimer t32;
-			//t32.start();
-
 			// 实体与实体，注意避免重复计算
 			
-			for (auto collideId : aabbTree.query(index)) {
-				if (collideId == index) {
-					continue; // 跳过自己
-				}
+			for (int collideId = 0; collideId < index; ++collideId) {
 				auto anotherEntity = world.entities[collideId];
 
 				auto faceOfEntity = entity->checkCollideWith(*anotherEntity);
@@ -309,25 +287,19 @@ void WorldController::tick() const {
     }
 
         // 4. 调用所有实体的更新函数（目前普通方块用于地形，仅仅在受到碰撞时会更新，不参与ticking）
-        //    qDebug() << "4. calling update() of entities";
-        //        auto entities2 = world.entities;
         for (const auto& entity : world.entities) {
             entity->update();
         }
 
         // 5. 检查悬空的实体，设置其重力加速度
-        //    qDebug() << "5. setting gravity";
         {
-            aabb::Tree aabbTree(2);
             for (int i = 0; i < world.entities.size(); i++) {
                 auto& entity = world.entities[i];
                 const auto& bbox = entity->getBoundingBoxWorld();
 
-                aabbTree.insertParticle(i, { bbox.getMinX(), bbox.getMinY() }, { bbox.getMaxX(), bbox.getMaxY() });
-
                 bool isFlying = true;
 
-                for (auto j : aabbTree.query(i)) {
+				for (int j = 0; j < world.entities.size(); j++) {
                     if (i == j) {
                         continue;
                     }

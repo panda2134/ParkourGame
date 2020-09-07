@@ -1,7 +1,6 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
-#include "iscene.h"
 #include "../../utils/consts.h"
 #include "../../model/entity.h"
 #include "gui/guibase.h"
@@ -20,8 +19,11 @@
 #include <QOpenGLTexture>
 
 namespace parkour {
-
-class GameScene : public IScene {
+	enum SceneMode {
+		GAMING,
+		MAPEDIT
+	};
+class GameScene : public QObject {
     Q_OBJECT
 
     struct CameraInfo {
@@ -38,13 +40,9 @@ class GameScene : public IScene {
         float getXMinOfViewport() const;
     };
 
-	enum SceneMode {
-		GAMING,
-		MAPEDIT
-	};
-
 	const QString NO_SUCH_TEXTURE = ":/assets/blocks/no_texture.png";
 	const int HOTBAR_TIMEOUT = 1 * TICKS_PER_SEC / TICKS_PER_FRAME;
+	bool quitting = false;
 
 	int hotbarIndex = 0, hotbarTicksLeft = -1;
 	QSharedPointer<GUIBase> ingameGUI;
@@ -56,7 +54,6 @@ class GameScene : public IScene {
 	QRect hotbarTargetRect;
 	QVector<int> blockTextureCount;
 	QHash<QString, QImage> entityTextureCache;
-	SceneMode mode = GAMING;
     double blockSizeOnScreen = 0.0;
     double deviceWidth = 854.0, deviceHeight = 480.0;
     void loadTexture();
@@ -79,13 +76,21 @@ class GameScene : public IScene {
 	void switchHotbar(int target);
 
 public:
+	SceneMode mode = GAMING;
     explicit GameScene(QObject* parent = nullptr);
-    void calculate() override;
-    void repaint(QPainter&, QOpenGLContext&) override;
+    void calculate();
+    void repaint(QPainter&, QOpenGLContext&);
 	void moveViewportToPlayerPosition();
-    bool event(QEvent* evt) override;
-    void initializeGL() override;
-	void closeGUI();
+    void initializeGL();
+	void showGUI(QSharedPointer<GUIBase> gui, Qt::Key exitKey);
+	bool event(QEvent* evt) override;
+	void setQuitting();
+
+
+public slots:
+	void quitGUI();
+signals:
+	void saveAndExit();
 };
 }
 

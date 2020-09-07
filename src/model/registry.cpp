@@ -27,6 +27,8 @@
 #include "itemblock.h"
 #include "itemspawnegg.h"
 
+#include "../controller/worldioworker.h"
+
 #include <QDebug>
 
 
@@ -110,9 +112,11 @@ namespace registry {
 
 	QList<QSharedPointer<Entity>> EntityRegistry::readEntitiesFromStream(QDataStream & in) {
 		QList<QSharedPointer<Entity>> ret;
+		auto &ioWorker = WorldIOWorker::instance();
 		int count;
 		if ((in >> count).status() != QDataStream::Ok) {
 			qDebug() << "read: count corrupted, cannot read";
+			ioWorker.setProgress(0);
 			return ret;
 		}
 		for (int i = 0; i < count; i++) {
@@ -124,6 +128,8 @@ namespace registry {
 				continue;
 			}
 			in >> *entity;
+			ioWorker.setProgress(ioWorker.getProgress() + 50.0 / count);
+
 			if (in.status() != QDataStream::Ok) {
 				continue;
 			}
@@ -134,15 +140,14 @@ namespace registry {
 
 	bool EntityRegistry::writeEntitiesToStream(QDataStream & out, 
 		const QList<QSharedPointer<Entity>>& entities) {
-
+		auto &ioWorker = WorldIOWorker::instance();
 		int count = entities.size();
 		out << count;
-		qDebug() << "write count = " << count;
 		for (const auto &entity : entities) {
 			QString className = entity->metaObject()->className();
-			qDebug() << "write entity of class " << className;
 			out << className;
 			out << *entity;
+			ioWorker.setProgress(ioWorker.getProgress() + 50.0 / count);
 		}
 
 		return true;
@@ -171,11 +176,6 @@ namespace registry {
 			"parkour::EntityMovingBrick",
 			":/assets/entities/moving_brick.png"
 		));
-
-		// debug
-		for (const auto &item : items) {
-			qDebug() << item->getDisplayName();
-		}
 	}
 
 	const QList<QSharedPointer<Item>>& ItemRegistry::getItems() {

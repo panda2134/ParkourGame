@@ -89,7 +89,6 @@ public:
 
 	friend QDataStream& operator<<(QDataStream& out, const World &world);
 	friend QDataStream& operator>>(QDataStream& in, World &world);
-
 };
 }
 

@@ -27,6 +27,7 @@ namespace parkour {
 		void update() override;
 		QString getDisplayName() const override;
 		void damage(double value) override;
+		double getMaxHp() const override;
 	};
 	Q_DECLARE_METATYPE(EntitySlime*)
 }

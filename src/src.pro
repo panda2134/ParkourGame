@@ -45,7 +45,6 @@ SOURCES += \
     view/mainwindow.cpp \
     view/scene/gamescene.cpp \
     view/scene/iscene.cpp \
-    vendor/aabbcc/AABB.cpp \
     model/blockspike.cpp \
     model/blockbedrock.cpp \
     model/blockstonebrick.cpp \
@@ -85,8 +84,7 @@ HEADERS += \
     view/gamerenderglwidget.h \
     view/mainwindow.h \
     view/scene/gamescene.h \
-    view/scene/iscene.h \
-	vendor/aabbcc/AABB.h
+    view/scene/iscene.h 
 
 FORMS += \
     view/mainwindow.ui

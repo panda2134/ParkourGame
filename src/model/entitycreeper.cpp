@@ -71,7 +71,7 @@ namespace parkour {
 		return 1.5;
 	}
 	bool EntityCreeper::showDeathAnimationAndInfo() const {
-		return false;
+		return true;
 	}
 	QString EntityCreeper::getDisplayName() const {
 		return "爬行者";

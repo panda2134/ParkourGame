@@ -5,9 +5,7 @@
 namespace parkour {
 
 	EntityPlayer::EntityPlayer()
-		: EntityPlayerLike() {
-		this->setHp(20.0);
-		this->maxHp = 20.0;
+		: maxHp(20.0), EntityPlayerLike() {
 		this->exp = 0;
 		this->shootFireballs = false;
 		this->loadInventory();
@@ -89,11 +87,11 @@ namespace parkour {
 	}
 
 	void EntityPlayer::serializeCustomProps(QDataStream & out) const {
-		out << maxHp << shootFireballs;
+		out << maxHp << shootFireballs << this->exp;
 	}
 
 	void EntityPlayer::deserializeCustomProps(QDataStream & in) {
-		in >> maxHp >> shootFireballs;
+		in >> maxHp >> shootFireballs >> this->exp;
 	}
 
 	int EntityPlayer::getSerializationVersion() const {

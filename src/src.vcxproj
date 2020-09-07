@@ -17,6 +17,7 @@
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <ProjectName>MineParkour</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -80,7 +81,7 @@
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\release\.moc;..\bin\debug\.ui;/include;.\model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\release\.moc;..\bin\debug\.ui;/include;.\model;.\view\widgets;.\controller;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>..\bin\release\.obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -148,7 +149,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\debug\.moc;..\bin\debug\.ui;/include;.\model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\debug\.moc;..\bin\debug\.ui;/include;.\model;.\view\widgets;.\controller;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>..\bin\debug\.obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -210,7 +211,12 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="controller\savemanager.cpp" />
+    <ClCompile Include="controller\worldioworker.cpp" />
+    <ClCompile Include="view\saveitem.cpp" />
+    <ClCompile Include="view\saveselection.cpp" />
     <ClCompile Include="utils\experiencehelper.cpp" />
+    <ClCompile Include="view\scene\gui\guipause.cpp" />
     <ClCompile Include="view\scene\gui\inventorygui.cpp" />
     <ClCompile Include="view\scene\gui\guieventfilter.cpp" />
     <ClCompile Include="model\item.cpp" />
@@ -240,14 +246,12 @@
     <ClCompile Include="model\entityplayer.cpp" />
     <ClCompile Include="model\entityplayerlike.cpp" />
     <ClCompile Include="model\entitytnt.cpp" />
-    <ClCompile Include="vendor\aabbcc\AABB.cpp" />
     <ClCompile Include="view\gamerenderglwidget.cpp" />
     <ClCompile Include="view\scene\gamescene.cpp" />
     <ClCompile Include="utils\geometryhelper.cpp" />
     <ClCompile Include="utils\glhelper.cpp" />
     <ClCompile Include="model\icollidable.cpp" />
     <ClCompile Include="view\scene\gui\guibase.cpp" />
-    <ClCompile Include="view\scene\iscene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="view\mainwindow.cpp" />
     <ClCompile Include="controller\playercontroller.cpp" />
@@ -255,8 +259,11 @@
     <ClCompile Include="model\entitymovingbrick.cpp" />
     <ClCompile Include="model\world.cpp" />
     <ClCompile Include="controller\worldcontroller.cpp" />
+    <ClCompile Include="view\widgets\styledpushbutton.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="view\widgets\styledpushbutton.h" />
+    <QtMoc Include="view\scene\gui\guipause.h" />
     <QtMoc Include="view\scene\gui\guibase.h" />
     <QtMoc Include="model\blockspike.h" />
     <QtMoc Include="model\blockspring.h" />
@@ -267,6 +274,8 @@
     <QtMoc Include="view\scene\gui\guieventfilter.h" />
     <QtMoc Include="view\scene\gui\inventorygui.h" />
     <QtMoc Include="utils\experiencehelper.h" />
+    <QtMoc Include="controller\savemanager.h" />
+    <QtMoc Include="controller\worldioworker.h" />
     <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />
@@ -274,10 +283,11 @@
     <QtMoc Include="model\entitycreeper.h" />
     <QtMoc Include="model\itemblock.h" />
     <QtMoc Include="model\itemspawnegg.h" />
-    <ClInclude Include="vendor\aabbcc\AABB.h" />
     <QtMoc Include="model\blocksaw.h" />
     <QtMoc Include="model\blockbedrock.h" />
     <ClInclude Include="model\blockstonebrick.h" />
+    <QtMoc Include="view\saveselection.h" />
+    <QtMoc Include="view\saveitem.h" />
     <ClInclude Include="utils\askeyvaluerange.h" />
     <QtMoc Include="model\block.h">
     </QtMoc>
@@ -306,8 +316,6 @@
     <ClInclude Include="utils\geometryhelper.h" />
     <ClInclude Include="utils\glhelper.h" />
     <ClInclude Include="model\icollidable.h" />
-    <QtMoc Include="view\scene\iscene.h">
-    </QtMoc>
     <QtMoc Include="view\mainwindow.h">
     </QtMoc>
     <QtMoc Include="controller\playercontroller.h">
@@ -341,6 +349,8 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="view\saveitem.ui" />
+    <QtUic Include="view\saveselection.ui" />
     <QtUic Include="view\mainwindow.ui">
     </QtUic>
   </ItemGroup>

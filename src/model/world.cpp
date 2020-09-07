@@ -1,5 +1,6 @@
 #include "world.h"
 #include "registry.h"
+#include "../controller/worldioworker.h"
 
 namespace parkour {
 
@@ -81,8 +82,11 @@ void World::clear() {
 }
 
 QDataStream & operator<<(QDataStream & out, const World & world) {
+	WorldIOWorker::instance().setProgress(0);
+	// world metadata
 	out << WORLD_SERIALIZATION_VERSION
-		<< world.ticksFromBirth << world.spawnPoint; // world metadata
+		<< world.ticksFromBirth << world.spawnPoint;
+	WorldIOWorker::instance().setProgress(5);
 
 	// blocks
 	for (int chunkNum = 0; chunkNum < World::CHUNK_COUNT; chunkNum++) {
@@ -95,10 +99,13 @@ QDataStream & operator<<(QDataStream & out, const World & world) {
 				}
 			}
 		}
+		WorldIOWorker::instance().setProgress(WorldIOWorker::instance().getProgress() + 50.0 / World::CHUNK_COUNT);
 	}
 
 	// entities
 	registry::EntityRegistry::instance().writeEntitiesToStream(out, world.entities);
+
+	WorldIOWorker::instance().setProgress(100);
 
 	return out;
 }

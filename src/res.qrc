@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>assets/gui/logo.png</file>
         <file>assets/blocks/grass.png</file>
         <file>assets/blocks/no_texture.png</file>
         <file>assets/blocks/dirt.png</file>
@@ -30,5 +31,6 @@
         <file>assets/items/spawn_egg_creeper.png</file>
         <file>assets/items/spawn_egg_slime.png</file>
         <file>assets/entities/moving_brick.png</file>
+        <file>assets/gui/options_background.png</file>
     </qresource>
 </RCC>

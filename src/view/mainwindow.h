@@ -3,19 +3,36 @@
 
 #include <QMainWindow>
 #include <QWindow>
+#include <QString>
+#include <QProgressDialog>
+#include <QSharedPointer>
+#include "./saveselection.h"
+#include "./gamerenderglwidget.h"
+#include "scene/gamescene.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow {
-    Q_OBJECT
+	Q_OBJECT
+
+	parkour::SceneMode mode;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+	void showProgress(int);
+	void progressDone();
+
 private:
     Ui::MainWindow* ui;
+	QProgressDialog *progressDialog;
+	GameRenderGLWidget *gameWidget;
+	SaveSelection *saveSelectionWidget;
+	void selectSave(parkour::SceneMode mode);
+	void initProgress(QString title);
 };
 #endif // MAINWINDOW_H

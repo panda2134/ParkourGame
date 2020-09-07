@@ -95,9 +95,6 @@
     <ClCompile Include="model\icollidable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="view\scene\iscene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="model\blockstonebrick.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\aabbcc\AABB.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="model\blockspike.cpp">
@@ -181,6 +175,24 @@
     </ClCompile>
     <ClCompile Include="utils\experiencehelper.cpp">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\guipause.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\widgets\styledpushbutton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\saveselection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\saveitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller\savemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller\worldioworker.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +247,6 @@
     <ClInclude Include="model\icollidable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <QtMoc Include="view\scene\iscene.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="view\mainwindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -257,9 +266,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClInclude Include="model\blockstonebrick.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vendor\aabbcc\AABB.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="model\blockmushroom.h">
@@ -282,6 +288,12 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="view\mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="view\saveselection.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="view\saveitem.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -371,6 +383,24 @@
     </QtMoc>
     <QtMoc Include="utils\experiencehelper.h">
       <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guipause.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\widgets\styledpushbutton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\saveselection.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\saveitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="controller\savemanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="controller\worldioworker.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

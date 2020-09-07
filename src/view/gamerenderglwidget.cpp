@@ -1,5 +1,7 @@
 #include "gamerenderglwidget.h"
+#include "../controller/savemanager.h"
 #include "../utils/consts.h"
+#include "../model/world.h"
 #include "./scene/gamescene.h"
 #include <QApplication>
 using namespace parkour;
@@ -7,31 +9,41 @@ using namespace parkour;
 GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
     : QOpenGLWidget(parent)
     , renderTick(0)
-    , lastUpdateTime(std::chrono::high_resolution_clock::now()) {
-    QSurfaceFormat fmt(QSurfaceFormat::DebugContext);
-    setFormat(fmt);
-    currentScene = QSharedPointer<GameScene>::create(this);
+    , timerThread(new QThread(this)){
+	this->setFocus();
+	this->setMouseTracking(true);
+	this->setAttribute(Qt::WA_DeleteOnClose);
+	this->setAttribute(Qt::WA_QuitOnClose, false);
+	this->setMinimumWidth(854);
+	this->setMinimumHeight(480);
+    gameScene = QSharedPointer<GameScene>::create(this);
+
+	connect(gameScene.data(), &GameScene::saveAndExit, this, &GameRenderGLWidget::close);
 
     auto* timer = new QTimer();
     timer->setInterval(TICK_LENGTH * 1000);
     timer->setTimerType(Qt::TimerType::PreciseTimer);
-    timer->moveToThread(&timerThread);
+    timer->moveToThread(timerThread);
 
-    connect(&timerThread, SIGNAL(started()), timer, SLOT(start()));
-    connect(&timerThread, SIGNAL(finished()), timer, SLOT(deleteLater()));
+    connect(timerThread, SIGNAL(started()), timer, SLOT(start()));
+    connect(timerThread, SIGNAL(finished()), timer, SLOT(deleteLater()));
     connect(timer, SIGNAL(timeout()), this, SLOT(tick()));
 
-    timerThread.start();
+    timerThread->start();
 }
 
 GameRenderGLWidget::~GameRenderGLWidget() {
-	timerThread.quit();
-	timerThread.wait();
+	timerThread->quit();
+	timerThread->wait();
+	delete timerThread;
 }
 
 void GameRenderGLWidget::tick() {
-    if (currentScene != nullptr) {
-        currentScene->calculate();
+	if (!parkour::World::instance().isReady()) {
+		return;
+	}
+    if (gameScene != nullptr) {
+        gameScene->calculate();
     }
     if ((renderTick++) % TICKS_PER_FRAME == 0) {
         this->update();
@@ -39,7 +51,7 @@ void GameRenderGLWidget::tick() {
 }
 
 bool GameRenderGLWidget::event(QEvent* e) {
-    if (currentScene != nullptr) {
+    if (gameScene != nullptr) {
         switch (e->type()) {
         case QEvent::MouseMove: // 只允许场景直接监听键盘鼠标相关事件
         case QEvent::MouseButtonPress:
@@ -50,7 +62,7 @@ bool GameRenderGLWidget::event(QEvent* e) {
 		case QEvent::DragMove:
 		case QEvent::DragEnter:
 		case QEvent::DragLeave:
-			return QApplication::sendEvent(currentScene.data(), e);
+			return QApplication::sendEvent(gameScene.data(), e);
         default:
             break;
         }
@@ -63,17 +75,6 @@ void GameRenderGLWidget::resizeEvent(QResizeEvent* e) {
     QOpenGLWidget::resizeEvent(e);
 }
 
-void GameRenderGLWidget::paintFps(QPainter& p) {
-    std::chrono::duration<double, std::milli> interval = (std::chrono::high_resolution_clock::now() - this->lastUpdateTime);
-    p.setPen(Qt::blue);
-    auto fps = qRound(1000.0 / interval.count());
-    QFont font("Consolas");
-    font.setPixelSize(20);
-    p.setFont(font);
-    p.drawText(QPoint(0, 20), QString::number(fps));
-}
-
-// todo: switch to QGraphicsView for different scenes
 void GameRenderGLWidget::paintGL() {
     QPainter p(this);
 
@@ -83,20 +84,22 @@ void GameRenderGLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_SCISSOR_TEST); // 不渲染屏幕外的像素
     glScissor(0, 0, width(), height());
-    glDisable(GL_MULTISAMPLE);
     p.endNativePainting();
 
-    if (currentScene != nullptr) {
-        currentScene->repaint(p, *(this->context()));
+    if (gameScene != nullptr) {
+        gameScene->repaint(p, *(this->context()));
     }
-
-    paintFps(p);
-    this->lastUpdateTime = std::chrono::high_resolution_clock::now();
 }
 
 void GameRenderGLWidget::initializeGL() {
     initializeOpenGLFunctions();
-    if (currentScene != nullptr) {
-        currentScene->initializeGL();
+    if (gameScene != nullptr) {
+        gameScene->initializeGL();
     }
+}
+
+void GameRenderGLWidget::closeEvent(QCloseEvent *) {
+	gameScene->setQuitting();
+	paintGL();
+	SaveManager::instance().setLastScreenshot(grabFramebuffer());
 }

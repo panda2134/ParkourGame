@@ -5,7 +5,8 @@
 #include <QRandomGenerator>
 
 namespace parkour {
-	EntitySlime::EntitySlime(): waitTicksLeft(-1) {}
+	EntitySlime::EntitySlime(): waitTicksLeft(-1) {
+	}
 	QString EntitySlime::getName() const {
 		return "slime";
 	}
@@ -66,6 +67,9 @@ namespace parkour {
 		if (this->getHp() < 0) {
 			EntityXpOrb::dropXpOrbs(getPosition(), 2);
 		}
+	}
+	double EntitySlime::getMaxHp() const {
+		return 6.0;
 	}
 	void EntitySlime::serializeCustomProps(QDataStream & out) const {
 		out << waitTicksLeft;

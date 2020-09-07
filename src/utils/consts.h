@@ -1,6 +1,9 @@
 #ifndef CONSTS_H
 #define CONSTS_H
 
+#include <QDataStream>
+#include <QString>
+
 namespace parkour {
 /**
  * @brief TICKS_PER_SEC 每秒游戏刻数目
@@ -157,6 +160,14 @@ const double AI_SEARCH_RANGE = 32;
  * @brief PLAYER_INVENTORY_SLOT_COUNT 玩家背包槽位数目
  */
 const size_t PLAYER_INVENTORY_SLOT_COUNT = 36;
+/**
+ * @brief QDATASTREAM_VERSION 序列化时使用的QDataStream协议版本
+ */
+const int QDATASTREAM_VERSION = QDataStream::Qt_5_14;
+/**
+ * @brief MAP_SERIALIZATION_VERSION 地图序列化格式标志
+ */
+const QString MAP_SERIALIZATION_VERSION = "MAPFILE1";
 }
 
 #endif // CONSTS_H

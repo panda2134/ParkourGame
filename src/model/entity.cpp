@@ -4,8 +4,8 @@
 
 namespace parkour {
 
-Entity::Entity(QObject* parent)
-    : QObject(parent) {
+Entity::Entity(QObject* parent) : QObject(parent) {
+	this->setHp(this->getMaxHp());
 }
 
 QVector2D Entity::getPosition() const { return position; }

@@ -1,9 +1,10 @@
 #include "guieventfilter.h"
 #include <QEvent>
 #include <QKeyEvent>
+#include <QDebug>
 
 namespace parkour {
-	GUIEventFilter::GUIEventFilter(GameScene &parent, Qt::Key key) : exitKey(key), parent(parent) {
+	GUIEventFilter::GUIEventFilter(Qt::Key key, QObject *parent) : exitKey(key), QObject(parent) {
 	}
 
 	GUIEventFilter::~GUIEventFilter() {}
@@ -12,8 +13,7 @@ namespace parkour {
 		if (evt->type() == QEvent::KeyPress) {
 			auto *ke = static_cast<QKeyEvent*>(evt);
 			if (ke->key() == Qt::Key::Key_Escape || ke->key() == exitKey) {
-				qDebug("esc pressed in gui");
-				parent.closeGUI();
+				emit quitGUI();
 				return true;
 			}
 		}
