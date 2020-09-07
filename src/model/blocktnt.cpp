@@ -37,11 +37,18 @@ void parkour::BlockTNT::collide(QPoint blockPos, Entity& entity, Direction dir) 
 		return;
 	}
 
-    auto& world = World::instance();
-    world.setBlock(blockPos, "air");
-    auto entityTnt = QSharedPointer<EntityTNT>::create();
-    entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
-    world.addEntity(entityTnt);
+	ignite(blockPos);
+}
+
+void parkour::BlockTNT::ignite(const QPoint &blockPos) {
+	auto& world = World::instance();
+	if (world.getBlock(blockPos) != "tnt") {
+		return;
+	}
+	world.setBlock(blockPos, "air");
+	auto entityTnt = QSharedPointer<EntityTNT>::create();
+	entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
+	world.addEntity(entityTnt);
 }
 
 void parkour::BlockTNT::onStand(QPoint blockPos, Entity &entity) {

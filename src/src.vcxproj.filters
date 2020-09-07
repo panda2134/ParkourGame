@@ -197,6 +197,12 @@
     <ClCompile Include="model\itemspawnpointsetter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\itemteleporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityobserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -406,6 +412,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="model\itemspawnpointsetter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemteleporter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityobserver.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

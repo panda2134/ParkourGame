@@ -32,5 +32,9 @@
         <file>assets/items/spawn_egg_slime.png</file>
         <file>assets/entities/moving_brick.png</file>
         <file>assets/gui/options_background.png</file>
+        <file>assets/items/spawnpoint.png</file>
+        <file>assets/items/tp.png</file>
+        <file>assets/entities/observer.png</file>
+        <file>assets/items/observer.png</file>
     </qresource>
 </RCC>

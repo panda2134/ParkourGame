@@ -12,6 +12,12 @@
 
 namespace parkour {
 
+/**
+ * 任何一个parkour命名空间下的实体，若要被成功序列化、反序列化，必须要满足以下3个条件：
+ *  1. 采用 Q_INVOKABLE 标记无参构造函数
+ *  2. 在类声明后立刻采用 Q_DECLARE_METATYPE 标记类型对应指针，如 Q_DECLARE_METATYPE(EntityCreeper*)
+ *  3. 在 registry.h 的 EntityRegistry 中进行注册
+ */
 class Entity : public QObject, public ICollidable {
 	Q_OBJECT
 

@@ -22,10 +22,13 @@
 #include "entityplayerlike.h"
 #include "entityslime.h"
 #include "entitytnt.h"
+#include "entityobserver.h"
 #include "entityxporb.h"
 
 #include "itemblock.h"
 #include "itemspawnegg.h"
+#include "itemteleporter.h"
+#include "itemspawnpointsetter.h"
 
 #include "../controller/worldioworker.h"
 
@@ -95,6 +98,7 @@ namespace registry {
 		REGISTER_ENTITY(EntitySlime);
 		REGISTER_ENTITY(EntityTNT);
 		REGISTER_ENTITY(EntityXpOrb);
+		REGISTER_ENTITY(EntityObserver);
 		// * entity registry end   *
 
 #undef REGISTER_ENTITY
@@ -159,7 +163,7 @@ namespace registry {
 		for (const auto &[_, block] : blockMap) {
 			items.push_back(QSharedPointer<ItemBlock>::create(block));
 		}
-		// 注册刷怪蛋和移动方块生成器
+		// 注册刷怪蛋
 		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
 			"parkour::EntityCreeper",
 			":/assets/items/spawn_egg_creeper.png"
@@ -172,6 +176,12 @@ namespace registry {
 			"parkour::EntitySlime",
 			":/assets/items/spawn_egg_slime.png"
 		));
+		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
+			"parkour::EntityObserver",
+			":/assets/items/observer.png"
+		));
+		items.push_back(QSharedPointer<ItemSpawnPointSetter>::create());
+		items.push_back(QSharedPointer<ItemTeleporter>::create());
 	}
 
 	const QList<QSharedPointer<Item>>& ItemRegistry::getItems() {

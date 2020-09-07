@@ -213,6 +213,8 @@
   <ItemGroup>
     <ClCompile Include="controller\savemanager.cpp" />
     <ClCompile Include="controller\worldioworker.cpp" />
+    <ClCompile Include="model\entityobserver.cpp" />
+    <ClCompile Include="model\itemteleporter.cpp" />
     <ClCompile Include="model\itemspawnpointsetter.cpp" />
     <ClCompile Include="view\saveitem.cpp" />
     <ClCompile Include="view\saveselection.cpp" />
@@ -278,6 +280,7 @@
     <QtMoc Include="controller\savemanager.h" />
     <QtMoc Include="controller\worldioworker.h" />
     <QtMoc Include="model\itemspawnpointsetter.h" />
+    <QtMoc Include="model\itemteleporter.h" />
     <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />
@@ -290,6 +293,7 @@
     <ClInclude Include="model\blockstonebrick.h" />
     <QtMoc Include="view\saveselection.h" />
     <QtMoc Include="view\saveitem.h" />
+    <QtMoc Include="model\entityobserver.h" />
     <ClInclude Include="utils\askeyvaluerange.h" />
     <QtMoc Include="model\block.h">
     </QtMoc>

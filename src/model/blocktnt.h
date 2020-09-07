@@ -18,6 +18,7 @@ public:
 	double getExplosionResistance() const override;
     void onExplosion(QPoint blockPos, double power) override;
     void collide(QPoint, Entity&, Direction) override;
+	void ignite(const QPoint &blockPos);
 	void onStand(QPoint, Entity&) override;
 };
 }
