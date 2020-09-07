@@ -26,6 +26,7 @@
 #include "entityxporb.h"
 
 #include "itemblock.h"
+#include "itemmovingbrick.h"
 #include "itemspawnegg.h"
 #include "itemteleporter.h"
 #include "itemspawnpointsetter.h"
@@ -180,6 +181,7 @@ namespace registry {
 			"parkour::EntityObserver",
 			":/assets/items/observer.png"
 		));
+		items.push_back(QSharedPointer<ItemMovingBrick>::create());
 		items.push_back(QSharedPointer<ItemSpawnPointSetter>::create());
 		items.push_back(QSharedPointer<ItemTeleporter>::create());
 	}

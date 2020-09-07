@@ -4,8 +4,8 @@
 #include "world.h"
 
 namespace parkour {
-	double EntityMovingBrick::getWalkSpeed() const {
-		return 1;
+	EntityMovingBrick::EntityMovingBrick() {
+		start = end = {.0f, .0f};
 	}
 	QString EntityMovingBrick::getName() const {
 		return "moving_brick";
@@ -19,6 +19,11 @@ namespace parkour {
 		return QVector2D(1.0, 1.0);
 	}
 
+	void EntityMovingBrick::setEnds(const QVector2D &start, const QVector2D &end) {
+		this->start = start;
+		this->end = end;
+	}
+
 	BoundingBox EntityMovingBrick::getBoundingBox() const {
 		return BoundingBox{ { 0, 0 }, { 1, 1 } };
 	}
@@ -28,24 +33,22 @@ namespace parkour {
 			ticksLeft--;
 		} else {
 			switch (state) {
-			case MovingState::STOP:
-			case MovingState::LEFT:
-				state = MovingState::RIGHT;
+			case MovingState::FORWARD:
+				state = MovingState::BACKWARD;
 				break;
-			case MovingState::RIGHT:
-				state = MovingState::LEFT;
+			case MovingState::BACKWARD:
+			case MovingState::STOP:
+				state = MovingState::FORWARD;
 				break;
 			}
-			ticksLeft = TICKS_PER_SEC * 3;
+			ticksLeft = (end - start).length() / movingVelocity * TICKS_PER_SEC;
 		}
-		if (state == MovingState::LEFT) {
-			goLeft();
-		} else if (state == MovingState::RIGHT) {
-			goRight();
+		if (state == MovingState::FORWARD) {
+			setVelocity((end - start).normalized() * movingVelocity);
+		} else if (state == MovingState::BACKWARD) {
+			setVelocity((start - end).normalized() * movingVelocity);
 		}
 	}
-
-
 
 	bool EntityMovingBrick::isAffectedByGravity() const {
 		return false;
@@ -56,13 +59,6 @@ namespace parkour {
 	double EntityMovingBrick::getMass() const {
 		return 1e8;
 	}
-	void EntityMovingBrick::collide(ICollidable & other, Direction dir) {
-		if (dir == Direction::LEFT && state != MovingState::RIGHT) {
-			state = MovingState::RIGHT;
-		} else if (dir == Direction::RIGHT && state != MovingState::LEFT) {
-			state = MovingState::LEFT;
-		}
-	}
 	void EntityMovingBrick::damage(double val) {
 		/* do nothing */
 	}
@@ -70,12 +66,12 @@ namespace parkour {
 		return false;
 	}
 	void EntityMovingBrick::serializeCustomProps(QDataStream & out) const {
-		out << ticksLeft << state;
+		out << ticksLeft << state << start << end;
 	}
 	void EntityMovingBrick::deserializeCustomProps(QDataStream & in) {
-		in >> ticksLeft >> state;
+		in >> ticksLeft >> state >> start >> end;
 	}
 	int EntityMovingBrick::getSerializationVersion() const {
-		return 1;
+		return 2;
 	}
 }

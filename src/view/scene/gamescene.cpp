@@ -561,6 +561,7 @@ bool GameScene::event(QEvent* event) {
 								if (item != nullptr) {
 									item->onUse(gameCoords);
 								}
+								hotbarTicksLeft = HOTBAR_TIMEOUT;
 							}
 						}
 						for (int i = blockPos.x() - 1; i <= blockPos.x() + 1; i++) {

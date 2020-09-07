@@ -203,6 +203,9 @@
     <ClCompile Include="model\entityobserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\itemmovingbrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -418,6 +421,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="model\entityobserver.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemmovingbrick.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

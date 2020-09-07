@@ -214,6 +214,7 @@
     <ClCompile Include="controller\savemanager.cpp" />
     <ClCompile Include="controller\worldioworker.cpp" />
     <ClCompile Include="model\entityobserver.cpp" />
+    <ClCompile Include="model\itemmovingbrick.cpp" />
     <ClCompile Include="model\itemteleporter.cpp" />
     <ClCompile Include="model\itemspawnpointsetter.cpp" />
     <ClCompile Include="view\saveitem.cpp" />
@@ -294,6 +295,7 @@
     <QtMoc Include="view\saveselection.h" />
     <QtMoc Include="view\saveitem.h" />
     <QtMoc Include="model\entityobserver.h" />
+    <QtMoc Include="model\itemmovingbrick.h" />
     <ClInclude Include="utils\askeyvaluerange.h" />
     <QtMoc Include="model\block.h">
     </QtMoc>
