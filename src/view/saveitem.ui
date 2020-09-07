@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>702</width>
-    <height>140</height>
+    <width>563</width>
+    <height>108</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,14 +30,14 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>150</width>
-       <height>122</height>
+       <width>160</width>
+       <height>90</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>150</width>
-       <height>122</height>
+       <width>160</width>
+       <height>90</height>
       </size>
      </property>
      <property name="text">
@@ -50,9 +50,12 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Maximum</enum>
+     </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>40</width>
+       <width>10</width>
        <height>20</height>
       </size>
      </property>
@@ -65,11 +68,15 @@
        <property name="font">
         <font>
          <family>Microsoft YaHei</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
+         <weight>62</weight>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color:white;</string>
+        <string notr="true">color:white;
+font-size: 25px;
+font-weight: 500;</string>
        </property>
        <property name="text">
         <string>TextLabel</string>
@@ -88,7 +95,8 @@
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color:white;</string>
+        <string notr="true">color: #cccccc;
+font-size:0.6em;</string>
        </property>
        <property name="text">
         <string>TextLabel</string>

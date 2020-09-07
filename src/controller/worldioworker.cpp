@@ -11,18 +11,22 @@ namespace parkour {
 	}
 	void WorldIOWorker::runWorkerFunc() {
 		workFunc();
+		QThread::msleep(500); // 保证进度条被显示
+		emit progress(100);
 		this->moveToThread(QApplication::instance()->thread());
-		qDebug() << "done!";
 		emit done();
 	}
 	void WorldIOWorker::executeWork(std::function<void()> func) {
+		static bool connected = false;
 		th->wait();
-		qDebug("execute");
 		auto &inst = WorldIOWorker::instance();
 		inst.moveToThread(th);
 		inst.workFunc = func;
-		QApplication::instance()->connect(th, &QThread::started, &inst, &WorldIOWorker::runWorkerFunc);
-		QApplication::instance()->connect(&inst, &WorldIOWorker::done, th, &QThread::quit);
+		if (!connected) {
+			connected = true;
+			QApplication::instance()->connect(th, &QThread::started, &inst, &WorldIOWorker::runWorkerFunc);
+			QApplication::instance()->connect(&inst, &WorldIOWorker::done, th, &QThread::quit);
+		}
 		th->start();
 	}
 	int WorldIOWorker::getProgress() {

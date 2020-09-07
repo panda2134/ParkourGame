@@ -213,6 +213,7 @@
   <ItemGroup>
     <ClCompile Include="controller\savemanager.cpp" />
     <ClCompile Include="controller\worldioworker.cpp" />
+    <ClCompile Include="model\itemspawnpointsetter.cpp" />
     <ClCompile Include="view\saveitem.cpp" />
     <ClCompile Include="view\saveselection.cpp" />
     <ClCompile Include="utils\experiencehelper.cpp" />
@@ -276,6 +277,7 @@
     <QtMoc Include="utils\experiencehelper.h" />
     <QtMoc Include="controller\savemanager.h" />
     <QtMoc Include="controller\worldioworker.h" />
+    <QtMoc Include="model\itemspawnpointsetter.h" />
     <ClInclude Include="model\blockoakplank.h" />
     <ClInclude Include="model\blockflower.h" />
     <ClInclude Include="model\blockmushroom.h" />

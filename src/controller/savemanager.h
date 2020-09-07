@@ -31,6 +31,7 @@ namespace parkour {
 		bool writeToSave(const QString &);
 		bool createSaveFolder(const QString &);
 		void setLastScreenshot(const QImage &im);
+		void removeSave(QString saveName);
 	};
 }
 

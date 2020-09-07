@@ -22,11 +22,13 @@ public:
 
 private slots:
 	void createButtonClicked();
+	void deleteButtonClicked();
 	void existingSaveClicked(QListWidgetItem *w);
 
 private:
 	Ui::SaveSelection *ui;
 	QList<parkour::SaveManager::SaveMeta> meta;
+	void refreshList();
 };
 
 #endif

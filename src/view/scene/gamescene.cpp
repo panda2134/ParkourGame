@@ -421,12 +421,12 @@ void GameScene::moveViewportToPlayerPosition() {
 }
 
 bool GameScene::event(QEvent* event) {
+	QSharedPointer<GUIBase> pGUI;
 	if (ingameGUI == nullptr) {
 		if (mode == GAMING) {
 			auto playerController = WorldController::instance().getPlayerController();
 			if (event->type() == QEvent::KeyPress) {
 				const auto key = static_cast<QKeyEvent*>(event)->key();
-				QSharedPointer<GUIBase> pGUI;
 				switch (key) {
 				case Qt::Key_A:
 					playerController->setGoingLeft(true);
@@ -503,7 +503,12 @@ bool GameScene::event(QEvent* event) {
 						mode = SceneMode::GAMING;
 						break;
 					case Qt::Key_Escape:
-						showGUI(QSharedPointer<GUIPause>::create(), Qt::Key_Escape);
+						pGUI = QSharedPointer<GUIPause>::create();
+						showGUI(pGUI, Qt::Key_Escape);
+						connect(static_cast<GUIPause*>(pGUI.data()), &GUIPause::saveAndExit, [this]() {
+							this->quitGUI();
+							emit saveAndExit();
+						});
 						break;
 #define HANDLE_HOTBAR(x) case Qt::Key_##x: switchHotbar(x-1); break;
 					HANDLE_HOTBAR(1)

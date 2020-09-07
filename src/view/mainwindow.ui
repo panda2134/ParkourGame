@@ -29,10 +29,10 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>ParkourGame</string>
+   <string>MineParkour</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: url(:/assets/gui/options_background.png);
+   <string notr="true">#MainWindow { background: url(:/assets/gui/options_background.png); }
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">

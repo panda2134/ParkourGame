@@ -1,5 +1,6 @@
 ﻿#include "saveselection.h"
 #include "saveitem.h"
+#include "../controller/savemanager.h"
 #include "ui_saveselection.h" 
 #include "styledpushbutton.h"
 #include <QDebug>
@@ -9,19 +10,22 @@
 SaveSelection::SaveSelection(QWidget * parent) : QDialog(parent) {
 	ui = new Ui::SaveSelection();
 	ui->setupUi(this);
-	meta = parkour::SaveManager::instance().listSaves();
 
-	for (const auto &x : meta) {
-		qDebug() << x.saveName;
-		auto *w = new SaveItem(this);
-		w->setMeta(x);
-		auto *item = new QListWidgetItem(ui->listWidget);
-		item->setSizeHint(w->sizeHint());
-		ui->listWidget->setItemWidget(item, w);
-	}
+	refreshList();
 
 	connect(ui->createButton, &StyledPushButton::clicked, this, &SaveSelection::createButtonClicked);
 	connect(ui->listWidget, &QListWidget::itemDoubleClicked, this, &SaveSelection::existingSaveClicked);
+	connect(ui->listWidget, &QListWidget::itemSelectionChanged, [this]() {
+		this->ui->deleteButton->setEnabled(this->ui->listWidget->selectedItems().length() > 0);
+	});
+	connect(ui->deleteButton, &StyledPushButton::clicked, this, &SaveSelection::deleteButtonClicked);
+}
+
+void SaveSelection::deleteButtonClicked() {
+	for (const auto &x : ui->listWidget->selectedItems()) {
+		parkour::SaveManager::instance().removeSave(static_cast<SaveItem*>(ui->listWidget->itemWidget(x))->getMeta().saveName);
+	}
+	refreshList();
 }
 
 void SaveSelection::createButtonClicked() {
@@ -62,4 +66,16 @@ void SaveSelection::existingSaveClicked(QListWidgetItem * w) {
 	this->saveName = saveItem->getMeta().saveName;
 	this->exists = true;
 	this->accept();
+}
+
+void SaveSelection::refreshList() {
+	meta = parkour::SaveManager::instance().listSaves();
+	ui->listWidget->clear();
+	for (const auto &x : meta) {
+		auto *w = new SaveItem(this);
+		w->setMeta(x);
+		auto *item = new QListWidgetItem(ui->listWidget);
+		item->setSizeHint(w->sizeHint());
+		ui->listWidget->setItemWidget(item, w);
+	}
 }

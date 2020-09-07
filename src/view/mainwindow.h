@@ -27,6 +27,9 @@ public slots:
 	void showProgress(int);
 	void progressDone();
 
+private slots:
+	void save();
+
 private:
     Ui::MainWindow* ui;
 	QProgressDialog *progressDialog;

@@ -6,10 +6,10 @@
 
 namespace parkour {
 bool PlayerController::isAlive() const {
-    return alive;
+    return getPlayer() != nullptr;
 }
 
-QSharedPointer<EntityPlayer> PlayerController::getPlayer() {
+QSharedPointer<EntityPlayer> PlayerController::getPlayer() const {
     for (const auto& entity : World::instance().getEntities()) {
         if (entity->getName() == "player") {
             return entity.objectCast<EntityPlayer>();
@@ -35,8 +35,7 @@ void PlayerController::setSneakingExpected(bool value) {
 }
 
 PlayerController::PlayerController()
-    : alive(false)
-    , readyJump(false)
+    : readyJump(false)
     , goingLeft(false)
     , goingRight(false)
     , sneakingExpected(false) {
@@ -50,46 +49,45 @@ void PlayerController::tick() {
 
     //    qDebug() << "start ticking in player controller";
 
-    QSharedPointer<EntityPlayer> player;
+    QSharedPointer<EntityPlayer> player = getPlayer();
+	bool dying = false;
 
-    alive = false;
+	if (player == nullptr) {
+		for (const auto& dyingEntity : world.getDyingEntities().keys()) {
+			if (dyingEntity->getName() == "player") {
+				dying = true;
+				player = dyingEntity.objectCast<EntityPlayer>();
+				break;
+			}
+		}
+	}
 
-    if ((player = getPlayer()) != nullptr) {
-        alive = true;
-    } 
+	if (!dying) {
+		if (player == nullptr) {
+			// 玩家已经死亡，在重生点重生
+			player = QSharedPointer<EntityPlayer>::create();
+			player->setPosition(world.getSpawnPoint());
+			world.addEntity(player);
+		}
 
-    if (!alive) {
-        for (const auto& dyingEntity : world.getDyingEntities().keys()) {
-            if (dyingEntity->getName() == "player") {
-                player = dyingEntity.objectCast<EntityPlayer>();
-            }
-        }
+		player = getPlayer();
 
-        if (player == nullptr) {
-            // 玩家已经死亡，在重生点重生
-            qDebug() << "respawn!";
-            player = QSharedPointer<EntityPlayer>::create();
-            player->setPosition(world.getSpawnPoint());
-            world.addEntity(player);
-            alive = true;
-        }
-    }
+		if (player != nullptr) {
+			if (readyJump) {
+				player->jump();
+			}
 
-    if (alive) {
-        if (readyJump) {
-            player->jump();
-        }
+			player->setSneak(sneakingExpected);
 
-        player->setSneak(sneakingExpected);
-
-        if (goingLeft ^ goingRight) {
-            if (goingLeft) {
-                player->goLeft();
-            } else {
-                player->goRight();
-            }
-        }
-    }
+			if (goingLeft ^ goingRight) {
+				if (goingLeft) {
+					player->goLeft();
+				} else {
+					player->goRight();
+				}
+			}
+		}
+	}
 }
 
 void PlayerController::shootFireballAt(QVector2D target) {

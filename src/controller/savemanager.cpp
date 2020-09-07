@@ -26,6 +26,7 @@ namespace parkour {
 		}
 		return ret;
 	}
+
 	bool SaveManager::loadFromSave(const QString &saveName) {
 		QFile saveFile(savesFolder.filePath(saveName + "/" + SAVE_FILENAME));
 		if (saveFile.open(QIODevice::ReadOnly)) {
@@ -39,16 +40,11 @@ namespace parkour {
 	}
 	bool SaveManager::writeToSave(const QString &saveName) {
 		QFile saveFile(savesFolder.filePath(saveName + "/" + SAVE_FILENAME));
-		//qDebug("41");
 		if (saveFile.open(QIODevice::WriteOnly)) {
 			QDataStream out(&saveFile);
-			//qDebug("before serialize");
 			WorldController::instance().serializeWorld(out);
-			//qDebug("after serialize");
 			lastScreenshot.save(savesFolder.filePath(saveName + "/" + PREVIEW_FILENAME));
-			//qDebug("after preview");
-			World::instance().setReady(false);
-			//qDebug("before return");
+			WorldController::instance().unloadWorld();
 			return out.status() == QDataStream::Ok;
 		} else {
 			return false;
@@ -59,5 +55,8 @@ namespace parkour {
 	}
 	void SaveManager::setLastScreenshot(const QImage & im) {
 		lastScreenshot = im;
+	}
+	void SaveManager::removeSave(QString saveName) {
+		QDir(savesFolder.absoluteFilePath(saveName)).removeRecursively();
 	}
 }

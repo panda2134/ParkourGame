@@ -105,7 +105,7 @@ QDataStream & operator<<(QDataStream & out, const World & world) {
 	// entities
 	registry::EntityRegistry::instance().writeEntitiesToStream(out, world.entities);
 
-	WorldIOWorker::instance().setProgress(100);
+	WorldIOWorker::instance().setProgress(99);
 
 	return out;
 }
@@ -134,6 +134,8 @@ QDataStream & operator>>(QDataStream & in, World & world) {
 
 	// entities
 	world.entities = registry::EntityRegistry::instance().readEntitiesFromStream(in);
+
+	WorldIOWorker::instance().setProgress(99);
 
 	return in;
 }

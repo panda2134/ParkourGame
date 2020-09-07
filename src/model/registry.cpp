@@ -172,10 +172,6 @@ namespace registry {
 			"parkour::EntitySlime",
 			":/assets/items/spawn_egg_slime.png"
 		));
-		items.push_back(QSharedPointer<ItemSpawnEgg>::create(
-			"parkour::EntityMovingBrick",
-			":/assets/entities/moving_brick.png"
-		));
 	}
 
 	const QList<QSharedPointer<Item>>& ItemRegistry::getItems() {

@@ -1,6 +1,9 @@
 ﻿#include "guipause.h"
+#include "../../model/world.h"
+#include "../../utils/consts.h"
 #include <QRect>
 #include <QDebug>
+#include <QLocale>
 #include <QMouseEvent>
 
 namespace parkour {
@@ -14,14 +17,31 @@ namespace parkour {
 
 		const auto ratio = 0.4 * deviceWidth / btnSourceRect.width();
 
-		QFont simsun("宋体");
-		simsun.setPointSize(13 * ratio);
+		auto font = p.font();
+		font.setPointSize(11 / 854.0 * deviceWidth);
+		auto smallFont = font;
+		smallFont.setPointSizeF(smallFont.pointSizeF() * 0.8);
+		qDebug() << "size:" << font.pointSizeF() << smallFont.pointSizeF();
+
+		p.setFont(font);
 		p.setPen(Qt::white);
+
 		QRect textRect(QPoint(0.3 * deviceWidth, 0.3 * deviceHeight), QSize(0.4 * deviceWidth, 0.1 * deviceHeight));
 		p.drawText(textRect, "游戏菜单", Qt::AlignCenter | Qt::AlignHCenter);
 
+		p.setFont(smallFont);
+		p.setPen(Qt::gray);
+
+		auto minutes = World::instance().getTicksFromBirth() / TICKS_PER_SEC / 60;
+		auto playTime = QString("游戏时间：%0 小时 %1 分钟").arg(minutes / 60).arg(minutes % 60);
+		QRect timeRect(textRect.bottomLeft(), QSize(0.4 * deviceWidth, 0.06 * deviceHeight));
+		p.drawText(timeRect, playTime, Qt::AlignCenter | Qt::AlignHCenter);
+
+		p.setFont(font);
+		p.setPen(Qt::white);
+
 		for (int i = 0; i < BUTTON_CNT; i++) {
-			QPoint topLeft = (i > 0 ? buttonRects[i - 1].bottomLeft() : textRect.bottomLeft()) + QPoint(0, 10 * ratio);
+			QPoint topLeft = (i > 0 ? buttonRects[i - 1].bottomLeft() : timeRect.bottomLeft()) + QPoint(0, 10 * ratio);
 			buttonRects[i] = QRect(topLeft, QSize(0.4 * deviceWidth, 0.4 * deviceWidth * btnSourceRect.height() / btnSourceRect.width()));
 			p.drawImage(buttonRects[i], widgetTexture,
 				buttonRects[i].contains(mouseX, mouseY) ? btnHoverSourceRect : btnSourceRect);

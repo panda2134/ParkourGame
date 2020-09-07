@@ -194,6 +194,9 @@
     <ClCompile Include="controller\worldioworker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="model\itemspawnpointsetter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\askeyvaluerange.h">
@@ -400,6 +403,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="controller\worldioworker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemspawnpointsetter.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

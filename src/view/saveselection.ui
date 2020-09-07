@@ -9,18 +9,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>854</width>
-    <height>480</height>
+    <width>640</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>854</width>
-    <height>480</height>
+    <width>640</width>
+    <height>320</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>SaveSelection</string>
+   <string>选择存档...</string>
   </property>
   <property name="styleSheet">
    <string notr="true">#SaveSelection{background: url(:/assets/gui/options_background.png);}
@@ -122,7 +122,7 @@ background-color: white !important;
       </widget>
      </item>
      <item>
-      <widget class="StyledPushButton" name="pushButton">
+      <widget class="StyledPushButton" name="deleteButton">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -133,7 +133,7 @@ background-color: white !important;
         </sizepolicy>
        </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>删除存档</string>
        </property>
       </widget>
      </item>

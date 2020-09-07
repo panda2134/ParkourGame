@@ -13,10 +13,6 @@ class PlayerController : public QObject
 	const double FIREBALL_VELOCITY = 18.0, FIREBALL_POWER = 3.0;
 
     /**
-     * @brief alive 是否存活
-     */
-    bool alive;
-    /**
      * @brief readyJump 是否准备一次跳跃（即是否跳跃键被按住）
      */
     bool readyJump;
@@ -43,7 +39,7 @@ public:
      * @brief getPlayer
      * @return 在存活且非濒临死亡的实体中寻找玩家，若无则返回nullptr
      */
-    QSharedPointer<EntityPlayer> getPlayer();
+    QSharedPointer<EntityPlayer> getPlayer() const;
 
 public slots:
     void setReadyJump(bool value);
