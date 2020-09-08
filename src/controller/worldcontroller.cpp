@@ -1,5 +1,5 @@
 #include "worldcontroller.h"
-#include "worldioworker.h"
+#include "../utils/worldioworker.h"
 #include "../model/blockdelegate.h"
 #include "../model/entitycreeper.h"
 #include "../model/entityplayer.h"

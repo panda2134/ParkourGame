@@ -31,7 +31,7 @@
 #include "itemteleporter.h"
 #include "itemspawnpointsetter.h"
 
-#include "../controller/worldioworker.h"
+#include "../utils/worldioworker.h"
 
 #include <QDebug>
 

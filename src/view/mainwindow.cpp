@@ -3,7 +3,7 @@
 #include "../model/world.h"
 #include "../controller/savemanager.h"
 #include "../controller/worldcontroller.h"
-#include "../controller/worldioworker.h"
+#include "../utils/worldioworker.h"
 #include <QDebug>
 #include <functional>
 

@@ -1,6 +1,6 @@
 #include "world.h"
 #include "registry.h"
-#include "../controller/worldioworker.h"
+#include "../utils/worldioworker.h"
 
 namespace parkour {
 

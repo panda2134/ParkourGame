@@ -1,4 +1,4 @@
-#include "worldioworker.h"
+ï»¿#include "worldioworker.h"
 #include "savemanager.h"
 #include <QDebug>
 
@@ -11,7 +11,7 @@ namespace parkour {
 	}
 	void WorldIOWorker::runWorkerFunc() {
 		workFunc();
-		QThread::msleep(500); // ±£Ö¤½ø¶ÈÌõ±»ÏÔÊ¾
+		QThread::msleep(500); // ä¿è¯è¿›åº¦æ¡è¢«æ˜¾ç¤º
 		emit progress(100);
 		this->moveToThread(QApplication::instance()->thread());
 		emit done();

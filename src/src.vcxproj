@@ -209,10 +209,13 @@
       <QtUicDir>..\bin\$(Configuration)\.ui</QtUicDir>
       <QtUicFileName>ui_%(Filename).h</QtUicFileName>
     </QtUic>
+    <PostBuildEvent>
+      <Command>"$(QTDIR)\bin\windeployqt.exe" "$(OutDir.TrimEnd('\'))" --$(Configuration.toLower())</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="controller\savemanager.cpp" />
-    <ClCompile Include="controller\worldioworker.cpp" />
+    <ClCompile Include="utils\worldioworker.cpp" />
     <ClCompile Include="model\entityobserver.cpp" />
     <ClCompile Include="model\itemmovingbrick.cpp" />
     <ClCompile Include="model\itemteleporter.cpp" />
@@ -279,7 +282,7 @@
     <QtMoc Include="view\scene\gui\inventorygui.h" />
     <QtMoc Include="utils\experiencehelper.h" />
     <QtMoc Include="controller\savemanager.h" />
-    <QtMoc Include="controller\worldioworker.h" />
+    <QtMoc Include="utils\worldioworker.h" />
     <QtMoc Include="model\itemspawnpointsetter.h" />
     <QtMoc Include="model\itemteleporter.h" />
     <ClInclude Include="model\blockoakplank.h" />

@@ -191,9 +191,6 @@
     <ClCompile Include="controller\savemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controller\worldioworker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="model\itemspawnpointsetter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -204,6 +201,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="model\itemmovingbrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\worldioworker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -411,9 +411,6 @@
     <QtMoc Include="controller\savemanager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="controller\worldioworker.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="model\itemspawnpointsetter.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -424,6 +421,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="model\itemmovingbrick.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="utils\worldioworker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

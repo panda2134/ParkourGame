@@ -28,7 +28,6 @@ int BlockSpring::getCurrentFrame(const QPoint& blockPos) {
 }
 
 void BlockSpring::onStand(QPoint blockPos, Entity& entity) {
-    qDebug() << "stand";
     frameCount[{ blockPos.x(), blockPos.y() }] = FRAME_COUNT;
     entity.setVelocity(entity.getVelocity() + QVector2D(0, BOUNCE_VELOCITY));
 }

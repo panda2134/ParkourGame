@@ -43,6 +43,7 @@ void SaveSelection::createButtonClicked() {
 	}
 	if (!parkour::SaveManager::instance().createSaveFolder(saveName)) {
 		QMessageBox::critical(this, "创建失败", "存档名称不合法");
+		return;
 	}
 	this->saveName = saveName;
 	this->exists = false;
