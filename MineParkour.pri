@@ -23,7 +23,6 @@ HEADERS += ./utils/askeyvaluerange.h \
     ./utils/worldioworker.h \
     ./model/itemspawnpointsetter.h \
     ./model/itemteleporter.h \
-    ./gamesound.h \
     ./model/itemblock.h \
     ./model/blocksaw.h \
     ./view/saveselection.h \
@@ -48,7 +47,6 @@ HEADERS += ./utils/askeyvaluerange.h \
     ./model/world.h \
     ./controller/worldcontroller.h
 SOURCES += ./controller/savemanager.cpp \
-    ./gamesound.cpp \
     ./utils/worldioworker.cpp \
     ./model/entityobserver.cpp \
     ./model/itemmovingbrick.cpp \

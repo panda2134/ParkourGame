@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5F05D8A3-1FE7-3DD9-B59E-1735EF29DFB9}</ProjectGuid>
-    <RootNamespace>src</RootNamespace>
+    <RootNamespace>MineParkour</RootNamespace>
     <Keyword>QtVS_v303</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
@@ -27,7 +27,7 @@
     <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <IntermediateDirectory>..\bin\release\.obj\</IntermediateDirectory>
-    <PrimaryOutput>src</PrimaryOutput>
+    <PrimaryOutput>MineParkour</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <PlatformToolset>v141</PlatformToolset>
@@ -36,7 +36,7 @@
     <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
     <IntermediateDirectory>..\bin\debug\.obj\</IntermediateDirectory>
-    <PrimaryOutput>src</PrimaryOutput>
+    <PrimaryOutput>MineParkour</PrimaryOutput>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -54,15 +54,15 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\bin\debug\</OutDir>
-    <IntDir>..\bin\debug\.obj\</IntDir>
-    <TargetName>src</TargetName>
+    <OutDir>.\bin\debug\</OutDir>
+    <IntDir>.\bin\debug\.obj\</IntDir>
+    <TargetName>MineParkour</TargetName>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\bin\release\</OutDir>
-    <IntDir>..\bin\release\.obj\</IntDir>
-    <TargetName>src</TargetName>
+    <OutDir>.\bin\release\</OutDir>
+    <IntDir>.\bin\release\.obj\</IntDir>
+    <TargetName>MineParkour</TargetName>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -111,7 +111,7 @@
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkIncremental>false</LinkIncremental>
       <OptimizeReferences>true</OptimizeReferences>
-      <OutputFile>$(OutDir)\src.exe</OutputFile>
+      <OutputFile>$(OutDir)\MineParkour.exe</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -174,7 +174,7 @@
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
-      <OutputFile>$(OutDir)\src.exe</OutputFile>
+      <OutputFile>$(OutDir)\MineParkour.exe</OutputFile>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>

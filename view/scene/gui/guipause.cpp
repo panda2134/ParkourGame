@@ -21,7 +21,6 @@ namespace parkour {
 		font.setPointSize(11 / 854.0 * deviceWidth);
 		auto smallFont = font;
 		smallFont.setPointSizeF(smallFont.pointSizeF() * 0.8);
-		qDebug() << "size:" << font.pointSizeF() << smallFont.pointSizeF();
 
 		p.setFont(font);
 		p.setPen(Qt::white);
