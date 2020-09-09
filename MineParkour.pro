@@ -20,6 +20,12 @@ win32 {
 	RC_FILE = MineParkour.rc
 }
 
+ambient.commands = $$QMAKE_COPY_DIR \"$$PWD/assets/sounds/ambient\" \"$$OUT_PWD/$$DESTDIR/ambient\"
+first.depends = $(first) ambient
+export(first.depends)
+export(ambient.commands)
+QMAKE_EXTRA_TARGETS += first ambient
+
 msvc* {
 	QMAKE_CXXFLAGS += /utf-8 /F 16777216 /std:c++17
 }

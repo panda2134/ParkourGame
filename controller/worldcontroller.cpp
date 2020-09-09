@@ -50,8 +50,9 @@ void WorldController::unloadWorld() const {
     if (!world.isReady()) {
         throw "world not ready, cannot unload";
     }
-	world.clear();
+    world.clear();
     world.setReady(false);
+    GameSound::instance().stopAmbient();
 }
 
 void WorldController::serializeWorld(QDataStream & out) {
@@ -266,12 +267,12 @@ void WorldController::tick() const {
 
 				auto lighter = entity, heavier = anotherEntity;
 				if (lighter->getMass() > heavier->getMass()) {
-					qSwap(lighter, heavier);
-				}
+                                    qSwap(lighter, heavier);
+                                }
 
-				float delta = 0.0f;
-				switch (lighter->checkCollideWith(*heavier)) {
-				case Direction::UP:
+                                float delta = 0.0f;
+                                switch (lighter->checkCollideWith(*heavier)) {
+                                case Direction::UP:
 					delta = qMax(.0f, heavier->getBoundingBoxWorld().getMaxY() - lighter->getBoundingBoxWorld().getMinY());
 					lighter->setPosition(lighter->getPosition() + QVector2D(0, delta));
 					break;
@@ -287,7 +288,7 @@ void WorldController::tick() const {
                     delta = qMax(.0f, lighter->getBoundingBoxWorld().getMaxX() - heavier->getBoundingBoxWorld().getMinX());
 					lighter->setPosition(lighter->getPosition() - QVector2D(delta, 0));
                     break;
-                }
+                                }
             }
         }
     }
@@ -352,6 +353,11 @@ void WorldController::tick() const {
         if (entity->getPosition().y() > WORLD_HEIGHT) {
             entity->setHp(entity->getHp() - VOID_DAMAGE_PER_TICK); // 直接采用setHp / getHp，是因为可能实体子类会覆写 damage() 实现无敌效果，而虚空伤害无视无敌效果
         }
+    }
+
+    // 8. 随机是否尝试播放ambient music
+    if (QRandomGenerator::system()->generateDouble() < AMBIENT_PLAY_CHANCE) {
+        GameSound::instance().playAmbient();
     }
 }
 }
