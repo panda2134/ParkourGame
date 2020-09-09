@@ -1,2 +1,4 @@
 .vs
 assets/sounds/*
+release
+debug
