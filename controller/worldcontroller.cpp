@@ -111,8 +111,9 @@ void WorldController::handleExplosion(QPoint center, double power) const {
             }
         }
     }
-    GameSound::instance().playSound(
-        QString("Explode%1").arg(QRandomGenerator::system()->generate() % 4 + 1)
+    GameSound::instance().playWorldSound(
+        QString("Explode%1").arg(QRandomGenerator::system()->generate() % 4 + 1),
+        QVector2D(center)
     );
 }
 

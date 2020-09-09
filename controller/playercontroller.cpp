@@ -66,7 +66,7 @@ void PlayerController::tick() {
 		if (player == nullptr) {
 			// 玩家已经死亡，在重生点重生
 			player = QSharedPointer<EntityPlayer>::create();
-			player->setPosition(world.getSpawnPoint());
+			player->placeBoundingBoxAt(world.getSpawnPoint());
 			world.addEntity(player);
 		}
 

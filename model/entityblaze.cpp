@@ -69,7 +69,7 @@ void EntityBlaze::update() {
         // 在停住时，随机决定是否改变状态
         if (QRandomGenerator::global()->generateDouble() < CHANGE_STATE_POSSIBILITY) {
             state = (state == BlazeState::HIGHEST) ? BlazeState::DOWN : BlazeState::UP;
-            GameSound::instance().playSound(QString("Blaze_idle%1").arg(gen->generate() % 4 + 1));
+            GameSound::instance().playWorldSound(QString("Blaze_idle%1").arg(gen->generate() % 4 + 1), getPosition());
         }
     }
 
@@ -131,9 +131,9 @@ double EntityBlaze::getMass() const {
 void EntityBlaze::damage(double val) {
 	Entity::damage(val);
     auto gen = QRandomGenerator::global();
-    GameSound::instance().playSound(QString("Blaze_hurt%1").arg(gen->generate() % 4 + 1));
+    GameSound::instance().playWorldSound(QString("Blaze_hurt%1").arg(gen->generate() % 4 + 1), getPosition());
 	if (this->getHp() < 0) {
-        GameSound::instance().playSound("Blaze_death");
+        GameSound::instance().playWorldSound("Blaze_death", getPosition());
 		int count = gen->generate() % 3 + 1;
 		for (int i = 0; i < count; i++) {
 			EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 10);

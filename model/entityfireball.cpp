@@ -42,7 +42,7 @@ void EntityFireball::placeFireball(QVector2D position, QVector2D velocity, doubl
 	auto fireball = QSharedPointer<EntityFireball>::create(power);
 	fireball->placeBoundingBoxAt(position);
 	fireball->setVelocity(velocity);
-    GameSound::instance().playSound("Fireball");
+    GameSound::instance().playWorldSound("Fireball", position);
 	World::instance().addEntity(fireball);
 }
 

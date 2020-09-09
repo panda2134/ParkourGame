@@ -46,7 +46,7 @@ namespace parkour {
 		if (delta.lengthSquared() < EXPLOSION_THRESHOLD) {
 			if (countdown < 0) {
 				countdown = FUSE_LENGTH;
-				GameSound::instance().playSound("Creeper_fuse");
+				GameSound::instance().playWorldSound("Creeper_fuse", getPosition());
 			} else {
 				countdown--;
 			}

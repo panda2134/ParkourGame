@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QString>
 #include <QThread>
+#include <QVector2D>
 #include <QSharedPointer>
 #include <QSoundEffect>
 
@@ -23,6 +24,7 @@ namespace parkour {
 				this->parent = parent;
 			}
 			void playSound(QString name);
+			void playWorldSound(QString name, QVector2D position);
 		};
 
 		GameSoundWorker* worker = nullptr;
@@ -30,11 +32,13 @@ namespace parkour {
 		
 	signals:
 		void playSoundInWorker(QString);
+		void playWorldSoundInWorker(QString, QVector2D);
 
 	public:
 		GameSound();
 		~GameSound();
 		void playSound(const QString&);
+		void playWorldSound(const QString&, const QVector2D &);
 	};
 }
 

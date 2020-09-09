@@ -34,9 +34,10 @@ namespace parkour {
 			if (other.getType() == "entity") {
 				this->setVelocity({ 5 * float(QRandomGenerator::global()->generateDouble() * 2 - 1),  float(-JUMP_SPEED * QRandomGenerator::global()->generateDouble()) });
 			}
-			GameSound::instance().playSound(QString("Slime_big%1").arg(
-				QRandomGenerator::system()->generate() % 4 + 1
-			));
+			GameSound::instance().playWorldSound(
+				QString("Slime_big%1").arg(QRandomGenerator::system()->generate() % 4 + 1),
+				getPosition()
+			);
 		}
 		if (other.getName() == "player") {
 			auto &player = static_cast<EntityPlayer&>(other);
@@ -69,14 +70,14 @@ namespace parkour {
 	void EntitySlime::damage(double value) {
 		EntityPlayerLike::damage(value);
 		if (this->getHp() < 0) {
-			GameSound::instance().playSound(QString("Slime_big%1").arg(
-				QRandomGenerator::system()->generate() % 4 + 1
-			));
+			GameSound::instance().playWorldSound(
+				QString("Slime_big%1").arg(QRandomGenerator::system()->generate() % 4 + 1),
+				getPosition());
 			EntityXpOrb::dropXpOrbs(getPosition(), 2);
 		} else {
-			GameSound::instance().playSound(QString("Slime_small%1").arg(
-				QRandomGenerator::system()->generate() % 4 + 1
-			));
+			GameSound::instance().playWorldSound(
+				QString("Slime_small%1").arg(QRandomGenerator::system()->generate() % 4 + 1),
+				getPosition());
 		}
 	}
 	double EntitySlime::getMaxHp() const {
@@ -84,9 +85,7 @@ namespace parkour {
 	}
 	void EntitySlime::jump() {
 		EntityPlayerLike::jump();
-		GameSound::instance().playSound(QString("Slime_small%1").arg(
-			QRandomGenerator::system()->generate() % 4 + 1
-		));
+		GameSound::instance().playWorldSound(QString("Slime_small%1").arg(QRandomGenerator::system()->generate() % 4 + 1), getPosition());
 	}
 	void EntitySlime::serializeCustomProps(QDataStream & out) const {
 		out << waitTicksLeft;

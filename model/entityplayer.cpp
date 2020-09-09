@@ -64,9 +64,9 @@ namespace parkour {
 	void EntityPlayer::increaseExp(int delta) {
 		auto origLevel = ExperienceHelper(exp).toLevelInfo();
 		exp += delta;
-		GameSound::instance().playSound("Exp_gained");
+		GameSound::instance().playWorldSound("Exp_gained", getPosition());
 		if (std::get<0>(ExperienceHelper(exp).toLevelInfo()) > std::get<0>(origLevel)) {
-			GameSound::instance().playSound("Levelup");
+			GameSound::instance().playWorldSound("Levelup", getPosition());
 		}
 	}
 

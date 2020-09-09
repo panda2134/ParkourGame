@@ -1,6 +1,6 @@
 #include "gamescene.h"
 #include "gamesound.h"
-#include "controller/playercontroller.h"
+#include "controller/worldcontroller.h"
 #include <QDebug>
 
 namespace parkour {
@@ -14,6 +14,7 @@ namespace parkour {
 		worker = new GameSoundWorker(this);
 		worker->moveToThread(&th);
 		connect(this, &GameSound::playSoundInWorker, worker, &GameSoundWorker::playSound);
+		connect(this, &GameSound::playWorldSoundInWorker, worker, &GameSoundWorker::playWorldSound);
 		th.start();
 
 		// load required sound files
@@ -49,14 +50,35 @@ namespace parkour {
 		}
 	}
 
-	void parkour::GameSound::playSound(const QString& name) {
+	void GameSound::playSound(const QString& name) {
 		emit playSoundInWorker(name);
 	}
 
-	void parkour::GameSound::GameSoundWorker::playSound(QString name) {
-		if (this->parent->sounds[name] != nullptr) {
-			this->parent->sounds[name]->stop();
-			this->parent->sounds[name]->play();
+	void GameSound::playWorldSound(const QString& name, const QVector2D& position) {
+		emit playWorldSoundInWorker(name, position);
+	}
+
+	void GameSound::GameSoundWorker::playSound(QString name) {
+		auto& sound = this->parent->sounds[name];
+		if (sound != nullptr) {
+			sound->stop();
+			sound->play();
+		}
+	}
+	void GameSound::GameSoundWorker::playWorldSound(QString name, QVector2D position) {
+		const double MAX_RANGE = 32;
+
+		auto player = parkour::WorldController::instance().getPlayerController()->getPlayer();
+		if (player != nullptr) {
+			double distance = (player->getPosition() - position).length();
+			double volume = distance <= MAX_RANGE ? qMin(1.0, 10.0 / (distance * distance)) : 0;
+			auto& sound = this->parent->sounds[name];
+			if (sound != nullptr) {
+				sound->stop();
+				sound->setVolume(volume);
+				qDebug() << "play world sound" << name << position << volume;
+				sound->play();
+			}
 		}
 	}
 }

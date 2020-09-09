@@ -33,7 +33,7 @@ void parkour::BlockExpBottle::collide(QPoint blockPos, Entity& entity, Direction
 		EntityXpOrb::dropXpOrbs(QVector2D(blockPos - QPoint(0, 1)), xp);
 	}
 	World::instance().setBlock(blockPos, "air");
-	GameSound::instance().playSound(QString("Glass_dig%1").arg(gen->generate() % 3 + 1));
+	GameSound::instance().playWorldSound(QString("Glass_dig%1").arg(gen->generate() % 3 + 1), QVector2D(blockPos));
 }
 
 void parkour::BlockExpBottle::onStand(QPoint blockPos, Entity& entity) {

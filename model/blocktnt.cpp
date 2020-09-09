@@ -50,7 +50,7 @@ void parkour::BlockTNT::ignite(const QPoint &blockPos) {
 	auto entityTnt = QSharedPointer<EntityTNT>::create();
 	entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
 	world.addEntity(entityTnt);
-	GameSound::instance().playSound("Fuse");
+	GameSound::instance().playWorldSound("Fuse", QVector2D(blockPos));
 }
 
 void parkour::BlockTNT::onStand(QPoint blockPos, Entity &entity) {
