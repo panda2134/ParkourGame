@@ -43,5 +43,30 @@
         <file>assets/sounds/Exp_gained.wav</file>
         <file>assets/sounds/Levelup.wav</file>
         <file>assets/gui/splash.png</file>
+        <file>assets/sounds/Blaze_death.wav</file>
+        <file>assets/sounds/Blaze_hurt1.wav</file>
+        <file>assets/sounds/Blaze_hurt2.wav</file>
+        <file>assets/sounds/Blaze_hurt3.wav</file>
+        <file>assets/sounds/Blaze_hurt4.wav</file>
+        <file>assets/sounds/Blaze_idle1.wav</file>
+        <file>assets/sounds/Blaze_idle2.wav</file>
+        <file>assets/sounds/Blaze_idle3.wav</file>
+        <file>assets/sounds/Blaze_idle4.wav</file>
+        <file>assets/sounds/Fireball.wav</file>
+        <file>assets/sounds/Slime_big1.wav</file>
+        <file>assets/sounds/Slime_big2.wav</file>
+        <file>assets/sounds/Slime_big3.wav</file>
+        <file>assets/sounds/Slime_big4.wav</file>
+        <file>assets/sounds/Slime_small1.wav</file>
+        <file>assets/sounds/Slime_small2.wav</file>
+        <file>assets/sounds/Slime_small3.wav</file>
+        <file>assets/sounds/Slime_small4.wav</file>
+        <file>assets/sounds/Slime_small5.wav</file>
+        <file>assets/sounds/Creeper_fuse.wav</file>
+        <file>assets/sounds/Fuse.wav</file>
+        <file>assets/sounds/Explode1.wav</file>
+        <file>assets/sounds/Explode2.wav</file>
+        <file>assets/sounds/Explode3.wav</file>
+        <file>assets/sounds/Explode4.wav</file>
     </qresource>
 </RCC>

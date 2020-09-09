@@ -1,5 +1,6 @@
 ﻿#include "blocktnt.h"
-#include "../controller/worldcontroller.h"
+#include "controller/worldcontroller.h"
+#include "view/scene/gamesound.h"
 #include "entitytnt.h"
 #include "world.h"
 
@@ -49,6 +50,7 @@ void parkour::BlockTNT::ignite(const QPoint &blockPos) {
 	auto entityTnt = QSharedPointer<EntityTNT>::create();
 	entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
 	world.addEntity(entityTnt);
+	GameSound::instance().playSound("Fuse");
 }
 
 void parkour::BlockTNT::onStand(QPoint blockPos, Entity &entity) {

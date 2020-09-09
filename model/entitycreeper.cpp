@@ -1,8 +1,9 @@
 ﻿#include "entitycreeper.h"
 #include "world.h"
-#include "../controller/worldcontroller.h"
 #include "entityplayer.h"
 #include "entityxporb.h"
+#include "controller/worldcontroller.h"
+#include "view/scene/gamesound.h"
 #include <QSharedPointer>
 #include <QRandomGenerator>
 
@@ -41,25 +42,42 @@ namespace parkour {
 		if (!found || delta.lengthSquared() > AI_SEARCH_RANGE * AI_SEARCH_RANGE) {
 			return;
 		}
+
 		if (delta.lengthSquared() < EXPLOSION_THRESHOLD) {
-			this->setHp(-1);
-			WorldController::instance().explode(getPosition().toPoint(), TNT_EXPLOSION_POWER);
-		} else if (randomTicksLeft > 0) {
-			randomTicksLeft--;
-		} else {
-			if (delta.x() > 1) { 
-				goRight();
-			} else if (delta.x() < -1) {
-				goLeft();
+			if (countdown < 0) {
+				countdown = FUSE_LENGTH;
+				GameSound::instance().playSound("Creeper_fuse");
 			} else {
-				auto randomGen = QRandomGenerator::global();
-				randomTicksLeft = randomGen->generateDouble() * RANDOM_TICK_LENGTH;
-				if (randomGen->generateDouble() > 0.5) {
+				countdown--;
+			}
+		} else {
+			countdown = -1;
+			if (randomTicksLeft > 0) {
+				randomTicksLeft--;
+			}
+			else {
+				if (delta.x() > 1) {
 					goRight();
-				} else {
+				}
+				else if (delta.x() < -1) {
 					goLeft();
 				}
+				else {
+					auto randomGen = QRandomGenerator::global();
+					randomTicksLeft = randomGen->generateDouble() * RANDOM_TICK_LENGTH;
+					if (randomGen->generateDouble() > 0.5) {
+						goRight();
+					}
+					else {
+						goLeft();
+					}
+				}
 			}
+		}
+
+		if (countdown == 0) {
+			this->setHp(-1);
+			WorldController::instance().explode(getPosition().toPoint(), TNT_EXPLOSION_POWER);
 		}
 	}
 	void EntityCreeper::collide(ICollidable & other, Direction dir) {

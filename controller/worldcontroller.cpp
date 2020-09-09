@@ -1,16 +1,18 @@
 #include "worldcontroller.h"
-#include "../utils/worldioworker.h"
-#include "../model/blockdelegate.h"
-#include "../model/entitycreeper.h"
-#include "../model/entityplayer.h"
-#include "../model/entityblaze.h"
-#include "../model/entityslime.h"
-#include "../model/registry.h"
-#include "../model/world.h"
-#include "../utils/consts.h"
-#include "../utils/geometryhelper.h"
+#include "utils/worldioworker.h"
+#include "utils/consts.h"
+#include "utils/geometryhelper.h"
+#include "model/blockdelegate.h"
+#include "model/entitycreeper.h"
+#include "model/entityplayer.h"
+#include "model/entityblaze.h"
+#include "model/entityslime.h"
+#include "model/registry.h"
+#include "model/world.h"
+#include "view/scene/gamesound.h"
 #include <algorithm>
 #include <QDebug>
+#include <QRandomGenerator>
 #include <QByteArray>
 #include <QDataStream>
 
@@ -102,13 +104,16 @@ void WorldController::handleExplosion(QPoint center, double power) const {
         auto distance = QVector2D(entityPointF - center).length();
         if (geometry::compareDoubles(distance, radius) <= 0) {
             auto damage = (power * EXPLOSION_DAMAGE_MULTIPLIER / (radius * radius)) * (distance - radius) * (distance - radius);
-			auto velocity = (power * EXPLOSION_VELOCITY_MULTIPLIER) * QVector2D(entityPointF - center).normalized() * (radius - distance);
+			auto velocity = (power * EXPLOSION_VELOCITY_MULTIPLIER) * QVector2D(entityPointF - center).normalized() * (radius - distance) / entity->getMass();
             entity->damage(damage);
             if (entity->isAffectedByExplosionWave()) {
                 entity->setVelocity(entity->getVelocity() + velocity);
             }
         }
     }
+    GameSound::instance().playSound(
+        QString("Explode%1").arg(QRandomGenerator::system()->generate() % 4 + 1)
+    );
 }
 
 void WorldController::tick() const {

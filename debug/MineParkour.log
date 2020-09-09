@@ -1,4 +1,4 @@
 ﻿  Generate moc_predefs.h
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(234,5): warning MSB8064: 项“debug\moc_predefs.h.cbt”的自定义生成成功，但指定的依赖项“c:\users\panda2134\documents\parkourgame\debug\moc_predefs.h.cbt”不存在。这可能会导致增量生成无法正常工作。
-  gamesound.cpp
+  worldcontroller.cpp
   MineParkour.vcxproj -> C:\Users\panda2134\Documents\ParkourGame\bin\debug\MineParkour.exe

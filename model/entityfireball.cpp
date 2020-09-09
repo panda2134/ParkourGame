@@ -1,6 +1,7 @@
 #include "entityfireball.h"
 #include "world.h"
-#include "../controller/worldcontroller.h"
+#include "controller/worldcontroller.h"
+#include "view/scene/gamesound.h"
 
 namespace parkour {
 EntityFireball::EntityFireball(double power)
@@ -41,6 +42,7 @@ void EntityFireball::placeFireball(QVector2D position, QVector2D velocity, doubl
 	auto fireball = QSharedPointer<EntityFireball>::create(power);
 	fireball->placeBoundingBoxAt(position);
 	fireball->setVelocity(velocity);
+    GameSound::instance().playSound("Fireball");
 	World::instance().addEntity(fireball);
 }
 

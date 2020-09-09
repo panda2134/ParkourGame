@@ -29,6 +29,7 @@ public:
     QString getDisplayName() const override;
     void damage(double value) override;
     double getMaxHp() const override;
+    void jump() override;
 };
 }
 Q_DECLARE_METATYPE(parkour::EntitySlime*)

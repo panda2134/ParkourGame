@@ -7,6 +7,13 @@
 #include <QPixmap>
 #include <QSplashScreen>
 
+void processAppEvents(QApplication& app) {
+    const int EVENT_COUNT_PER_CALL = 5000;
+    for (int i = 0; i < EVENT_COUNT_PER_CALL; i++) {
+        app.processEvents();
+    }
+}
+
 int main(int argc, char *argv[])
 {
     using namespace parkour;
@@ -17,34 +24,32 @@ int main(int argc, char *argv[])
     QSplashScreen splash(pixmap);
     splash.show();
 
-    a.processEvents();
+    processAppEvents(a);
     splash.showMessage("Loading blocks...", Qt::AlignBottom);
     parkour::registry::BlockRegistry::instance();
 
-    a.processEvents();
+    processAppEvents(a);
     splash.showMessage("Loading entities...", Qt::AlignBottom);
     parkour::registry::EntityRegistry::instance();
 
-    a.processEvents();
+    processAppEvents(a);
     splash.showMessage("Loading items...", Qt::AlignBottom);
     parkour::registry::ItemRegistry::instance();
 
-    a.processEvents();
+    processAppEvents(a);
     splash.showMessage("Loading sounds...", Qt::AlignBottom);
     parkour::GameSound::instance();
 
-    a.processEvents();
+    processAppEvents(a);
     splash.showMessage("Loading workers...", Qt::AlignBottom);
     parkour::WorldIOWorker::instance();
 
+    processAppEvents(a);
     splash.showMessage("Loading Main Screen...", Qt::AlignBottom);
-    for (int i = 0; i < 100000; i++) {
-        a.processEvents();
-    }
 
     MainWindow w;
     w.show();
-
+    processAppEvents(a);
     splash.finish(&w);
 
     return a.exec();

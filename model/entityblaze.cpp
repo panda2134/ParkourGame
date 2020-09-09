@@ -1,5 +1,6 @@
 #include "entityblaze.h"
-#include "../utils/consts.h"
+#include "utils/consts.h"
+#include "view/scene/gamesound.h"
 #include "entityfireball.h"
 #include "entityxporb.h"
 #include "world.h"
@@ -56,6 +57,7 @@ QString EntityBlaze::getName() const {
 
 void EntityBlaze::update() {
     auto& world = World::instance();
+    auto gen = QRandomGenerator::global();
     livingTicks++;
 
     if (state == BlazeState::UP && (getPosition().y() < 1 || blocked(-1.0f))) {
@@ -67,6 +69,7 @@ void EntityBlaze::update() {
         // 在停住时，随机决定是否改变状态
         if (QRandomGenerator::global()->generateDouble() < CHANGE_STATE_POSSIBILITY) {
             state = (state == BlazeState::HIGHEST) ? BlazeState::DOWN : BlazeState::UP;
+            GameSound::instance().playSound(QString("Blaze_idle%1").arg(gen->generate() % 4 + 1));
         }
     }
 
@@ -127,8 +130,10 @@ double EntityBlaze::getMass() const {
 }
 void EntityBlaze::damage(double val) {
 	Entity::damage(val);
+    auto gen = QRandomGenerator::global();
+    GameSound::instance().playSound(QString("Blaze_hurt%1").arg(gen->generate() % 4 + 1));
 	if (this->getHp() < 0) {
-		auto gen = QRandomGenerator::global();
+        GameSound::instance().playSound("Blaze_death");
 		int count = gen->generate() % 3 + 1;
 		for (int i = 0; i < count; i++) {
 			EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 10);

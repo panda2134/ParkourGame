@@ -12,19 +12,20 @@
 namespace parkour {
 	class GameSound : public QObject, public Singleton<GameSound> {
 		Q_OBJECT
+
 		QHash<QString, QSharedPointer<QSoundEffect> > sounds;
 		void loadSound(const QString&);
 
 		class GameSoundWorker: public QObject {
 			GameSound* parent;
 		public:
-			GameSoundWorker(GameSound* parent) : QObject(parent) {
+			GameSoundWorker(GameSound* parent) {
 				this->parent = parent;
 			}
 			void playSound(QString name);
 		};
 
-		GameSoundWorker* worker;
+		GameSoundWorker* worker = nullptr;
 		QThread th;
 		
 	signals:

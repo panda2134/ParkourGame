@@ -2,15 +2,16 @@
 #define ENTITYCREEPER_H
 
 #include "entityplayerlike.h"
-#include "../utils/consts.h"
+#include "utils/consts.h"
 #include <QDataStream>
 
 namespace parkour {
 class EntityCreeper : public EntityPlayerLike {
     Q_OBJECT
-    const double EXPLOSION_THRESHOLD = 4.0;
+    const double EXPLOSION_THRESHOLD = 16.0;
     const int RANDOM_TICK_LENGTH = TICKS_PER_SEC * 5;
-    int randomTicksLeft;
+    const int FUSE_LENGTH = TICKS_PER_SEC * 1.5;
+    int randomTicksLeft, countdown = -1;
     void serializeCustomProps(QDataStream& out) const override;
     void deserializeCustomProps(QDataStream& in) override;
     int getSerializationVersion() const override;
