@@ -40,9 +40,8 @@ public:
 
 	void damage(double val) override;
 	bool showDeathAnimationAndInfo() const override;
-
 };
-Q_DECLARE_METATYPE(EntityMovingBrick*)
 }
+Q_DECLARE_METATYPE(parkour::EntityMovingBrick*)
 
 #endif // ENTITYMOVINGBRICK_H

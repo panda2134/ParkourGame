@@ -1,6 +1,8 @@
 ﻿#include "entityplayer.h"
 #include "entityxporb.h"
 #include "registry.h"
+#include "utils/experiencehelper.h"
+#include "view/scene/gamesound.h"
 
 namespace parkour {
 
@@ -60,7 +62,12 @@ namespace parkour {
 	}
 
 	void EntityPlayer::increaseExp(int delta) {
+		auto origLevel = ExperienceHelper(exp).toLevelInfo();
 		exp += delta;
+		GameSound::instance().playSound("Exp_gained");
+		if (std::get<0>(ExperienceHelper(exp).toLevelInfo()) > std::get<0>(origLevel)) {
+			GameSound::instance().playSound("Levelup");
+		}
 	}
 
 	bool EntityPlayer::isAbleToShootFireballs() {

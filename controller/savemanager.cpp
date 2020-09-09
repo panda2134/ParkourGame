@@ -1,6 +1,6 @@
 #include "savemanager.h"
 #include "worldcontroller.h"
-#include "../model/world.h"
+#include "model/world.h"
 #include <QStandardPaths>
 #include <QDir>
 #include <QFile>

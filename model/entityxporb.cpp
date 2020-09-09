@@ -9,10 +9,10 @@ namespace parkour {
 	EntityXpOrb::EntityXpOrb()
 		: xp(0), tick(0) {}
 	void EntityXpOrb::serializeCustomProps(QDataStream & out) const {
-		out << xp;
+		out << xp << tick;
 	}
 	void EntityXpOrb::deserializeCustomProps(QDataStream & in) {
-		in >> xp;
+		in >> xp >> tick;
 	}
 	int EntityXpOrb::getSerializationVersion() const {
 		return 1;
@@ -91,10 +91,13 @@ namespace parkour {
 		return 0.001;
 	}
 	void EntityXpOrb::dropXpOrbs(QVector2D position, int xp) {
+		if (xp <= 0) {
+			return;
+		}
 		auto orb = QSharedPointer<EntityXpOrb>::create();
 		auto gen = QRandomGenerator::global();
 		orb->setXp(xp);
-		orb->placeBoundingBoxAt(position + QVector2D(gen->generateDouble() * 2, 0));
+		orb->placeBoundingBoxAt(position + QVector2D(gen->generateDouble() * 3, 0));
 		orb->setVelocity(QVector2D(gen->generateDouble(), gen->generateDouble()) * 3);
 		World::instance().addEntity(orb);
 	}

@@ -1,9 +1,10 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "../model/world.h"
-#include "../controller/savemanager.h"
-#include "../controller/worldcontroller.h"
-#include "../utils/worldioworker.h"
+#include "model/world.h"
+#include "controller/savemanager.h"
+#include "controller/worldcontroller.h"
+#include "view/scene/gamesound.h"
+#include "utils/worldioworker.h"
 #include <QDebug>
 #include <functional>
 
@@ -12,7 +13,8 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
     , saveSelectionWidget(nullptr)
     , gameWidget(nullptr)
-    , progressDialog(nullptr) {
+    , progressDialog(nullptr)
+    , mode(parkour::SceneMode::GAMING) {
     ui->setupUi(this);
 	connect(ui->playButton, &StyledPushButton::clicked, [this]() { this->selectSave(parkour::SceneMode::GAMING); });
 	connect(ui->editButton, &StyledPushButton::clicked, [this]() { this->selectSave(parkour::SceneMode::MAPEDIT); });

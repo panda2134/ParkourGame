@@ -26,7 +26,7 @@ public:
 	QString getDisplayName() const override;
 	bool showDeathAnimationAndInfo() const override;
 };
-Q_DECLARE_METATYPE(EntityTNT*)
 }
+Q_DECLARE_METATYPE(parkour::EntityTNT*)
 
 #endif // ENTITYTNT_H

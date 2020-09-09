@@ -9,7 +9,7 @@ namespace parkour {
 		int xpValue;
 	public:
 		ExperienceHelper(int xpValue_);
-		std::tuple<int, int, int> toLevel() const;
+		std::tuple<int, int, int> toLevelInfo() const;
 		int toXpValue() const;
 		void setXpValue(int newValue);
 	};

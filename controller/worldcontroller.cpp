@@ -29,7 +29,7 @@ void WorldController::loadInitialWorld() const {
 	WorldIOWorker::instance().setProgress(0);
     auto& world = World::instance();
     if (world.isReady()) {
-        throw std::exception("test world loading failed: world is already ready");
+        throw "test world loading failed: world is already ready";
     }
     for (int i = 0; i < WORLD_WIDTH; i++) {
         world.setBlock(QPoint(i, 15), "bedrock");
@@ -46,7 +46,7 @@ void WorldController::loadInitialWorld() const {
 void WorldController::unloadWorld() const {
     auto& world = World::instance();
     if (!world.isReady()) {
-        throw std::exception("world not ready, cannot unload");
+        throw "world not ready, cannot unload";
     }
 	world.clear();
     world.setReady(false);
@@ -81,7 +81,7 @@ void WorldController::handleExplosion(QPoint center, double power) const {
     }
     auto& world = World::instance();
     if (!world.isReady()) {
-        throw std::exception("world not ready");
+        throw "world not ready";
     }
     // damage blocks
     double radius = power * EXPLOSION_RADIUS_MULTIPLIER;

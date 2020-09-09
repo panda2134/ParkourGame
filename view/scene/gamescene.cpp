@@ -315,7 +315,7 @@ void GameScene::repaintHud(QPainter& p, QOpenGLContext& ctx) {
 		// 游戏模式，渲染经验条和血量
 		auto player = playerController->getPlayer();
 		if (player != nullptr) {
-			auto [level, xpLeft, xpRequired] = ExperienceHelper(player->getExp()).toLevel();
+			auto [level, xpLeft, xpRequired] = ExperienceHelper(player->getExp()).toLevelInfo();
 			QRect xpBackgroundSourceRect(QPoint(0, 0), QSize(182, 5));
 			QRect xpValueSourceRect(QPoint(0, 5), QSize(xpLeft * 1.0f / xpRequired * 182.0, 5));
 			const double ratio = 0.4 * deviceWidth / xpBackgroundSourceRect.width();

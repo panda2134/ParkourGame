@@ -56,8 +56,8 @@ public:
 	void damage(double val) override;
 	virtual QString getDisplayName() const override;
 };
-Q_DECLARE_METATYPE(EntityBlaze*)
 
 }
+Q_DECLARE_METATYPE(parkour::EntityBlaze*)
 
 #endif // ENTITYBLAZE_H

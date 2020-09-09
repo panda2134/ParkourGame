@@ -36,5 +36,12 @@
         <file>assets/items/tp.png</file>
         <file>assets/entities/observer.png</file>
         <file>assets/items/observer.png</file>
+        <file>assets/blocks/xp_bottle.png</file>
+        <file>assets/sounds/Glass_dig1.wav</file>
+        <file>assets/sounds/Glass_dig2.wav</file>
+        <file>assets/sounds/Glass_dig3.wav</file>
+        <file>assets/sounds/Exp_gained.wav</file>
+        <file>assets/sounds/Levelup.wav</file>
+        <file>assets/gui/splash.png</file>
     </qresource>
 </RCC>

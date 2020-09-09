@@ -15,7 +15,7 @@ UI_DIR += .
 RCC_DIR += .
 include(MineParkour.pri)
 
-QT += core gui widgets
+QT += core gui widgets multimedia
 win32 {
 	RC_FILE = MineParkour.rc
 }

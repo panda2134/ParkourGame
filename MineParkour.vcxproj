@@ -14,28 +14,27 @@
     <ProjectGuid>{5F05D8A3-1FE7-3DD9-B59E-1735EF29DFB9}</ProjectGuid>
     <RootNamespace>MineParkour</RootNamespace>
     <Keyword>QtVS_v303</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.18362.0</WindowsTargetPlatformMinVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
-    <ProjectName>MineParkour</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
-    <OutputDirectory>..\bin\release\</OutputDirectory>
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>bin\release\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
-    <IntermediateDirectory>..\bin\release\.obj\</IntermediateDirectory>
+    <IntermediateDirectory>release\</IntermediateDirectory>
     <PrimaryOutput>MineParkour</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
-    <OutputDirectory>..\bin\debug\</OutputDirectory>
+    <PlatformToolset>v142</PlatformToolset>
+    <OutputDirectory>bin\debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
-    <IntermediateDirectory>..\bin\debug\.obj\</IntermediateDirectory>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
     <PrimaryOutput>MineParkour</PrimaryOutput>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -54,44 +53,42 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>.\bin\debug\</OutDir>
-    <IntDir>.\bin\debug\.obj\</IntDir>
+    <OutDir>bin\debug\</OutDir>
+    <IntDir>debug\</IntDir>
     <TargetName>MineParkour</TargetName>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>.\bin\release\</OutDir>
-    <IntDir>.\bin\release\.obj\</IntDir>
+    <OutDir>bin\release\</OutDir>
+    <IntDir>release\</IntDir>
     <TargetName>MineParkour</TargetName>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;network;gui;multimedia;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;network;gui;multimedia;widgets</QtModules>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\release\.moc;..\bin\debug\.ui;/include;.\model;.\view\widgets;.\controller;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\bin\release\.obj\</AssemblerListingLocation>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;release;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 /F 16777216 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <ObjectFileName>..\bin\release\.obj\</ObjectFileName>
+      <ObjectFileName>release\</ObjectFileName>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WINDOWS;_UNICODE;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>
       </ProgramDataBaseFileName>
@@ -100,10 +97,9 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shell32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -115,8 +111,6 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <StackReserveSize>4194304</StackReserveSize>
-      <Profile>true</Profile>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -124,42 +118,42 @@
       <WarningLevel>0</WarningLevel>
     </Midl>
     <ResourceCompile>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;NDEBUG;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WINDOWS;_UNICODE;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;NDEBUG;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_MULTIMEDIA_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <QtMoc>
       <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>C:/Users/panda2134/Documents/ParkourGame/bin/$(Configuration)/.moc/moc_predefs.h</Include>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>
-      <QtMocDir>..\bin\$(Configuration)\.moc</QtMocDir>
+      <QtMocDir>$(Configuration)</QtMocDir>
       <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
     </QtMoc>
     <QtRcc>
-      <Compression>default</Compression>
       <InitFuncName>res</InitFuncName>
       <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
-      <QtRccDir>..\bin\$(Configuration)\.qrc</QtRccDir>
+      <Compression>default</Compression>
+      <QtRccDir>$(Configuration)</QtRccDir>
       <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
     </QtRcc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
-      <QtUicDir>..\bin\debug\.ui</QtUicDir>
+      <QtUicDir>$(ProjectDir)</QtUicDir>
       <QtUicFileName>ui_%(Filename).h</QtUicFileName>
     </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..\bin\debug\.moc;..\bin\debug\.ui;/include;.\model;.\view\widgets;.\controller;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
-      <AssemblerListingLocation>..\bin\debug\.obj\</AssemblerListingLocation>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;debug;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 /F 16777216 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <ObjectFileName>..\bin\debug\.obj\</ObjectFileName>
+      <ObjectFileName>debug\</ObjectFileName>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WINDOWS;_UNICODE;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -168,7 +162,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shell32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
@@ -178,8 +172,6 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <StackReserveSize>4194304</StackReserveSize>
-      <Profile>true</Profile>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -187,127 +179,110 @@
       <WarningLevel>0</WarningLevel>
     </Midl>
     <ResourceCompile>
-      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;_WINDOWS;_UNICODE;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;QT_WIDGETS_LIB;QT_MULTIMEDIA_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
       <Compression>default</Compression>
       <InitFuncName>res</InitFuncName>
-      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
-      <QtRccDir>..\bin\$(Configuration)\.qrc</QtRccDir>
+      <QtRccDir>$(Configuration)</QtRccDir>
       <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
     </QtRcc>
     <QtMoc>
       <CompilerFlavor>msvc</CompilerFlavor>
-      <Include>C:/Users/panda2134/Documents/ParkourGame/bin/$(Configuration)/.moc/moc_predefs.h</Include>
+      <Include>./$(Configuration)/moc_predefs.h</Include>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <DynamicSource>output</DynamicSource>
-      <QtMocDir>..\bin\$(Configuration)\.moc</QtMocDir>
+      <QtMocDir>$(Configuration)</QtMocDir>
       <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
-      <QtUicDir>..\bin\$(Configuration)\.ui</QtUicDir>
+      <QtUicDir>$(ProjectDir)</QtUicDir>
       <QtUicFileName>ui_%(Filename).h</QtUicFileName>
     </QtUic>
-    <PostBuildEvent>
-      <Command>"$(QTDIR)\bin\windeployqt.exe" "$(OutDir.TrimEnd('\'))" --$(Configuration.toLower())</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="controller\savemanager.cpp" />
-    <ClCompile Include="utils\worldioworker.cpp" />
-    <ClCompile Include="model\entityobserver.cpp" />
-    <ClCompile Include="model\itemmovingbrick.cpp" />
-    <ClCompile Include="model\itemteleporter.cpp" />
-    <ClCompile Include="model\itemspawnpointsetter.cpp" />
-    <ClCompile Include="view\saveitem.cpp" />
-    <ClCompile Include="view\saveselection.cpp" />
-    <ClCompile Include="utils\experiencehelper.cpp" />
-    <ClCompile Include="view\scene\gui\guipause.cpp" />
-    <ClCompile Include="view\scene\gui\inventorygui.cpp" />
-    <ClCompile Include="view\scene\gui\guieventfilter.cpp" />
-    <ClCompile Include="model\item.cpp" />
-    <ClCompile Include="model\entityxporb.cpp" />
-    <ClCompile Include="model\blockoakplank.cpp" />
-    <ClCompile Include="model\blockflower.cpp" />
-    <ClCompile Include="model\blockmushroom.cpp" />
-    <ClCompile Include="model\entityslime.cpp" />
-    <ClCompile Include="model\entitycreeper.cpp" />
     <ClCompile Include="model\block.cpp" />
     <ClCompile Include="model\blockbedrock.cpp" />
     <ClCompile Include="model\blockdelegate.cpp" />
     <ClCompile Include="model\blockdirt.cpp" />
+    <ClCompile Include="model\blockexpbottle.cpp" />
+    <ClCompile Include="model\blockflower.cpp" />
     <ClCompile Include="model\blockgrass.cpp" />
+    <ClCompile Include="model\blockmushroom.cpp" />
+    <ClCompile Include="model\blockoakplank.cpp" />
     <ClCompile Include="model\blocksaw.cpp" />
     <ClCompile Include="model\blockspike.cpp" />
     <ClCompile Include="model\blockspring.cpp" />
     <ClCompile Include="model\blockstonebrick.cpp" />
     <ClCompile Include="model\blocktnt.cpp" />
     <ClCompile Include="model\boundingbox.cpp" />
-    <ClCompile Include="model\entityblaze.cpp" />
-    <ClCompile Include="model\entityfireball.cpp" />
-    <ClCompile Include="model\itemblock.cpp" />
-    <ClCompile Include="model\itemspawnegg.cpp" />
     <ClCompile Include="utils\direction.cpp" />
     <ClCompile Include="model\entity.cpp" />
+    <ClCompile Include="model\entityblaze.cpp" />
+    <ClCompile Include="model\entitycreeper.cpp" />
+    <ClCompile Include="model\entityfireball.cpp" />
+    <ClCompile Include="model\entitymovingbrick.cpp" />
+    <ClCompile Include="model\entityobserver.cpp" />
     <ClCompile Include="model\entityplayer.cpp" />
     <ClCompile Include="model\entityplayerlike.cpp" />
+    <ClCompile Include="model\entityslime.cpp" />
     <ClCompile Include="model\entitytnt.cpp" />
+    <ClCompile Include="model\entityxporb.cpp" />
+    <ClCompile Include="utils\experiencehelper.cpp" />
     <ClCompile Include="view\gamerenderglwidget.cpp" />
     <ClCompile Include="view\scene\gamescene.cpp" />
+    <ClCompile Include="view\scene\gamesound.cpp" />
     <ClCompile Include="utils\geometryhelper.cpp" />
     <ClCompile Include="utils\glhelper.cpp" />
-    <ClCompile Include="model\icollidable.cpp" />
     <ClCompile Include="view\scene\gui\guibase.cpp" />
+    <ClCompile Include="view\scene\gui\guieventfilter.cpp" />
+    <ClCompile Include="view\scene\gui\guipause.cpp" />
+    <ClCompile Include="model\icollidable.cpp" />
+    <ClCompile Include="view\scene\gui\inventorygui.cpp" />
+    <ClCompile Include="model\item.cpp" />
+    <ClCompile Include="model\itemblock.cpp" />
+    <ClCompile Include="model\itemmovingbrick.cpp" />
+    <ClCompile Include="model\itemspawnegg.cpp" />
+    <ClCompile Include="model\itemspawnpointsetter.cpp" />
+    <ClCompile Include="model\itemteleporter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="view\mainwindow.cpp" />
     <ClCompile Include="controller\playercontroller.cpp" />
     <ClCompile Include="model\registry.cpp" />
-    <ClCompile Include="model\entitymovingbrick.cpp" />
+    <ClCompile Include="view\saveitem.cpp" />
+    <ClCompile Include="controller\savemanager.cpp" />
+    <ClCompile Include="view\saveselection.cpp" />
+    <ClCompile Include="view\widgets\styledpushbutton.cpp" />
     <ClCompile Include="model\world.cpp" />
     <ClCompile Include="controller\worldcontroller.cpp" />
-    <ClCompile Include="view\widgets\styledpushbutton.cpp" />
+    <ClCompile Include="utils\worldioworker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="view\widgets\styledpushbutton.h" />
-    <QtMoc Include="view\scene\gui\guipause.h" />
-    <QtMoc Include="view\scene\gui\guibase.h" />
-    <QtMoc Include="model\blockspike.h" />
-    <QtMoc Include="model\blockspring.h" />
-    <QtMoc Include="model\entityblaze.h" />
-    <QtMoc Include="model\entityfireball.h" />
-    <QtMoc Include="model\entityxporb.h" />
-    <QtMoc Include="model\item.h" />
-    <QtMoc Include="view\scene\gui\guieventfilter.h" />
-    <QtMoc Include="view\scene\gui\inventorygui.h" />
-    <QtMoc Include="utils\experiencehelper.h" />
-    <QtMoc Include="controller\savemanager.h" />
-    <QtMoc Include="utils\worldioworker.h" />
-    <QtMoc Include="model\itemspawnpointsetter.h" />
-    <QtMoc Include="model\itemteleporter.h" />
-    <ClInclude Include="model\blockoakplank.h" />
-    <ClInclude Include="model\blockflower.h" />
-    <ClInclude Include="model\blockmushroom.h" />
-    <QtMoc Include="model\entityslime.h" />
-    <QtMoc Include="model\entitycreeper.h" />
-    <QtMoc Include="model\itemblock.h" />
-    <QtMoc Include="model\itemspawnegg.h" />
-    <QtMoc Include="model\blocksaw.h" />
-    <QtMoc Include="model\blockbedrock.h" />
-    <ClInclude Include="model\blockstonebrick.h" />
-    <QtMoc Include="view\saveselection.h" />
-    <QtMoc Include="view\saveitem.h" />
-    <QtMoc Include="model\entityobserver.h" />
-    <QtMoc Include="model\itemmovingbrick.h" />
     <ClInclude Include="utils\askeyvaluerange.h" />
     <QtMoc Include="model\block.h">
+    </QtMoc>
+    <QtMoc Include="model\blockbedrock.h">
     </QtMoc>
     <QtMoc Include="model\blockdelegate.h">
     </QtMoc>
     <QtMoc Include="model\blockdirt.h">
     </QtMoc>
+    <QtMoc Include="model\blockexpbottle.h">
+    </QtMoc>
+    <ClInclude Include="model\blockflower.h" />
     <QtMoc Include="model\blockgrass.h">
     </QtMoc>
+    <ClInclude Include="model\blockmushroom.h" />
+    <ClInclude Include="model\blockoakplank.h" />
+    <QtMoc Include="model\blocksaw.h">
+    </QtMoc>
+    <QtMoc Include="model\blockspike.h">
+    </QtMoc>
+    <QtMoc Include="model\blockspring.h">
+    </QtMoc>
+    <ClInclude Include="model\blockstonebrick.h" />
     <QtMoc Include="model\blocktnt.h">
     </QtMoc>
     <ClInclude Include="model\boundingbox.h" />
@@ -315,71 +290,147 @@
     <ClInclude Include="utils\direction.h" />
     <QtMoc Include="model\entity.h">
     </QtMoc>
+    <QtMoc Include="model\entityblaze.h">
+    </QtMoc>
+    <QtMoc Include="model\entitycreeper.h">
+    </QtMoc>
+    <QtMoc Include="model\entityfireball.h">
+    </QtMoc>
+    <QtMoc Include="model\entitymovingbrick.h">
+    </QtMoc>
+    <QtMoc Include="model\entityobserver.h">
+    </QtMoc>
     <QtMoc Include="model\entityplayer.h">
     </QtMoc>
     <QtMoc Include="model\entityplayerlike.h">
     </QtMoc>
-    <QtMoc Include="model\entitytnt.h" />
+    <QtMoc Include="model\entityslime.h">
+    </QtMoc>
+    <QtMoc Include="model\entitytnt.h">
+    </QtMoc>
+    <QtMoc Include="model\entityxporb.h">
+    </QtMoc>
+    <QtMoc Include="utils\experiencehelper.h">
+    </QtMoc>
     <QtMoc Include="view\gamerenderglwidget.h">
     </QtMoc>
     <QtMoc Include="view\scene\gamescene.h">
     </QtMoc>
+    <QtMoc Include="view\scene\gamesound.h" />
     <ClInclude Include="utils\geometryhelper.h" />
     <ClInclude Include="utils\glhelper.h" />
+    <QtMoc Include="view\scene\gui\guibase.h">
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guieventfilter.h">
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guipause.h">
+    </QtMoc>
     <ClInclude Include="model\icollidable.h" />
+    <QtMoc Include="view\scene\gui\inventorygui.h">
+    </QtMoc>
+    <QtMoc Include="model\item.h">
+    </QtMoc>
+    <QtMoc Include="model\itemblock.h">
+    </QtMoc>
+    <QtMoc Include="model\itemmovingbrick.h">
+    </QtMoc>
+    <QtMoc Include="model\itemspawnegg.h">
+    </QtMoc>
+    <QtMoc Include="model\itemspawnpointsetter.h">
+    </QtMoc>
+    <QtMoc Include="model\itemteleporter.h">
+    </QtMoc>
     <QtMoc Include="view\mainwindow.h">
     </QtMoc>
     <QtMoc Include="controller\playercontroller.h">
     </QtMoc>
     <QtMoc Include="model\registry.h">
     </QtMoc>
+    <QtMoc Include="view\saveitem.h">
+    </QtMoc>
+    <QtMoc Include="controller\savemanager.h">
+    </QtMoc>
+    <QtMoc Include="view\saveselection.h">
+    </QtMoc>
     <ClInclude Include="utils\singleton.h" />
-    <QtMoc Include="model\entitymovingbrick.h">
+    <QtMoc Include="view\widgets\styledpushbutton.h">
     </QtMoc>
     <QtMoc Include="model\world.h">
     </QtMoc>
     <QtMoc Include="controller\worldcontroller.h">
     </QtMoc>
+    <QtMoc Include="utils\worldioworker.h">
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\bin\debug\.moc\moc_predefs.h.cbt">
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -Zi -MDd -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\bin\debug\.moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 /F 16777216 /std:c++17 -Zi -MDd -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate moc_predefs.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\bin\debug\.moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_predefs.h;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\bin\release\.moc\moc_predefs.h.cbt">
+    <CustomBuild Include="release\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 -O2 -MD -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;..\bin\release\.moc\moc_predefs.h</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus /utf-8 /F 16777216 /std:c++17 -O2 -MD -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\bin\release\.moc\moc_predefs.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_predefs.h;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="view\saveitem.ui" />
-    <QtUic Include="view\saveselection.ui" />
     <QtUic Include="view\mainwindow.ui">
+    </QtUic>
+    <QtUic Include="view\saveitem.ui">
+    </QtUic>
+    <QtUic Include="view\saveselection.ui">
     </QtUic>
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\entities\blaze\0.png" />
+    <None Include="assets\entities\player\0.png" />
+    <None Include="assets\entities\blaze\1.png" />
+    <None Include="assets\entities\player\1.png" />
+    <None Include="assets\sounds\Glass_dig1.wav" />
+    <None Include="assets\sounds\Glass_dig2.wav" />
+    <None Include="assets\sounds\Glass_dig3.wav" />
+    <None Include="assets\blocks\bedrock.png" />
+    <None Include="assets\gui\bg.png" />
     <None Include="assets\shaders\block.frag" />
     <None Include="assets\shaders\block.vert" />
+    <None Include="assets\entities\creeper.png" />
     <None Include="assets\blocks\dirt.png" />
+    <None Include="assets\entities\fireball.png" />
+    <None Include="assets\blocks\flower.png" />
     <None Include="assets\blocks\grass.png" />
+    <None Include="assets\gui\inventory.png" />
+    <None Include="assets\gui\logo.png" />
+    <None Include="assets\entities\moving_brick.png" />
+    <None Include="assets\blocks\mushroom.png" />
     <None Include="assets\blocks\no_texture.png" />
-    <None Include="cpp.hint" />
+    <None Include="assets\blocks\oak_plank.png" />
+    <None Include="assets\entities\observer.png" />
+    <None Include="assets\items\observer.png" />
+    <None Include="assets\gui\options_background.png" />
     <QtRcc Include="res.qrc">
     </QtRcc>
+    <None Include="assets\blocks\saw.png" />
+    <None Include="assets\entities\slime.png" />
+    <None Include="assets\items\spawn_egg_blaze.png" />
+    <None Include="assets\items\spawn_egg_creeper.png" />
+    <None Include="assets\items\spawn_egg_slime.png" />
+    <None Include="assets\items\spawnpoint.png" />
+    <None Include="assets\blocks\spike.png" />
+    <None Include="assets\blocks\spring.png" />
+    <None Include="assets\blocks\stone_brick.png" />
     <None Include="assets\blocks\tnt.png" />
     <None Include="assets\entities\tnt.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\entities\player.png" />
-    <Image Include="assets\icon.ico" />
+    <None Include="assets\items\tp.png" />
+    <None Include="assets\gui\widgets.png" />
+    <None Include="assets\blocks\xp_bottle.png" />
+    <None Include="assets\entities\xp_orb.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MineParkour.rc" />

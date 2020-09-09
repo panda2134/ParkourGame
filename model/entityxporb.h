@@ -14,7 +14,7 @@ namespace parkour {
 		int xp, tick;
 
 	public:
-		EntityXpOrb();
+		Q_INVOKABLE EntityXpOrb();
 
 		virtual void serializeCustomProps(QDataStream & out) const override;
 		virtual void deserializeCustomProps(QDataStream & in) override;
@@ -35,5 +35,6 @@ namespace parkour {
 		static void dropXpOrbs(QVector2D position, int xp);
 	};
 }
+Q_DECLARE_METATYPE(parkour::EntityXpOrb*)
 
 #endif

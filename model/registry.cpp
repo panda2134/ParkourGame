@@ -12,6 +12,7 @@
 #include "blockmushroom.h"
 #include "blockflower.h"
 #include "blockoakplank.h"
+#include "blockexpbottle.h"
 
 #include "entity.h"
 #include "entityblaze.h"
@@ -44,7 +45,7 @@ namespace registry {
         QSharedPointer<Block> ptr = QSharedPointer<T>::create();
         blockMap[ptr->getName().toStdString()] = ptr;
         blockIds.push_back(ptr->getName());
-        idMapping[ptr->getName().toStdString()] = blockIds.size() - 1;
+        idMapping[ptr->getName().toStdString()] = static_cast<size_t>(blockIds.size()) - 1;
     }
 
     BlockRegistry::BlockRegistry() {
@@ -63,20 +64,22 @@ namespace registry {
 		registerBlock<parkour::BlockMushroom>();
 		registerBlock<parkour::BlockFlower>();
 		registerBlock<parkour::BlockOakPlank>();
+		registerBlock<parkour::BlockExpBottle>();
         // * block mapping end   *
     }
 
     QSharedPointer<Block> BlockRegistry::getBlockByName(QString blockName) {
         if (blockName == "air") {
             return nullptr;
-		} else {
-			const auto &blockNameStd = blockName.toStdString();
-			if (blockMap.count(blockNameStd) == 0) {
-				throw std::exception((blockName + ": no such block!").toStdString().c_str());
-			} else {
-				return blockMap[blockNameStd];
-			}
-		}
+        } else {
+            const auto& blockNameStd = blockName.toStdString();
+            if (blockMap.count(blockNameStd) == 0) {
+                qDebug() << (blockName + ": no such block!").toStdString().c_str();
+                return nullptr;
+            } else {
+                return blockMap[blockNameStd];
+            }
+        }
     }
 
     size_t BlockRegistry::getBlockIdByName(QString blockName) {
@@ -90,17 +93,17 @@ namespace registry {
 	EntityRegistry::EntityRegistry() {
 #define REGISTER_ENTITY(T) qRegisterMetaType<T*>("parkour::" #T "*")
 
-		// * entity registry start *
-		REGISTER_ENTITY(EntityBlaze);
-		REGISTER_ENTITY(EntityCreeper);
-		REGISTER_ENTITY(EntityFireball);
-		REGISTER_ENTITY(EntityMovingBrick);
-		REGISTER_ENTITY(EntityPlayer);
-		REGISTER_ENTITY(EntitySlime);
-		REGISTER_ENTITY(EntityTNT);
-		REGISTER_ENTITY(EntityXpOrb);
-		REGISTER_ENTITY(EntityObserver);
-		// * entity registry end   *
+            // * entity registry start *
+            REGISTER_ENTITY(EntityBlaze);
+            REGISTER_ENTITY(EntityCreeper);
+            REGISTER_ENTITY(EntityFireball);
+            REGISTER_ENTITY(EntityMovingBrick);
+            REGISTER_ENTITY(EntityPlayer);
+            REGISTER_ENTITY(EntitySlime);
+            REGISTER_ENTITY(EntityTNT);
+            REGISTER_ENTITY(EntityXpOrb);
+            REGISTER_ENTITY(EntityObserver);
+            // * entity registry end   *
 
 #undef REGISTER_ENTITY
 	}

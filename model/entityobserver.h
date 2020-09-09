@@ -24,8 +24,8 @@ namespace parkour {
 		virtual void update() override;
 		virtual bool showDeathAnimationAndInfo() const;
 		virtual double getMass() const;
-	};
-	Q_DECLARE_METATYPE(EntityObserver*)
+        };
 }
 
+Q_DECLARE_METATYPE(parkour::EntityObserver*)
 #endif

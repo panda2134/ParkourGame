@@ -15,7 +15,7 @@ namespace parkour {
 class EntityPlayer : public EntityPlayerLike {
 	Q_OBJECT
 
-	const double DRAG_FACTOR = 1.5;
+	const double DRAG_FACTOR = 3;
 	const double GROUND_STOP_THRESHOLD = 3;
 	double maxHp;
 	bool shootFireballs;
@@ -46,7 +46,7 @@ public:
 	void damage(double value) override;
 	QSharedPointer<Item>* getInventory();
 };
-Q_DECLARE_METATYPE(EntityPlayer*)
 }
+Q_DECLARE_METATYPE(parkour::EntityPlayer*)
 
 #endif // ENTITY_PLAYER_H

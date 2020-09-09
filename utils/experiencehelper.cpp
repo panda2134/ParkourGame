@@ -2,7 +2,7 @@
 
 namespace parkour {
 	ExperienceHelper::ExperienceHelper(int xpValue_): xpValue(xpValue_) {}
-	std::tuple<int, int, int> ExperienceHelper::toLevel() const {
+	std::tuple<int, int, int> ExperienceHelper::toLevelInfo() const {
 		int level = 0, xpLeft = xpValue;
 		for (; level <= 15; ++level) {
 			int xpRequired = 2 * level + 7;
