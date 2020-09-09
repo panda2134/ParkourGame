@@ -1,13 +1,13 @@
 #ifndef WORLDIOWORKER_H
 #define WORLDIOWORKER_H
 
-#include <functional>
+#include "controller/savemanager.h"
+#include "utils/singleton.h"
 #include <QApplication>
+#include <QMutex>
 #include <QObject>
 #include <QThread>
-#include <QMutex>
-#include "../utils/singleton.h"
-#include "savemanager.h"
+#include <functional>
 
 namespace parkour {
 	class WorldIOWorker : public QObject, public Singleton<WorldIOWorker> {

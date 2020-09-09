@@ -1,5 +1,6 @@
 ﻿  Reading Qt configuration (C:\Qt\Qt5.14.2\5.14.2\msvc2017_64\bin\qmake.exe)
   Generate moc_predefs.h
+  blockspring.cpp
 qtmain.lib(qtmain_win.obj) : warning LNK4099: 未找到 PDB“qtmain.pdb”(使用“qtmain.lib(qtmain_win.obj)”或在“C:\Users\panda2134\Documents\ParkourGame\bin\release\qtmain.pdb”中寻找)；正在链接对象，如同没有调试信息一样
   MineParkour.vcxproj -> C:\Users\panda2134\Documents\ParkourGame\.\bin\release\MineParkour.exe
 c:\qt\qt5.14.2\5.14.2\msvc2017_64\include\qtcore\qglobal.h(658): warning C26451: Arithmetic overflow: Using operator '+' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '+' to avoid overflow (io.2).

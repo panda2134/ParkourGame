@@ -1,11 +1,11 @@
 ﻿#include "saveselection.h"
+#include "./widgets/styledpushbutton.h"
+#include "controller/savemanager.h"
 #include "saveitem.h"
-#include "../controller/savemanager.h"
-#include "ui_saveselection.h" 
-#include "styledpushbutton.h"
+#include "ui_saveselection.h"
 #include <QDebug>
-#include <QMessageBox>
 #include <QInputDialog>
+#include <QMessageBox>
 
 SaveSelection::SaveSelection(QWidget * parent) : QDialog(parent) {
 	ui = new Ui::SaveSelection();

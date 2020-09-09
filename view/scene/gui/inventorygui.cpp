@@ -1,8 +1,8 @@
 #include "inventorygui.h"
-#include "../controller/worldcontroller.h"
-#include <QPoint>
+#include "controller/worldcontroller.h"
 #include <QEvent>
 #include <QMouseEvent>
+#include <QPoint>
 
 namespace parkour {
 	QRect InventoryGUI::slotOnScreen(const QRect & rect) {

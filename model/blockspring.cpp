@@ -42,7 +42,6 @@ QString BlockSpring::getDisplayName() const {
 
 void BlockSpring::collide(QPoint blockPos, Entity& entity, Direction dir) {
     if (dir == Direction::UP) {
-        qDebug() << "Collide up";
         onStand(blockPos, entity);
     }
 }

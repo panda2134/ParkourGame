@@ -2,16 +2,16 @@
 #define INVENTORYGUI_H
 
 #include "guibase.h"
-#include "../utils/consts.h"
-#include "../model/item.h"
-#include <QObject>
+#include "model/item.h"
+#include "utils/consts.h"
 #include <QEvent>
 #include <QImage>
+#include <QObject>
 #include <QPoint>
-#include <QVector2D>
 #include <QRect>
-#include <QSize>
 #include <QSharedPointer>
+#include <QSize>
+#include <QVector2D>
 
 namespace parkour {
 	class InventoryGUI : public GUIBase {

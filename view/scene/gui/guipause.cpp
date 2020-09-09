@@ -1,10 +1,10 @@
 ﻿#include "guipause.h"
-#include "../../model/world.h"
-#include "../../utils/consts.h"
-#include <QRect>
+#include "model/world.h"
+#include "utils/consts.h"
 #include <QDebug>
 #include <QLocale>
 #include <QMouseEvent>
+#include <QRect>
 
 namespace parkour {
 	GUIPause::GUIPause() {
