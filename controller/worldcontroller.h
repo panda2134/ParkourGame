@@ -16,7 +16,7 @@ class WorldController : public QObject, public Singleton<WorldController> {
 
     const int EXPLOSIONS_PER_TICK = 2;
     const bool NO_EXPLOSION = false;
-    const double AMBIENT_PLAY_CHANCE = 1.0 / (300 * TICKS_PER_SEC);
+    const double AMBIENT_PLAY_CHANCE = 5e-5;
 
     QSharedPointer<PlayerController> playerController;
     void handleExplosion(QPoint center, double power) const;

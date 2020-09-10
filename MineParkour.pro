@@ -16,7 +16,7 @@ win32 {
 	RC_FILE = MineParkour.rc
 }
 
-ambient.commands = $$QMAKE_COPY_DIR \"$$PWD/assets/sounds/ambient\" \"$$OUT_PWD/$$DESTDIR/ambient\"
+ambient.commands = $$QMAKE_COPY_DIR $$shell_quote($$shell_path($$PWD/assets/sounds/ambient)) $$shell_quote($$shell_path($$OUT_PWD/$$DESTDIR/ambient))
 first.depends = $(first) ambient
 export(first.depends)
 export(ambient.commands)
