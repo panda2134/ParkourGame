@@ -42,7 +42,7 @@ class Entity : public QObject, public ICollidable {
 public:
     virtual QString getName() const = 0;
     /**
-     * @brief 每个tick调用一次，用于更新位置；此后需要在collide中设置状态
+     * @brief 计算下一个游戏刻的位置等信息
      */
     void updatePosition();
     /**
