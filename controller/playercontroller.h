@@ -6,11 +6,10 @@
 #include <QSharedPointer>
 
 namespace parkour {
-class PlayerController : public QObject
-{
-	Q_OBJECT
+class PlayerController : public QObject {
+    Q_OBJECT
 
-	const double FIREBALL_VELOCITY = 18.0, FIREBALL_POWER = 3.0;
+    const double FIREBALL_VELOCITY = 18.0, FIREBALL_POWER = 3.0;
 
     /**
      * @brief readyJump 是否准备一次跳跃（即是否跳跃键被按住）
@@ -33,7 +32,7 @@ public:
     explicit PlayerController();
 
     void tick();
-	void shootFireballAt(QVector2D target);
+    void shootFireballAt(QVector2D target);
     bool isAlive() const;
     /**
      * @brief getPlayer

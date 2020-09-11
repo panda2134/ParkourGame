@@ -6,10 +6,10 @@
 #include "world.h"
 
 namespace parkour {
-	double EntityPlayerLike::getWalkSpeed() const {
-		return WALK_SPEED;
-	}
-	EntityPlayerLike::EntityPlayerLike() {
+double EntityPlayerLike::getWalkSpeed() const {
+    return WALK_SPEED;
+}
+EntityPlayerLike::EntityPlayerLike() {
     sneak = false;
 }
 
@@ -41,9 +41,9 @@ bool EntityPlayerLike::isSneak() const {
 }
 
 bool EntityPlayerLike::setSneak(bool value) {
-	if (value == sneak) {
-		return sneak;
-	}
+    if (value == sneak) {
+        return sneak;
+    }
     auto& world = World::instance();
     sneak = value;
     if (world.isReady()) { // 尝试站起来的时候检查：下一个状态的碰撞盒是否可能嵌入其他物体？

@@ -15,7 +15,7 @@ public:
     virtual QString getName() const = 0;
     virtual QString getResourceLocation() const = 0;
     virtual double getExplosionResistance() const = 0;
-	virtual QString getDisplayName() const = 0;
+    virtual QString getDisplayName() const = 0;
     /**
      * @brief getCurrentFrame 取得当前方块显示哪一帧
      * @param blockPos 方块位置
@@ -29,10 +29,10 @@ public:
      * @param power 此位置的爆炸强度
      */
     virtual void onExplosion(QPoint blockPos, double power);
-	virtual void onStand(QPoint blockPos, Entity& entity);
+    virtual void onStand(QPoint blockPos, Entity& entity);
     virtual void collide(QPoint, Entity&, Direction) {};
-	virtual bool canPlaceAt(QPoint) const;
-	virtual bool isSolid() const;
+    virtual bool canPlaceAt(QPoint) const;
+    virtual bool isSolid() const;
     virtual BoundingBox getBoundingBox() const;
 signals:
 };

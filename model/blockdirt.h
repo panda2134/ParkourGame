@@ -12,9 +12,8 @@ public:
     BlockDirt() = default;
     QString getResourceLocation() const override;
     QString getName() const override;
-    double getExplosionResistance() const override;		
-	virtual QString getDisplayName() const override;
-
+    double getExplosionResistance() const override;
+    virtual QString getDisplayName() const override;
 };
 }
 

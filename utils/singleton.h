@@ -2,19 +2,20 @@
 #define SINGLETON_H
 
 namespace parkour {
-    template<typename T>
-    class Singleton {
-    protected:
-        Singleton() = default;
-        ~Singleton() = default;
-        Singleton(const Singleton&) = delete;
-        Singleton(Singleton&&) = delete;
-    public:
-        static T& instance() {
-            static T inst;
-            return inst;
-        }
-    };
+template <typename T>
+class Singleton {
+protected:
+    Singleton() = default;
+    ~Singleton() = default;
+    Singleton(const Singleton&) = delete;
+    Singleton(Singleton&&) = delete;
+
+public:
+    static T& instance() {
+        static T inst;
+        return inst;
+    }
+};
 }
 
 #endif // SINGLETON_H

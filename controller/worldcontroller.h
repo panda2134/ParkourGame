@@ -1,18 +1,18 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "../utils/singleton.h"
 #include "../utils/consts.h"
+#include "../utils/singleton.h"
 #include "playercontroller.h"
-#include <QObject>
-#include <QString>
-#include <QSharedPointer>
-#include <QTimer>
 #include <QElapsedTimer>
+#include <QObject>
+#include <QSharedPointer>
+#include <QString>
+#include <QTimer>
 
 namespace parkour {
 class WorldController : public QObject, public Singleton<WorldController> {
-	Q_OBJECT
+    Q_OBJECT
 
     const int EXPLOSIONS_PER_TICK = 2;
     const bool NO_EXPLOSION = false;

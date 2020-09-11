@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Comment CommentText="&#xD;&#xA;Model">
+    <Position X="1.07" Y="3.131" Height="0.638" Width="0.7" />
+  </Comment>
+  <Comment CommentText="View&#xD;&#xA;">
+    <Position X="7.235" Y="28.751" Height="0.638" Width="0.7" />
+  </Comment>
+  <Comment CommentText="Controller">
+    <Position X="57.426" Y="3.515" Height="0.449" Width="0.876" />
+  </Comment>
+  <Class Name="parkour::Block">
+    <Position X="12" Y="3.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEEAAAAACARAAACCAAEAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\block.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockBedrock" Collapsed="true">
+    <Position X="3.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>model\blockbedrock.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockDirt" Collapsed="true">
+    <Position X="14.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blockdirt.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockExpBottle" Collapsed="true">
+    <Position X="23.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAAAAAAAAQAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>model\blockexpbottle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockFlower" Collapsed="true">
+    <Position X="10" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAMEAAAAACAAAAACAAAEAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blockflower.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockGrass" Collapsed="true">
+    <Position X="25.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blockgrass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockMushroom" Collapsed="true">
+    <Position X="5.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEEAAAAACAAAAACAAAEAAAABAAEAAAAAAA=</HashCode>
+      <FileName>model\blockmushroom.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockOakPlank" Collapsed="true">
+    <Position X="21.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blockoakplank.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockSaw" Collapsed="true">
+    <Position X="1" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEEAAAAAAAAAEACIAAEQAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blocksaw.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockSpike" Collapsed="true">
+    <Position X="7.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAEAgBAAEEAAAAAAAQAAACAAAEAAAAAAAEAgAAAAA=</HashCode>
+      <FileName>model\blockspike.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockSpring" Collapsed="true">
+    <Position X="19" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAgAEEAAAAACEQAAAiCAAEAAAAAAAFAgAAAAA=</HashCode>
+      <FileName>model\blockspring.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockStoneBrick" Collapsed="true">
+    <Position X="12.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blockstonebrick.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockTNT" Collapsed="true">
+    <Position X="16.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAEAIAAAAAARAAAAAAAEAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>model\blocktnt.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ICollidable">
+    <Position X="22.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAEAABAAAAAAAAAIAAQAEAAAAAABEAAAAAAA=</HashCode>
+      <FileName>model\icollidable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::Entity">
+    <Position X="30.75" Y="10.25" Width="2.75" />
+    <InheritanceLine Type="parkour::ICollidable" ManuallyRouted="true">
+      <Path>
+        <Point X="23.625" Y="2.864" />
+        <Point X="23.625" Y="3.114" />
+        <Point X="32.125" Y="3.114" />
+        <Point X="32.125" Y="10.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>FAQBMAQAAEEB5FiAAGEAIAACASAEACQEEgRGAUBEAAA=</HashCode>
+      <FileName>model\entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::BlockDelegate">
+    <Position X="9.25" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAggAAAEAABAAAAAAEAAAAAQAEAAAAAABECAAABAA=</HashCode>
+      <FileName>model\blockdelegate.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityPlayerLike" Collapsed="true">
+    <Position X="36.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACAQAAgAABAAAAEEAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>model\entityplayerlike.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityBlaze" Collapsed="true">
+    <Position X="34" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAkAaAAAEAgkABAmABAAAIQHAEACAEAgBEAAAEAAA=</HashCode>
+      <FileName>model\entityblaze.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityCreeper" Collapsed="true">
+    <Position X="34" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEBQACAEAwBgAAGAAAAAAABAEAAAAAgAEAAgEAAA=</HashCode>
+      <FileName>model\entitycreeper.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityFireball" Collapsed="true">
+    <Position X="34" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAQAAAEAgkgAAGgAQAAAEAAEAAEAAgAEAEAEAAA=</HashCode>
+      <FileName>model\entityfireball.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityMovingBrick" Collapsed="true">
+    <Position X="34" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAlAQCAAEAgEggAmAAEAAAAAAAAAIEAgAEAAAECAA=</HashCode>
+      <FileName>model\entitymovingbrick.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityObserver" Collapsed="true">
+    <Position X="34" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAsAQAAAGAAggAAGAAAAAAAAAAAAAAAgAEAAAEAAA=</HashCode>
+      <FileName>model\entityobserver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityPlayer" Collapsed="true">
+    <Position X="38.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAECQABCEAgAAAAGAAAgCAAAAAAAADEgAEiAAEAgw=</HashCode>
+      <FileName>model\entityplayer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntitySlime" Collapsed="true">
+    <Position X="36.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQCkAQCCAkAgAAAAGAAAAAAABAEAAgAEgAEAAAEAAA=</HashCode>
+      <FileName>model\entityslime.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityTNT" Collapsed="true">
+    <Position X="34" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAQAAAEAgAgAAGAAEAAAAAAAIAAAAgAECAAEAAA=</HashCode>
+      <FileName>model\entitytnt.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::EntityXpOrb" Collapsed="true">
+    <Position X="34" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAkAQAgFEAgAhAAGAAgAAAAAAEAAAAAgAEAEAEAAA=</HashCode>
+      <FileName>model\entityxporb.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::Item">
+    <Position X="5.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>model\item.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ItemBlock">
+    <Position X="5.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIEAAAAAAAAAQAAAAAAAAgAAAAAAAAAQBAA=</HashCode>
+      <FileName>model\itemblock.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ItemMovingBrick">
+    <Position X="0.5" Y="12" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKEAAAAAAAAAIAAAAAABAAAAAQAAAAAQAAA=</HashCode>
+      <FileName>model\itemmovingbrick.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ItemSpawnEgg">
+    <Position X="3" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAIEAAAAAAAAAAAAAAAACAAAAAQAAAAAQAAA=</HashCode>
+      <FileName>model\itemspawnegg.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ItemSpawnPointSetter">
+    <Position X="7.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAQAAAEAQAAA=</HashCode>
+      <FileName>model\itemspawnpointsetter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ItemTeleporter">
+    <Position X="9.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAIEAAAAAAAAAAAAAAAAAAAAAAQAAAAAQAAA=</HashCode>
+      <FileName>model\itemteleporter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::World">
+    <Position X="13.25" Y="9.5" Width="8.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="parkour::World::ExplosionInfo">
+        <TypeIdentifier>
+          <NewMemberFileName>model\world.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="parkour::World::ChunkStorage&lt;T&gt;">
+        <TypeIdentifier>
+          <NewMemberFileName>model\world.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AEABEAQEEQBAAAkAAAEAAAAQAAAIAQAAQAAAJACAABA=</HashCode>
+      <FileName>model\world.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::registry::BlockRegistry">
+    <Position X="16.5" Y="3.25" Width="1.75" />
+    <InheritanceLine Type="parkour::Singleton&lt;T&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="50.25" Y="22.75" />
+        <Point X="50.25" Y="21.875" />
+        <Point X="27.987" Y="21.875" />
+        <Point X="27.987" Y="6.496" />
+        <Point X="17.375" Y="6.496" />
+        <Point X="17.375" Y="6.121" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAABAACAAgAAAAEgAEAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>model\registry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::registry::ItemRegistry">
+    <Position X="7" Y="9.5" Width="2" />
+    <InheritanceLine Type="parkour::Singleton&lt;T&gt;" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="50.25" Y="22.75" />
+        <Point X="50.25" Y="21.875" />
+        <Point X="12.317" Y="21.875" />
+        <Point X="12.317" Y="10.312" />
+        <Point X="9" Y="10.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAIAAAAAAAA=</HashCode>
+      <FileName>model\registry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::registry::EntityRegistry">
+    <Position X="28.25" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>model\registry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::PlayerController">
+    <Position X="46.75" Y="3.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AABAAAgAAAAAASABACAAAAAEAAAAAEAAAQAgBAEACAA=</HashCode>
+      <FileName>controller\playercontroller.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::SaveManager">
+    <Position X="52" Y="3.5" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="parkour::SaveManager::SaveMeta">
+        <TypeIdentifier>
+          <NewMemberFileName>controller\savemanager.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <InheritanceLine Type="parkour::Singleton&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="50.25" Y="22.75" />
+        <Point X="50.25" Y="21.875" />
+        <Point X="57.125" Y="21.875" />
+        <Point X="57.125" Y="6" />
+        <Point X="56.75" Y="6" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAIAAIAAAAAAAAAAACCBEAAAAACAAgAAEAAAAAEAAA=</HashCode>
+      <FileName>controller\savemanager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::WorldController">
+    <Position X="46.75" Y="7.5" Width="4" />
+    <InheritanceLine Type="parkour::Singleton&lt;T&gt;" ManuallyRouted="true">
+      <Path>
+        <Point X="50.25" Y="22.75" />
+        <Point X="50.25" Y="19.033" />
+        <Point X="48.75" Y="19.033" />
+        <Point X="48.75" Y="11.11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAACAAAQaAAAAAAAgAAAAAAAAABACIAAAKA=</HashCode>
+      <FileName>controller\worldcontroller.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameRenderGLWidget">
+    <Position X="3.25" Y="28.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAIAAAAAQACAAgAABAAEgIEIAAAAAAAAAAAA=</HashCode>
+      <FileName>view\gamerenderglwidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::GameSound">
+    <Position X="0.5" Y="28.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="parkour::GameSound::GameSoundWorker" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>view\scene\gamesound.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <InheritanceLine Type="parkour::Singleton&lt;T&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="48.75" Y="23.625" />
+        <Point X="1.75" Y="23.625" />
+        <Point X="1.75" Y="28.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACgAAIQAAAAAAiABAAAAAAMggQAIAgAAAEAAAA=</HashCode>
+      <FileName>view\scene\gamesound.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::GameScene">
+    <Position X="3.25" Y="33.25" Width="3.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="parkour::GameScene::CameraInfo">
+        <TypeIdentifier>
+          <NewMemberFileName>view\scene\gamescene.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BAAQAQBIBAoIgGCBACQCogABCaAkCIYACABEBAgAUAA=</HashCode>
+      <FileName>view\scene\gamescene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::GUIBase" Collapsed="true">
+    <Position X="7" Y="34.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>view\scene\gui\guibase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::GUIEventFilter" Collapsed="true">
+    <Position X="7" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAAAgAIAAAA=</HashCode>
+      <FileName>view\scene\gui\guieventfilter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::GUIPause" Collapsed="true">
+    <Position X="7" Y="35.5" Width="1.5" />
+    <InheritanceLine Type="parkour::GUIBase" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="7.75" Y="34.927" />
+        <Point X="7.75" Y="35.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAEAAAAAAIAAAAEAACAAAAAIQAAAAAAAAAAA=</HashCode>
+      <FileName>view\scene\gui\guipause.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::InventoryGUI" Collapsed="true">
+    <Position X="9.25" Y="35.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgCAIMCAAAAAAAAACABEAACAAACBIAABAEAAAAAAA=</HashCode>
+      <FileName>view\scene\gui\inventorygui.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::ExperienceHelper">
+    <Position X="22.75" Y="11.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAUAEAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>utils\experiencehelper.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::WorldIOWorker">
+    <Position X="52" Y="9.25" Width="4.75" />
+    <InheritanceLine Type="parkour::Singleton&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="50.25" Y="22.75" />
+        <Point X="50.25" Y="21.875" />
+        <Point X="57.125" Y="21.875" />
+        <Point X="57.125" Y="10.312" />
+        <Point X="56.75" Y="10.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAQAAAAAAAAAAAQAABAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>utils\worldioworker.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parkour::Singleton&lt;T&gt;">
+    <Position X="48.75" Y="22.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAABAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>utils\singleton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="parkour::SceneMode">
+    <Position X="0.5" Y="34.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>view\scene\gamescene.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="parkour::Direction">
+    <Position X="22.75" Y="9.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAgAAAAAAAAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>utils\direction.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

@@ -33,7 +33,7 @@ Direction ICollidable::checkCollideWith(const ICollidable& other) {
         const float ratio = qAbs((deltaRight < deltaLeft ? deltaRight : deltaLeft) / deltaPosition.x());
         const float up = this->getBoundingBoxWorld().getMinY() - deltaPosition.y() * ratio,
                     down = this->getBoundingBoxWorld().getMaxY() - deltaPosition.y() * ratio;
-		//qDebug() << ">" << up << down << other.getBoundingBoxWorld().getMaxY() << other.getBoundingBoxWorld().getMinY();
+        //qDebug() << ">" << up << down << other.getBoundingBoxWorld().getMaxY() << other.getBoundingBoxWorld().getMinY();
         if (geometry::compareDoubles(other.getBoundingBoxWorld().getMaxY(), up) < 0
             || geometry::compareDoubles(other.getBoundingBoxWorld().getMinY(), down) > 0) {
             /* 不是从此方向碰撞，do nothing */
@@ -41,10 +41,10 @@ Direction ICollidable::checkCollideWith(const ICollidable& other) {
             dir = deltaRight < deltaLeft ? Direction::RIGHT : Direction::LEFT;
         }
     }
-	//qDebug() << "DIR =" << dir;
+    //qDebug() << "DIR =" << dir;
     return dir;
 }
 double ICollidable::getMass() const {
-	return 1.0;
+    return 1.0;
 }
 }

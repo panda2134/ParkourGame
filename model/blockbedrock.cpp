@@ -13,6 +13,6 @@ double BlockBedrock::getExplosionResistance() const {
     return 16000000.0;
 }
 QString BlockBedrock::getDisplayName() const {
-	return "基岩";
+    return "基岩";
 }
 }

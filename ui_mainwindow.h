@@ -9,6 +9,7 @@
 #ifndef UI_MAINWINDOW_H
 #define UI_MAINWINDOW_H
 
+#include "view/widgets/styledpushbutton.h"
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
@@ -16,25 +17,22 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "view/widgets/styledpushbutton.h"
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
-{
+class Ui_MainWindow {
 public:
-    QWidget *centralwidget;
-    QVBoxLayout *verticalLayout_2;
-    QSpacerItem *verticalSpacer_3;
-    QLabel *label;
-    QSpacerItem *verticalSpacer;
-    StyledPushButton *playButton;
-    QSpacerItem *verticalSpacer_4;
-    StyledPushButton *editButton;
-    QSpacerItem *verticalSpacer_2;
+    QWidget* centralwidget;
+    QVBoxLayout* verticalLayout_2;
+    QSpacerItem* verticalSpacer_3;
+    QLabel* label;
+    QSpacerItem* verticalSpacer;
+    StyledPushButton* playButton;
+    QSpacerItem* verticalSpacer_4;
+    StyledPushButton* editButton;
+    QSpacerItem* verticalSpacer_2;
 
-    void setupUi(QMainWindow *MainWindow)
-    {
+    void setupUi(QMainWindow* MainWindow) {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(854, 480);
@@ -46,7 +44,7 @@ public:
         MainWindow->setMinimumSize(QSize(854, 480));
         MainWindow->setMaximumSize(QSize(16777215, 16777215));
         MainWindow->setStyleSheet(QString::fromUtf8("#MainWindow { background: url(:/assets/gui/options_background.png); }\n"
-""));
+                                                    ""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -121,18 +119,16 @@ public:
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
-    {
+    void retranslateUi(QMainWindow* MainWindow) {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MineParkour", nullptr));
         label->setText(QString());
         playButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\346\270\270\346\210\217", nullptr));
         editButton->setText(QCoreApplication::translate("MainWindow", "\345\234\260\345\233\276\347\274\226\350\276\221\346\250\241\345\274\217", nullptr));
     } // retranslateUi
-
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+class MainWindow : public Ui_MainWindow { };
 } // namespace Ui
 
 QT_END_NAMESPACE

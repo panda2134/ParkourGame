@@ -125,7 +125,6 @@ const double BOUNCE_BOTTOM_ATTENUATION = 0.05;
  */
 const double BOUNCE_SIDE_ATTENUATION = 0.5;
 
-
 /**
  * @brief VOID_DAMAGE_PER_TICK 每个游戏刻的虚空伤害
  */

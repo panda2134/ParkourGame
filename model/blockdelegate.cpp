@@ -10,25 +10,26 @@ BlockDelegate::BlockDelegate(QString blockName, QPoint blockPos_)
     this->block = registry::BlockRegistry::instance().getBlockByName(blockName);
 }
 
-BlockDelegate::BlockDelegate(QPoint blockPos_): blockPos(blockPos_) {
-	auto blockName = World::instance().getBlock(blockPos);
-	this->block = registry::BlockRegistry::instance().getBlockByName(blockName);
+BlockDelegate::BlockDelegate(QPoint blockPos_)
+    : blockPos(blockPos_) {
+    auto blockName = World::instance().getBlock(blockPos);
+    this->block = registry::BlockRegistry::instance().getBlockByName(blockName);
 }
 
 BoundingBoxWorld BlockDelegate::getBoundingBoxWorld() const {
     QVector2D blockPosVect(blockPos);
-	BoundingBox bbox = block->getBoundingBox();
-	BoundingBoxWorld ret(blockPosVect, bbox);
-	return ret;
+    BoundingBox bbox = block->getBoundingBox();
+    BoundingBoxWorld ret(blockPosVect, bbox);
+    return ret;
 }
 
 void BlockDelegate::collide(ICollidable& other, Direction dir) {
-	Q_ASSERT(block != nullptr);
-	try {
-		block->collide(this->blockPos, dynamic_cast<Entity&>(other), dir);
-	} catch (std::bad_cast) {
-		qDebug() << "WARNING: casting failed";
-	}
+    Q_ASSERT(block != nullptr);
+    try {
+        block->collide(this->blockPos, dynamic_cast<Entity&>(other), dir);
+    } catch (std::bad_cast) {
+        qDebug() << "WARNING: casting failed";
+    }
 }
 
 QVector2D BlockDelegate::getVelocity() const {
@@ -42,19 +43,19 @@ void BlockDelegate::setVelocity(const QVector2D&) {
 }
 
 double BlockDelegate::getMass() const {
-	return 1e10;
+    return 1e10;
 }
 
 QString BlockDelegate::getName() const {
-	return block == nullptr ? "air" : block->getName();
+    return block == nullptr ? "air" : block->getName();
 }
 
 QString BlockDelegate::getType() const {
-	return "block";
+    return "block";
 }
 
 bool BlockDelegate::isNull() const {
-	return block == nullptr;
+    return block == nullptr;
 }
 
 }

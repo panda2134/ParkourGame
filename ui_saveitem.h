@@ -19,18 +19,16 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_SaveItem
-{
+class Ui_SaveItem {
 public:
-    QHBoxLayout *horizontalLayout;
-    QLabel *imgLabel;
-    QSpacerItem *horizontalSpacer;
-    QVBoxLayout *verticalLayout;
-    QLabel *saveNameLabel;
-    QLabel *lastModifiedLabel;
+    QHBoxLayout* horizontalLayout;
+    QLabel* imgLabel;
+    QSpacerItem* horizontalSpacer;
+    QVBoxLayout* verticalLayout;
+    QLabel* saveNameLabel;
+    QLabel* lastModifiedLabel;
 
-    void setupUi(QWidget *SaveItem)
-    {
+    void setupUi(QWidget* SaveItem) {
         if (SaveItem->objectName().isEmpty())
             SaveItem->setObjectName(QString::fromUtf8("SaveItem"));
         SaveItem->resize(563, 108);
@@ -70,9 +68,9 @@ public:
         font.setWeight(62);
         saveNameLabel->setFont(font);
         saveNameLabel->setStyleSheet(QString::fromUtf8("color:white;\n"
-"font-size: 25px;\n"
-"font-weight: 500;"));
-        saveNameLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+                                                       "font-size: 25px;\n"
+                                                       "font-weight: 500;"));
+        saveNameLabel->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
         verticalLayout->addWidget(saveNameLabel);
 
@@ -83,11 +81,10 @@ public:
         font1.setPointSize(12);
         lastModifiedLabel->setFont(font1);
         lastModifiedLabel->setStyleSheet(QString::fromUtf8("color: #cccccc;\n"
-"font-size:0.6em;"));
-        lastModifiedLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+                                                           "font-size:0.6em;"));
+        lastModifiedLabel->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
 
         verticalLayout->addWidget(lastModifiedLabel);
-
 
         horizontalLayout->addLayout(verticalLayout);
 
@@ -100,18 +97,16 @@ public:
         QMetaObject::connectSlotsByName(SaveItem);
     } // setupUi
 
-    void retranslateUi(QWidget *SaveItem)
-    {
+    void retranslateUi(QWidget* SaveItem) {
         SaveItem->setWindowTitle(QCoreApplication::translate("SaveItem", "SaveItem", nullptr));
         imgLabel->setText(QString());
         saveNameLabel->setText(QCoreApplication::translate("SaveItem", "TextLabel", nullptr));
         lastModifiedLabel->setText(QCoreApplication::translate("SaveItem", "TextLabel", nullptr));
     } // retranslateUi
-
 };
 
 namespace Ui {
-    class SaveItem: public Ui_SaveItem {};
+class SaveItem : public Ui_SaveItem { };
 } // namespace Ui
 
 QT_END_NAMESPACE

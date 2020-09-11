@@ -15,7 +15,7 @@ class EntityPlayerLike : public Entity {
      */
     bool sneak;
 
-	virtual double getWalkSpeed() const;
+    virtual double getWalkSpeed() const;
 
 public:
     EntityPlayerLike();

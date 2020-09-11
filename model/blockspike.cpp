@@ -25,7 +25,7 @@ void BlockSpike::onStand(QPoint blockPos, Entity& entity) {
 }
 
 QString BlockSpike::getDisplayName() const {
-	return "尖刺方块";
+    return "尖刺方块";
 }
 
 void BlockSpike::collide(QPoint blockPos, Entity& entity, Direction dir) {
@@ -35,11 +35,11 @@ void BlockSpike::collide(QPoint blockPos, Entity& entity, Direction dir) {
 }
 
 bool BlockSpike::canPlaceAt(QPoint blockPos) const {
-	auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
-	return block != nullptr && block->isSolid();
+    auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
+    return block != nullptr && block->isSolid();
 }
 
 bool BlockSpike::isSolid() const {
-	return false;
+    return false;
 }
 }

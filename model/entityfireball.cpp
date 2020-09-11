@@ -1,7 +1,7 @@
 #include "entityfireball.h"
-#include "world.h"
 #include "controller/worldcontroller.h"
 #include "view/scene/gamesound.h"
+#include "world.h"
 
 namespace parkour {
 EntityFireball::EntityFireball(double power)
@@ -39,23 +39,23 @@ void EntityFireball::collide(ICollidable&, Direction) {
 }
 
 void EntityFireball::placeFireball(QVector2D position, QVector2D velocity, double power) {
-	auto fireball = QSharedPointer<EntityFireball>::create(power);
-	fireball->placeBoundingBoxAt(position);
-	fireball->setVelocity(velocity);
+    auto fireball = QSharedPointer<EntityFireball>::create(power);
+    fireball->placeBoundingBoxAt(position);
+    fireball->setVelocity(velocity);
     GameSound::instance().playWorldSound("Fireball", position);
-	World::instance().addEntity(fireball);
+    World::instance().addEntity(fireball);
 }
 
-void EntityFireball::serializeCustomProps(QDataStream & out) const {
-	out << explosionPower << livingTicks;
+void EntityFireball::serializeCustomProps(QDataStream& out) const {
+    out << explosionPower << livingTicks;
 }
 
-void EntityFireball::deserializeCustomProps(QDataStream & in) {
-	in >> explosionPower >> livingTicks;
+void EntityFireball::deserializeCustomProps(QDataStream& in) {
+    in >> explosionPower >> livingTicks;
 }
 
 int EntityFireball::getSerializationVersion() const {
-	return 1;
+    return 1;
 }
 
 void EntityFireball::damage(double value) {
@@ -75,8 +75,7 @@ void EntityFireball::update() {
 }
 
 QString EntityFireball::getDisplayName() const {
-	return "火球";
+    return "火球";
 }
-
 
 }

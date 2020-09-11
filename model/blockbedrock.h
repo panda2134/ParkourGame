@@ -2,16 +2,14 @@
 #define BLOCKBEDROCK_H
 #include "block.h"
 namespace parkour {
-	class BlockBedrock : public Block {
-		Q_OBJECT
+class BlockBedrock : public Block {
+    Q_OBJECT
 
-	public:
-		virtual QString getName() const override;
-		virtual QString getResourceLocation() const override;
-        virtual double getExplosionResistance() const override;		
-		virtual QString getDisplayName() const override;
-
-    };
+public:
+    virtual QString getName() const override;
+    virtual QString getResourceLocation() const override;
+    virtual double getExplosionResistance() const override;
+    virtual QString getDisplayName() const override;
+};
 }
 #endif
-

@@ -4,8 +4,7 @@
 #include "block.h"
 
 namespace parkour {
-class BlockTNT : public Block
-{
+class BlockTNT : public Block {
     Q_OBJECT
 public:
     BlockTNT();
@@ -14,12 +13,12 @@ public:
 public:
     QString getName() const override;
     QString getResourceLocation() const override;
-	virtual QString getDisplayName() const override;
-	double getExplosionResistance() const override;
+    virtual QString getDisplayName() const override;
+    double getExplosionResistance() const override;
     void onExplosion(QPoint blockPos, double power) override;
     void collide(QPoint, Entity&, Direction) override;
-	void ignite(const QPoint &blockPos);
-	void onStand(QPoint, Entity&) override;
+    void ignite(const QPoint& blockPos);
+    void onStand(QPoint, Entity&) override;
 };
 }
 

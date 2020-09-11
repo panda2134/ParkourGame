@@ -1,7 +1,7 @@
-#include "view/mainwindow.h"
-#include "view/scene/gamesound.h"
 #include "model/registry.h"
 #include "utils/worldioworker.h"
+#include "view/mainwindow.h"
+#include "view/scene/gamesound.h"
 
 #include <QApplication>
 #include <QPixmap>
@@ -14,8 +14,7 @@ void processAppEvents(QApplication& app) {
     }
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
     using namespace parkour;
 
     QApplication a(argc, argv);

@@ -4,8 +4,9 @@
 
 namespace parkour {
 
-Entity::Entity(QObject* parent) : QObject(parent) {
-	this->setHp(this->getMaxHp());
+Entity::Entity(QObject* parent)
+    : QObject(parent) {
+    this->setHp(this->getMaxHp());
 }
 
 QVector2D Entity::getPosition() const { return position; }
@@ -26,7 +27,7 @@ void Entity::setHp(double value) {
 }
 
 void Entity::regenerate() {
-	this->setHp(this->getMaxHp());
+    this->setHp(this->getMaxHp());
 }
 
 void Entity::damage(double value) {
@@ -34,11 +35,11 @@ void Entity::damage(double value) {
 }
 
 double Entity::getMaxHp() const {
-	return 20.0;
+    return 20.0;
 }
 
 QRect Entity::getTextureRenderRect() const {
-	return QRect();
+    return QRect();
 }
 
 bool Entity::isDying() const {
@@ -61,15 +62,15 @@ BoundingBoxWorld Entity::getBoundingBoxWorld() const {
 }
 
 QString Entity::getType() const {
-	return "entity";
+    return "entity";
 }
 
-void Entity::serializeEntityBasics(QDataStream & out) const {
-	out << position << velocity << acceleration << hp << dying << onFloor;
+void Entity::serializeEntityBasics(QDataStream& out) const {
+    out << position << velocity << acceleration << hp << dying << onFloor;
 }
 
-void Entity::deserializeEntityBasics(QDataStream & in) {
-	in >> position >> velocity >> acceleration >> hp >> dying >> onFloor;
+void Entity::deserializeEntityBasics(QDataStream& in) {
+    in >> position >> velocity >> acceleration >> hp >> dying >> onFloor;
 }
 
 void Entity::updatePosition() {
@@ -79,7 +80,7 @@ void Entity::updatePosition() {
 }
 
 bool Entity::showDeathAnimationAndInfo() const {
-	return true;
+    return true;
 }
 
 bool Entity::isAffectedByGravity() const {
@@ -105,8 +106,12 @@ QVector2D Entity::getVelocity() const { return velocity; }
 void Entity::setVelocity(const QVector2D& value) {
     velocity = QVector2D(geometry::compareDoubles(value[0], 0) * qMin(1.0 * qAbs(value[0]), MAX_VELOCITY),
         geometry::compareDoubles(value[1], 0) * qMin(1.0 * qAbs(value[1]), MAX_VELOCITY));
-	if (qAbs(velocity[0]) < ENTITY_MIN_VELOCITY) { velocity[0] = 0; }
-	if (qAbs(velocity[1]) < ENTITY_MIN_VELOCITY) { velocity[1] = 0; }
+    if (qAbs(velocity[0]) < ENTITY_MIN_VELOCITY) {
+        velocity[0] = 0;
+    }
+    if (qAbs(velocity[1]) < ENTITY_MIN_VELOCITY) {
+        velocity[1] = 0;
+    }
 }
 
 QVector2D Entity::getAcceleration() const {
@@ -118,24 +123,25 @@ void Entity::setAcceleration(const QVector2D& value) {
         geometry::compareDoubles(value[1], 0) * qMin(1.0 * qAbs(value[1]), MAX_ACCELERATION));
 }
 
-QDataStream & operator<<(QDataStream & out, const Entity & e) {
-	out << e.getSerializationVersion();
-	e.serializeEntityBasics(out);
-	e.serializeCustomProps(out);
-	return out;
+QDataStream& operator<<(QDataStream& out, const Entity& e) {
+    out << e.getSerializationVersion();
+    e.serializeEntityBasics(out);
+    e.serializeCustomProps(out);
+    return out;
 }
 
-QDataStream & operator>>(QDataStream & in, Entity & e) {
-	in.startTransaction();
-	int version; in >> version;
-	if (version != e.getSerializationVersion()) {
-		in.abortTransaction();
-	} else {
-		e.deserializeEntityBasics(in);
-		e.deserializeCustomProps(in);
-		in.commitTransaction();
-	}
-	return in;
+QDataStream& operator>>(QDataStream& in, Entity& e) {
+    in.startTransaction();
+    int version;
+    in >> version;
+    if (version != e.getSerializationVersion()) {
+        in.abortTransaction();
+    } else {
+        e.deserializeEntityBasics(in);
+        e.deserializeCustomProps(in);
+        in.commitTransaction();
+    }
+    return in;
 }
 
 }

@@ -21,17 +21,17 @@ public:
      * @param blockPos_ 方块位置
      */
     BlockDelegate(QString blockName_, QPoint blockPos_);
-	BlockDelegate(QPoint blockPos_);
+    BlockDelegate(QPoint blockPos_);
 
     BoundingBoxWorld getBoundingBoxWorld() const override;
     void collide(ICollidable&, Direction) override;
     QVector2D getVelocity() const override;
     void setVelocity(const QVector2D&) override;
-	double getMass() const override final;
+    double getMass() const override final;
     bool isAir() { return block == nullptr; }
-	virtual QString getName() const override;
-	virtual QString getType() const override;
-	virtual bool isNull() const;
+    virtual QString getName() const override;
+    virtual QString getType() const override;
+    virtual bool isNull() const;
 };
 
 }

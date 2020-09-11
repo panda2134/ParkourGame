@@ -6,8 +6,7 @@
 #include <QString>
 
 namespace parkour {
-class BlockGrass : public Block
-{
+class BlockGrass : public Block {
     Q_OBJECT
 public:
     BlockGrass() = default;
@@ -15,8 +14,8 @@ public:
     QString getName() const override;
     QString getResourceLocation() const override;
 
-	virtual QString getDisplayName() const override;
-	double getExplosionResistance() const override;
+    virtual QString getDisplayName() const override;
+    double getExplosionResistance() const override;
 };
 }
 

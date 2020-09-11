@@ -1,7 +1,7 @@
 ﻿#include "blocktnt.h"
 #include "controller/worldcontroller.h"
-#include "view/scene/gamesound.h"
 #include "entitytnt.h"
+#include "view/scene/gamesound.h"
 #include "world.h"
 
 namespace parkour {
@@ -17,7 +17,7 @@ QString BlockTNT::getResourceLocation() const {
 }
 
 QString BlockTNT::getDisplayName() const {
-	return "TNT";
+    return "TNT";
 }
 
 double BlockTNT::getExplosionResistance() const {
@@ -34,25 +34,25 @@ void parkour::BlockTNT::collide(QPoint blockPos, Entity& entity, Direction dir) 
     Q_UNUSED(entity)
     Q_UNUSED(dir)
 
-	if (entity.getName() != "player") {
-		return;
-	}
+    if (entity.getName() != "player") {
+        return;
+    }
 
-	ignite(blockPos);
+    ignite(blockPos);
 }
 
-void parkour::BlockTNT::ignite(const QPoint &blockPos) {
-	auto& world = World::instance();
-	if (world.getBlock(blockPos) != "tnt") {
-		return;
-	}
-	world.setBlock(blockPos, "air");
-	auto entityTnt = QSharedPointer<EntityTNT>::create();
-	entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
-	world.addEntity(entityTnt);
-	GameSound::instance().playWorldSound("Fuse", QVector2D(blockPos));
+void parkour::BlockTNT::ignite(const QPoint& blockPos) {
+    auto& world = World::instance();
+    if (world.getBlock(blockPos) != "tnt") {
+        return;
+    }
+    world.setBlock(blockPos, "air");
+    auto entityTnt = QSharedPointer<EntityTNT>::create();
+    entityTnt->placeBoundingBoxAt(QVector2D(blockPos));
+    world.addEntity(entityTnt);
+    GameSound::instance().playWorldSound("Fuse", QVector2D(blockPos));
 }
 
-void parkour::BlockTNT::onStand(QPoint blockPos, Entity &entity) {
-	this->collide(blockPos, entity, Direction::UP);
+void parkour::BlockTNT::onStand(QPoint blockPos, Entity& entity) {
+    this->collide(blockPos, entity, Direction::UP);
 }

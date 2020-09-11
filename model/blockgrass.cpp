@@ -11,7 +11,7 @@ QString BlockGrass::getResourceLocation() const {
 }
 
 QString BlockGrass::getDisplayName() const {
-	return "草方块";
+    return "草方块";
 }
 
 double BlockGrass::getExplosionResistance() const {

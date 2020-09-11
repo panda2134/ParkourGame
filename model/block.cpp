@@ -9,14 +9,14 @@ int Block::getCurrentFrame(const QPoint& blockPos) {
 void Block::onExplosion(QPoint, double) {
 }
 
-void Block::onStand(QPoint blockPos, Entity & entity) {}
+void Block::onStand(QPoint blockPos, Entity& entity) { }
 
 bool Block::canPlaceAt(QPoint) const {
-	return true;
+    return true;
 }
 
 bool Block::isSolid() const {
-	return true;
+    return true;
 }
 
 BoundingBox Block::getBoundingBox() const {

@@ -37,7 +37,7 @@ BoundingBox BlockSpring::getBoundingBox() const {
 }
 
 QString BlockSpring::getDisplayName() const {
-	return "弹簧";
+    return "弹簧";
 }
 
 void BlockSpring::collide(QPoint blockPos, Entity& entity, Direction dir) {
@@ -47,12 +47,12 @@ void BlockSpring::collide(QPoint blockPos, Entity& entity, Direction dir) {
 }
 
 bool BlockSpring::canPlaceAt(QPoint blockPos) const {
-	auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
-	return block != nullptr && block->isSolid();
+    auto block = registry::BlockRegistry::instance().getBlockByName(World::instance().getBlock(blockPos + QPoint(0, 1)));
+    return block != nullptr && block->isSolid();
 }
 
 bool BlockSpring::isSolid() const {
-	return false;
+    return false;
 }
 
 }

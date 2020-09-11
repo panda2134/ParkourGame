@@ -9,6 +9,7 @@
 #ifndef UI_SAVESELECTION_H
 #define UI_SAVESELECTION_H
 
+#include "view/widgets/styledpushbutton.h"
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
@@ -17,36 +18,33 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "view/widgets/styledpushbutton.h"
 
 QT_BEGIN_NAMESPACE
 
-class Ui_SaveSelection
-{
+class Ui_SaveSelection {
 public:
-    QVBoxLayout *verticalLayout;
-    QLabel *label;
-    QSpacerItem *verticalSpacer_2;
-    QListWidget *listWidget;
-    QSpacerItem *verticalSpacer;
-    QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer;
-    StyledPushButton *createButton;
-    StyledPushButton *deleteButton;
-    QSpacerItem *horizontalSpacer_2;
-    QSpacerItem *verticalSpacer_3;
+    QVBoxLayout* verticalLayout;
+    QLabel* label;
+    QSpacerItem* verticalSpacer_2;
+    QListWidget* listWidget;
+    QSpacerItem* verticalSpacer;
+    QHBoxLayout* horizontalLayout;
+    QSpacerItem* horizontalSpacer;
+    StyledPushButton* createButton;
+    StyledPushButton* deleteButton;
+    QSpacerItem* horizontalSpacer_2;
+    QSpacerItem* verticalSpacer_3;
 
-    void setupUi(QWidget *SaveSelection)
-    {
+    void setupUi(QWidget* SaveSelection) {
         if (SaveSelection->objectName().isEmpty())
             SaveSelection->setObjectName(QString::fromUtf8("SaveSelection"));
         SaveSelection->setWindowModality(Qt::WindowModal);
         SaveSelection->resize(640, 320);
         SaveSelection->setMinimumSize(QSize(640, 320));
         SaveSelection->setStyleSheet(QString::fromUtf8("#SaveSelection{background: url(:/assets/gui/options_background.png);}\n"
-"QInputDialog {\n"
-"background-color: white !important;\n"
-"}"));
+                                                       "QInputDialog {\n"
+                                                       "background-color: white !important;\n"
+                                                       "}"));
         verticalLayout = new QVBoxLayout(SaveSelection);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -106,31 +104,27 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_2);
 
-
         verticalLayout->addLayout(horizontalLayout);
 
         verticalSpacer_3 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         verticalLayout->addItem(verticalSpacer_3);
 
-
         retranslateUi(SaveSelection);
 
         QMetaObject::connectSlotsByName(SaveSelection);
     } // setupUi
 
-    void retranslateUi(QWidget *SaveSelection)
-    {
+    void retranslateUi(QWidget* SaveSelection) {
         SaveSelection->setWindowTitle(QCoreApplication::translate("SaveSelection", "\351\200\211\346\213\251\345\255\230\346\241\243...", nullptr));
         label->setText(QCoreApplication::translate("SaveSelection", "\351\200\211\346\213\251\345\255\230\346\241\243...", nullptr));
         createButton->setText(QCoreApplication::translate("SaveSelection", "\345\210\233\345\273\272\346\226\260\345\255\230\346\241\243", nullptr));
         deleteButton->setText(QCoreApplication::translate("SaveSelection", "\345\210\240\351\231\244\345\255\230\346\241\243", nullptr));
     } // retranslateUi
-
 };
 
 namespace Ui {
-    class SaveSelection: public Ui_SaveSelection {};
+class SaveSelection : public Ui_SaveSelection { };
 } // namespace Ui
 
 QT_END_NAMESPACE

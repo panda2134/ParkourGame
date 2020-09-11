@@ -12,11 +12,11 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QRegion>
+#include <QThread>
 #include <QTime>
 #include <QTimer>
 #include <QVector2D>
 #include <QWindow>
-#include <QThread>
 #include <chrono>
 
 class GameRenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -26,13 +26,13 @@ class GameRenderGLWidget : public QOpenGLWidget, protected QOpenGLFunctions {
      * @brief renderTick 渲染时世界不一定已加载，故渲染组件需要单独维护一个tick计数
      */
     size_t renderTick;
-	QThread *timerThread;
+    QThread* timerThread;
     std::chrono::time_point<std::chrono::steady_clock> lastUpdateTime;
 
 public:
-	QSharedPointer<parkour::GameScene> gameScene;
+    QSharedPointer<parkour::GameScene> gameScene;
     GameRenderGLWidget(QWidget* parent = nullptr);
-	~GameRenderGLWidget();
+    ~GameRenderGLWidget();
 public slots:
     void tick();
 
@@ -41,7 +41,7 @@ protected:
     void resizeEvent(QResizeEvent* e) override;
     void paintGL() override;
     void initializeGL() override;
-	void closeEvent(QCloseEvent *) override;
+    void closeEvent(QCloseEvent*) override;
 };
 
 #endif // GAMERENDERGLWIDGET_H

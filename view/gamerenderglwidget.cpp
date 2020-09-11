@@ -1,7 +1,7 @@
 #include "gamerenderglwidget.h"
 #include "../controller/savemanager.h"
-#include "../utils/consts.h"
 #include "../model/world.h"
+#include "../utils/consts.h"
 #include "./scene/gamescene.h"
 #include <QApplication>
 using namespace parkour;
@@ -9,16 +9,16 @@ using namespace parkour;
 GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
     : QOpenGLWidget(parent)
     , renderTick(0)
-    , timerThread(new QThread(this)){
-	this->setFocus();
-	this->setMouseTracking(true);
-	this->setAttribute(Qt::WA_DeleteOnClose);
-	this->setAttribute(Qt::WA_QuitOnClose, false);
-	this->setMinimumWidth(854);
-	this->setMinimumHeight(480);
+    , timerThread(new QThread(this)) {
+    this->setFocus();
+    this->setMouseTracking(true);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
+    this->setMinimumWidth(854);
+    this->setMinimumHeight(480);
     gameScene = QSharedPointer<GameScene>::create(this);
 
-	connect(gameScene.data(), &GameScene::saveAndExit, this, &GameRenderGLWidget::close);
+    connect(gameScene.data(), &GameScene::saveAndExit, this, &GameRenderGLWidget::close);
 
     auto* timer = new QTimer();
     timer->setInterval(TICK_LENGTH * 1000);
@@ -33,15 +33,15 @@ GameRenderGLWidget::GameRenderGLWidget(QWidget* parent)
 }
 
 GameRenderGLWidget::~GameRenderGLWidget() {
-	timerThread->quit();
-	timerThread->wait();
-	delete timerThread;
+    timerThread->quit();
+    timerThread->wait();
+    delete timerThread;
 }
 
 void GameRenderGLWidget::tick() {
-	if (!parkour::World::instance().isReady()) {
-		return;
-	}
+    if (!parkour::World::instance().isReady()) {
+        return;
+    }
     if (gameScene != nullptr) {
         gameScene->calculate();
     }
@@ -58,11 +58,11 @@ bool GameRenderGLWidget::event(QEvent* e) {
         case QEvent::MouseButtonRelease:
         case QEvent::KeyPress:
         case QEvent::KeyRelease:
-		case QEvent::Wheel:
-		case QEvent::DragMove:
-		case QEvent::DragEnter:
-		case QEvent::DragLeave:
-			return QApplication::sendEvent(gameScene.data(), e);
+        case QEvent::Wheel:
+        case QEvent::DragMove:
+        case QEvent::DragEnter:
+        case QEvent::DragLeave:
+            return QApplication::sendEvent(gameScene.data(), e);
         default:
             break;
         }
@@ -80,7 +80,7 @@ void GameRenderGLWidget::paintGL() {
 
     // clear screen
     p.beginNativePainting();
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_SCISSOR_TEST); // 不渲染屏幕外的像素
     glScissor(0, 0, width(), height());
@@ -98,8 +98,8 @@ void GameRenderGLWidget::initializeGL() {
     }
 }
 
-void GameRenderGLWidget::closeEvent(QCloseEvent *) {
-	gameScene->setQuitting();
-	paintGL();
-	SaveManager::instance().setLastScreenshot(grabFramebuffer());
+void GameRenderGLWidget::closeEvent(QCloseEvent*) {
+    gameScene->setQuitting();
+    paintGL();
+    SaveManager::instance().setLastScreenshot(grabFramebuffer());
 }

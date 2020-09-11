@@ -8,7 +8,8 @@ class AsKeyValueRange {
 
 public:
     AsKeyValueRange(T& container_)
-        : container(container_) {}
+        : container(container_) {
+    }
 
     auto begin() { return container.keyValueBegin(); }
     auto end() { return container.keyValueEnd(); }

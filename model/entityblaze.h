@@ -3,14 +3,13 @@
 
 #include "../utils/consts.h"
 #include "entity.h"
+#include <QDataStream>
 #include <QPair>
 #include <QQueue>
-#include <QDataStream>
 
 namespace parkour {
 
-class EntityBlaze : public Entity
-{
+class EntityBlaze : public Entity {
     Q_OBJECT
 
     enum BlazeState {
@@ -30,15 +29,15 @@ class EntityBlaze : public Entity
     QQueue<QPair<int, QVector2D>> attackQueue;
     void pushAttackQueue(QSharedPointer<Entity> entity);
 
-	void serializeCustomProps(QDataStream& out) const override;
-	void deserializeCustomProps(QDataStream& in) override;
+    void serializeCustomProps(QDataStream& out) const override;
+    void deserializeCustomProps(QDataStream& in) override;
 
-	virtual int getSerializationVersion() const override;
+    virtual int getSerializationVersion() const override;
 
-	bool blocked(float offsetY);
+    bool blocked(float offsetY);
 
 public:
-	Q_INVOKABLE EntityBlaze();
+    Q_INVOKABLE EntityBlaze();
 
     // ICollidable interface
 public:
@@ -52,9 +51,9 @@ public:
     QString getResourceLocation() override;
     QVector2D getTextureDimensions() override;
     BoundingBox getBoundingBox() const override;
-	double getMass() const override;
-	void damage(double val) override;
-	virtual QString getDisplayName() const override;
+    double getMass() const override;
+    void damage(double val) override;
+    virtual QString getDisplayName() const override;
 };
 
 }

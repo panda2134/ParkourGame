@@ -7,8 +7,7 @@
 #include <QPair>
 
 namespace parkour {
-class BlockSpring : public Block
-{
+class BlockSpring : public Block {
     Q_OBJECT
 
     const int FRAME_COUNT = 4;
@@ -28,10 +27,10 @@ public:
     int getCurrentFrame(const QPoint& blockPos) override;
     void onStand(QPoint blockPos, Entity& entity) override;
     BoundingBox getBoundingBox() const override;
-	virtual QString getDisplayName() const override;
-	void collide(QPoint, Entity&, Direction) override; 
-	bool canPlaceAt(QPoint blockPos) const;
-	bool isSolid() const;
+    virtual QString getDisplayName() const override;
+    void collide(QPoint, Entity&, Direction) override;
+    bool canPlaceAt(QPoint blockPos) const;
+    bool isSolid() const;
 };
 }
 

@@ -7,17 +7,17 @@
 
 namespace parkour {
 
-class EntityFireball : public Entity
-{
+class EntityFireball : public Entity {
     Q_OBJECT
     double explosionPower;
     int livingTicks;
     const int MAX_AGE = TICKS_PER_SEC * 10;
-	virtual void serializeCustomProps(QDataStream & out) const override;
-	virtual void deserializeCustomProps(QDataStream & in) override;
-	virtual int getSerializationVersion() const override;
+    virtual void serializeCustomProps(QDataStream& out) const override;
+    virtual void deserializeCustomProps(QDataStream& in) override;
+    virtual int getSerializationVersion() const override;
+
 public:
-	Q_INVOKABLE EntityFireball(double power = .0);
+    Q_INVOKABLE EntityFireball(double power = .0);
     QString getName() const override;
     bool isAffectedByGravity() const override;
     bool isAffectedByExplosionWave() const override;
@@ -27,9 +27,9 @@ public:
     void damage(double value) override;
     bool showDeathAnimationAndInfo() const override;
     void update() override;
-	virtual QString getDisplayName() const override;
-	void collide(ICollidable&, Direction) override;
-	static void placeFireball(QVector2D position, QVector2D velocity, double power = 7.0);
+    virtual QString getDisplayName() const override;
+    void collide(ICollidable&, Direction) override;
+    static void placeFireball(QVector2D position, QVector2D velocity, double power = 7.0);
 };
 }
 Q_DECLARE_METATYPE(parkour::EntityFireball*)

@@ -14,5 +14,5 @@ double parkour::BlockDirt::getExplosionResistance() const {
 }
 
 QString parkour::BlockDirt::getDisplayName() const {
-	return "土块";
+    return "土块";
 }

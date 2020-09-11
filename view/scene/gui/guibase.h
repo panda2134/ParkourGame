@@ -1,25 +1,23 @@
 ﻿#ifndef GUIBASE_H
 #define GUIBASE_H
 #include <QObject>
-#include <QString>
 #include <QPainter>
+#include <QString>
 
 namespace parkour {
-	class GUIBase : public QObject {
-		Q_OBJECT
+class GUIBase : public QObject {
+    Q_OBJECT
 
-	protected:
-		
-
-	public:
-		/**
+protected:
+public:
+    /**
 		 * @brief paintGUI 画出GUI页面，使用参数给定的QPainter
 		 */
-		virtual void paintGUI(QPainter &) = 0;
+    virtual void paintGUI(QPainter&) = 0;
 
-	signals:
-		void quitGUI();
-	};
+signals:
+    void quitGUI();
+};
 }
 
 #endif

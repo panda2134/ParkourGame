@@ -1,7 +1,7 @@
 #ifndef ENTITYSLIME_H
 #define ENTITISLIME_H
-#include "entityplayerlike.h"
 #include "../utils/consts.h"
+#include "entityplayerlike.h"
 #include <QDataStream>
 #include <QString>
 

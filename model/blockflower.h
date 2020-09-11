@@ -4,20 +4,21 @@
 #include "block.h"
 
 namespace parkour {
-	class BlockFlower: public Block {
-		const double HP_BONUS = 10.0;
-	public:
-		QString getName() const override;
-		QString getResourceLocation() const override;
-		double getExplosionResistance() const override;
+class BlockFlower : public Block {
+    const double HP_BONUS = 10.0;
 
-		BoundingBox getBoundingBox() const override;
-		void collide(QPoint blockPos, Entity &entity, Direction dir);
+public:
+    QString getName() const override;
+    QString getResourceLocation() const override;
+    double getExplosionResistance() const override;
 
-		virtual bool canPlaceAt(QPoint) const override;
-		virtual bool isSolid() const;
+    BoundingBox getBoundingBox() const override;
+    void collide(QPoint blockPos, Entity& entity, Direction dir);
 
-		virtual QString getDisplayName() const override;
-	};
+    virtual bool canPlaceAt(QPoint) const override;
+    virtual bool isSolid() const;
+
+    virtual QString getDisplayName() const override;
+};
 }
 #endif

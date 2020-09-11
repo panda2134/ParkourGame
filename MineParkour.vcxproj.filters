@@ -1,0 +1,621 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="model\block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockbedrock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockdelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockdirt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockexpbottle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockflower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockgrass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockmushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockoakplank.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blocksaw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockspike.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockspring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blockstonebrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\blocktnt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\boundingbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\direction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityblaze.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entitycreeper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityfireball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entitymovingbrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityobserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityplayerlike.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityslime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entitytnt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\entityxporb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\experiencehelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\gamerenderglwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gamescene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gamesound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\geometryhelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\glhelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\guibase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\guieventfilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\guipause.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\icollidable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\scene\gui\inventorygui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemblock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemmovingbrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemspawnegg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemspawnpointsetter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\itemteleporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller\playercontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\saveitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller\savemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\saveselection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="view\widgets\styledpushbutton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model\world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller\worldcontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\worldioworker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="utils\askeyvaluerange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="model\block.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockbedrock.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockdelegate.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockdirt.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockexpbottle.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="model\blockflower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="model\blockgrass.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="model\blockmushroom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model\blockoakplank.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="model\blocksaw.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockspike.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\blockspring.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="model\blockstonebrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="model\blocktnt.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="model\boundingbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\consts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\direction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="model\entity.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityblaze.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entitycreeper.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityfireball.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entitymovingbrick.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityobserver.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityplayer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityplayerlike.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityslime.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entitytnt.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\entityxporb.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="utils\experiencehelper.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\gamerenderglwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gamescene.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gamesound.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="utils\geometryhelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\glhelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="view\scene\gui\guibase.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guieventfilter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\scene\gui\guipause.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="model\icollidable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="view\scene\gui\inventorygui.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\item.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemblock.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemmovingbrick.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemspawnegg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemspawnpointsetter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\itemteleporter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="controller\playercontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\registry.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\saveitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="controller\savemanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="view\saveselection.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="utils\singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="view\widgets\styledpushbutton.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="model\world.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="controller\worldcontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="utils\worldioworker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="view\mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="view\saveitem.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="view\saveselection.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\entities\blaze\0.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\player\0.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\blaze\1.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\player\1.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_death.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_hurt1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_hurt2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_hurt3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_hurt4.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_idle1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_idle2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_idle3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Blaze_idle4.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Creeper_fuse.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Exp_gained.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Explode1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Explode2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Explode3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Explode4.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Fireball.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Fuse.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Glass_dig1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Glass_dig2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Glass_dig3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Levelup.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_big1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_big2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_big3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_big4.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_small1.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_small2.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_small3.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_small4.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\sounds\Slime_small5.wav">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\bedrock.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\gui\bg.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\shaders\block.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\shaders\block.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\creeper.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\dirt.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\fireball.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\flower.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\grass.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\gui\inventory.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\gui\logo.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\moving_brick.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\mushroom.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\no_texture.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\oak_plank.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\observer.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\items\observer.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\gui\options_background.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="res.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="assets\blocks\saw.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\slime.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\items\spawn_egg_blaze.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\items\spawn_egg_creeper.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\items\spawn_egg_slime.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\items\spawnpoint.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\spike.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\gui\splash.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\spring.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\stone_brick.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\tnt.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\tnt.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\items\tp.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\gui\widgets.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\blocks\xp_bottle.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\entities\xp_orb.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MineParkour.rc" />
+  </ItemGroup>
+</Project>

@@ -1,8 +1,8 @@
 #include "entityblaze.h"
-#include "utils/consts.h"
-#include "view/scene/gamesound.h"
 #include "entityfireball.h"
 #include "entityxporb.h"
+#include "utils/consts.h"
+#include "view/scene/gamesound.h"
 #include "world.h"
 #include <QRandomGenerator>
 #include <QSharedPointer>
@@ -62,8 +62,7 @@ void EntityBlaze::update() {
 
     if (state == BlazeState::UP && (getPosition().y() < 1 || blocked(-1.0f))) {
         state = BlazeState::HIGHEST;
-    } else if (state == BlazeState::DOWN && (getPosition().y() >= WORLD_HEIGHT 
-		|| blocked(1.0f) || blocked(2.0f) || blocked(3.0f))) {
+    } else if (state == BlazeState::DOWN && (getPosition().y() >= WORLD_HEIGHT || blocked(1.0f) || blocked(2.0f) || blocked(3.0f))) {
         state = BlazeState::LOWEST;
     } else {
         // 在停住时，随机决定是否改变状态
@@ -86,8 +85,8 @@ void EntityBlaze::update() {
     //    处理攻击队列
     for (auto& [tick, norm] : attackQueue) {
         if (tick <= livingTicks) {
-			auto bbox = getBoundingBoxWorld();
-			EntityFireball::placeFireball(bbox.getCenter() + norm * 2, norm * FIREBALL_VELOCITY);
+            auto bbox = getBoundingBoxWorld();
+            EntityFireball::placeFireball(bbox.getCenter() + norm * 2, norm * FIREBALL_VELOCITY);
         }
     }
     while (!attackQueue.empty() && attackQueue.front().first <= livingTicks) {
@@ -126,36 +125,36 @@ BoundingBox EntityBlaze::getBoundingBox() const {
     return BoundingBox { { 0.25f, 0.0625f }, { 0.5f, 0.5f } };
 }
 double EntityBlaze::getMass() const {
-	return 1e10;
+    return 1e10;
 }
 void EntityBlaze::damage(double val) {
-	Entity::damage(val);
+    Entity::damage(val);
     auto gen = QRandomGenerator::global();
     GameSound::instance().playWorldSound(QString("Blaze_hurt%1").arg(gen->generate() % 4 + 1), getPosition());
-	if (this->getHp() < 0) {
+    if (this->getHp() < 0) {
         GameSound::instance().playWorldSound("Blaze_death", getPosition());
-		int count = gen->generate() % 3 + 1;
-		for (int i = 0; i < count; i++) {
-			EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 10);
-		}
-	}
+        int count = gen->generate() % 3 + 1;
+        for (int i = 0; i < count; i++) {
+            EntityXpOrb::dropXpOrbs(getPosition(), gen->generateDouble() * 10);
+        }
+    }
 }
 QString EntityBlaze::getDisplayName() const {
-	return "烈焰人";
+    return "烈焰人";
 }
-void EntityBlaze::serializeCustomProps(QDataStream & out) const {
-	out << livingTicks << cooldown << state << attackQueue;
+void EntityBlaze::serializeCustomProps(QDataStream& out) const {
+    out << livingTicks << cooldown << state << attackQueue;
 }
-void EntityBlaze::deserializeCustomProps(QDataStream & in) {
-	in >> livingTicks >> cooldown >> state >> attackQueue;
+void EntityBlaze::deserializeCustomProps(QDataStream& in) {
+    in >> livingTicks >> cooldown >> state >> attackQueue;
 }
 int EntityBlaze::getSerializationVersion() const {
-	return 1;
+    return 1;
 }
 bool EntityBlaze::blocked(float offsetY) {
-	auto &world = World::instance();
-	return world.getBlock(QPoint(getPosition().x(), getPosition().y() + offsetY)) != "air"
-		|| world.getBlock(QPoint(getPosition().x() - 1.0f, getPosition().y() + offsetY)) != "air"
-		|| world.getBlock(QPoint(getPosition().x() + 1.0f, getPosition().y() + offsetY)) != "air";
+    auto& world = World::instance();
+    return world.getBlock(QPoint(getPosition().x(), getPosition().y() + offsetY)) != "air"
+        || world.getBlock(QPoint(getPosition().x() - 1.0f, getPosition().y() + offsetY)) != "air"
+        || world.getBlock(QPoint(getPosition().x() + 1.0f, getPosition().y() + offsetY)) != "air";
 }
 }

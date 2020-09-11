@@ -6,8 +6,7 @@
 #include "block.h"
 
 namespace parkour {
-class BlockSpike : public Block
-{
+class BlockSpike : public Block {
     Q_OBJECT
 
     const double SPIKE_DAMAGE_PER_TICK = 1.0 / TICKS_PER_SEC * 50.0;
@@ -22,10 +21,10 @@ public:
     QString getResourceLocation() const override;
     double getExplosionResistance() const override;
     void onStand(QPoint blockPos, Entity& entity) override;
-	virtual QString getDisplayName() const override;
-	void collide(QPoint, Entity&, Direction) override;
-	bool canPlaceAt(QPoint blockPos) const;
-	bool isSolid() const;
+    virtual QString getDisplayName() const override;
+    void collide(QPoint, Entity&, Direction) override;
+    bool canPlaceAt(QPoint blockPos) const;
+    bool isSolid() const;
 };
 }
 
